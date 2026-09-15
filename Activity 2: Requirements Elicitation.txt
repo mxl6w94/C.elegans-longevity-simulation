@@ -24,6 +24,12 @@ Brainstorming/ Identify features
 
 core features:
 
-researcher will turn a gene on or off from a preset list of 
+  researchers/users will turn a gene on or off from a preset list of preselected genes to see how that effects the model
+  users will see a predicted life expectancyof the worm for a given set of genetic peramaters. 
+  users will have a visual of what the worm will look like for the given biological age in relation to chronological time. 
 
 nice to have
+
+  the user 
+
+  
