@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Longevity Line</title>
+<style>
+  :root{
+    --paper:#F2F4F1;
+    --panel:#FFFFFF;
+    --panel-2:#EAEDE8;
+    --ink:#16211C;
+    --ink-soft:#48584D;
+    --ink-faint:#7C8C80;
+    --rule:#CBD4CC;
+    --amber:#9C6B18;
+    --amber-ink:#5B3F0F;
+    --amber-soft:#F3E7CC;
+    --teal:#0E6E62;
+    --teal-ink:#0A4A42;
+    --teal-soft:#DCEEEA;
+    --shadow:rgba(22,33,28,.10);
+    --focus:#1B6FE0;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#0E1715;
+      --panel:#152420;
+      --panel-2:#1B2D27;
+      --ink:#E9F1EA;
+      --ink-soft:#A9BDAF;
+      --ink-faint:#6E8378;
+      --rule:#2B3C34;
+      --amber:#E7B45F;
+      --amber-ink:#F6DDAC;
+      --amber-soft:#2C2313;
+      --teal:#5FD1C1;
+      --teal-ink:#A9EAE0;
+      --teal-soft:#0F2C29;
+      --shadow:rgba(0,0,0,.45);
+      --focus:#7FB4FF;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#0E1715;
+    --panel:#152420;
+    --panel-2:#1B2D27;
+    --ink:#E9F1EA;
+    --ink-soft:#A9BDAF;
+    --ink-faint:#6E8378;
+    --rule:#2B3C34;
+    --amber:#E7B45F;
+    --amber-ink:#F6DDAC;
+    --amber-soft:#2C2313;
+    --teal:#5FD1C1;
+    --teal-ink:#A9EAE0;
+    --teal-soft:#0F2C29;
+    --shadow:rgba(0,0,0,.45);
+    --focus:#7FB4FF;
+  }
+
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    margin:0;
+    font-family:'Literata','Iowan Old Style','Palatino Linotype',Georgia,serif;
+    font-optical-sizing:auto;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono, .placard-label, .stat-num, .legend-code, .credit{
+    font-family:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  h1,h2,h3,.eyebrow,.stop-title,.nav-label{
+    font-family:'Big Shoulders','Arial Narrow',sans-serif;
+    font-weight:700;
+    text-wrap:balance;
+    letter-spacing:.01em;
+  }
+  a{color:inherit;}
+  a:focus-visible, button:focus-visible, [tabindex]:focus-visible{
+    outline:3px solid var(--focus);
+    outline-offset:2px;
+    border-radius:2px;
+  }
+  img,svg{max-width:100%;}
+
+  /* ---------- layout shell ---------- */
+  .page{
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 24px 120px;
+  }
+  .track{
+    max-width:660px;
+    margin:0 auto;
+    padding-left:0;
+  }
+  @media (min-width:900px){
+    .track{ padding-left:76px; }
+  }
+
+  /* ---------- rail ---------- */
+  .rail{
+    display:none;
+  }
+  @media (min-width:900px){
+    .rail{
+      display:block;
+      position:fixed;
+      top:0; bottom:0; left:calc(50% - 590px + 24px);
+      width:52px;
+    }
+    .rail-line{
+      position:absolute; top:0; bottom:0; left:24px;
+      width:2px;
+      background:linear-gradient(var(--amber), var(--amber) 46%, var(--teal) 54%, var(--teal));
+      opacity:.55;
+    }
+    .rail-dots{
+      position:relative; height:100%;
+    }
+    .rail-dot{
+      position:absolute; left:24px; transform:translate(-50%,-50%);
+      width:13px; height:13px; border-radius:50%;
+      background:var(--paper);
+      border:2px solid var(--ink-faint);
+      cursor:pointer;
+      transition:transform .18s ease, border-color .18s ease, background .18s ease;
+    }
+    .rail-dot:hover{ transform:translate(-50%,-50%) scale(1.25); }
+    .rail-dot.on-bio{ border-color:var(--amber); }
+    .rail-dot.on-comp{ border-color:var(--teal); }
+    .rail-dot.active{ background:var(--ink); border-color:var(--ink); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .rail-dot{ transition:none; }
+  }
+
+  /* ---------- hero ---------- */
+  .hero{
+    padding:76px 0 40px;
+  }
+  .hero .kicker{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:.78rem;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--ink-faint);
+    margin:0 0 18px;
+  }
+  .hero h1{
+    font-size:clamp(2.6rem, 6.5vw, 4.6rem);
+    line-height:.96;
+    margin:0 0 22px;
+    text-transform:uppercase;
+  }
+  .hero h1 em{
+    font-style:normal;
+    background:linear-gradient(90deg, var(--amber), var(--teal));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  .hero p.dek{
+    font-size:1.18rem;
+    color:var(--ink-soft);
+    max-width:640px;
+    margin:0 0 8px;
+  }
+  .hero .promise{
+    margin-top:28px;
+    display:flex; gap:10px; flex-wrap:wrap;
+  }
+  .chip{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:.72rem;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    border:1px solid var(--rule);
+    border-radius:100px;
+    padding:6px 12px;
+    color:var(--ink-soft);
+  }
+
+  /* ---------- route map (hero diagram) ---------- */
+  .routemap-wrap{
+    margin-top:52px;
+    border-top:1px solid var(--rule);
+    padding-top:28px;
+  }
+  .routemap-cap{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:.72rem; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--ink-faint); margin:0 0 14px;
+  }
+  .routemap-scroll{ overflow-x:auto; padding-bottom:6px; }
+  .routemap-scroll svg{ display:block; min-width:760px; }
+  .rm-stop{ cursor:pointer; }
+  .rm-stop circle{ transition:r .15s ease; }
+  .rm-stop:hover circle{ r:9; }
+  .rm-stop text{ font-family:'IBM Plex Mono',monospace; }
+  .rm-label{ font-size:11px; fill:var(--ink-soft); }
+  .rm-num{ font-size:10px; fill:var(--paper); font-weight:600; }
+
+  /* ---------- stops ---------- */
+  .stop{
+    padding:64px 0 8px;
+    border-top:1px solid var(--rule);
+    scroll-margin-top:24px;
+  }
+  #stop-01{ border-top:none; }
+  .stop-eyebrow{
+    display:flex; align-items:center; gap:10px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:.76rem; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-faint);
+    margin:0 0 10px;
+  }
+  .stop-eyebrow .dot{
+    width:8px; height:8px; border-radius:50%;
+    display:inline-block;
+  }
+  .dot.bio{ background:var(--amber); }
+  .dot.comp{ background:var(--teal); }
+  .dot.both{ background:linear-gradient(90deg,var(--amber),var(--teal)); }
+  .stop h2{
+    font-size:clamp(1.7rem,3.4vw,2.5rem);
+    text-transform:uppercase;
+    line-height:1.02;
+    margin:0 0 22px;
+  }
+  .stop p{ margin:0 0 18px; color:var(--ink); }
+  .stop p.lede{
+    font-size:1.12rem;
+    color:var(--ink-soft);
+  }
+  .stop ul, .stop ol{ margin:0 0 18px; padding-left:1.15em; }
+  .stop li{ margin:0 0 8px; }
+  .pull{
+    font-family:'Big Shoulders',sans-serif;
+    font-weight:600;
+    font-size:clamp(1.25rem,2.6vw,1.6rem);
+    line-height:1.22;
+    text-transform:none;
+    letter-spacing:0;
+    color:var(--ink);
+    border-left:3px solid var(--teal);
+    padding:2px 0 2px 20px;
+    margin:28px 0;
+  }
+  .pull.amber{ border-left-color:var(--amber); }
+
+  /* ---------- placards (jargon busters) ---------- */
+  .placard{
+    border:1px dashed var(--rule);
+    border-radius:6px;
+    padding:16px 18px;
+    margin:22px 0;
+    background:var(--panel);
+    box-shadow:0 1px 0 var(--shadow);
+  }
+  .placard--bio{ border-color:color-mix(in srgb, var(--amber) 55%, var(--rule)); background:var(--amber-soft); }
+  .placard--comp{ border-color:color-mix(in srgb, var(--teal) 55%, var(--rule)); background:var(--teal-soft); }
+  .placard-label{
+    font-size:.72rem; letter-spacing:.1em; text-transform:uppercase;
+    margin:0 0 6px; color:var(--ink-faint);
+  }
+  .placard--bio .placard-label{ color:var(--amber-ink); }
+  .placard--comp .placard-label{ color:var(--teal-ink); }
+  .placard-term{
+    font-family:'Big Shoulders',sans-serif;
+    font-weight:700; font-size:1.05rem; text-transform:none;
+    margin:0 0 6px;
+  }
+  .placard p{ margin:0; font-size:.98rem; color:var(--ink); }
+
+  /* ---------- stat strip ---------- */
+  .stats{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:1px;
+    background:var(--rule);
+    border:1px solid var(--rule);
+    border-radius:8px;
+    overflow:hidden;
+    margin:26px 0;
+  }
+  @media (min-width:560px){ .stats{ grid-template-columns:repeat(4,1fr); } }
+  .stat{
+    background:var(--panel);
+    padding:16px 14px;
+  }
+  .stat-num{
+    font-variant-numeric:tabular-nums;
+    font-size:1.5rem;
+    font-weight:600;
+    display:block;
+  }
+  .stat-cap{
+    font-size:.74rem;
+    color:var(--ink-faint);
+    margin-top:2px;
+  }
+
+  /* ---------- diagrams ---------- */
+  .diagram{
+    margin:30px 0;
+    border:1px solid var(--rule);
+    border-radius:8px;
+    background:var(--panel);
+    padding:18px;
+  }
+  .diagram-scroll{ overflow-x:auto; }
+  .diagram-scroll svg{ display:block; margin:0 auto; }
+  .diagram-cap{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:.72rem; color:var(--ink-faint);
+    margin:12px 0 0; text-align:center;
+  }
+  text{ fill:var(--ink); }
+  .svg-soft{ fill:var(--ink-soft); }
+  .svg-faint{ fill:var(--ink-faint); }
+  .svg-amber{ fill:var(--amber); stroke:var(--amber); }
+  .svg-teal{ fill:var(--teal); stroke:var(--teal); }
+  .svg-rule{ stroke:var(--rule); }
+
+  /* ---------- field-note (real project findings) ---------- */
+  .fieldnote{
+    margin:30px 0;
+    border-radius:8px;
+    background:var(--panel-2);
+    padding:20px 22px;
+    border:1px solid var(--rule);
+  }
+  .fieldnote-tag{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:.72rem; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--ink-faint); margin:0 0 10px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .fieldnote p:last-child{ margin-bottom:0; }
+
+  /* ---------- glossary (terminus) ---------- */
+  .terminus{ padding-top:64px; border-top:1px solid var(--rule); }
+  .glossary{
+    display:grid; grid-template-columns:1fr; gap:14px;
+    margin-top:24px;
+  }
+  @media (min-width:640px){ .glossary{ grid-template-columns:1fr 1fr; } }
+  .gloss-item{
+    border-top:1px solid var(--rule);
+    padding-top:10px;
+  }
+  .gloss-term{
+    font-family:'Big Shoulders',sans-serif; font-weight:700;
+    font-size:1rem; margin:0 0 4px;
+  }
+  .gloss-def{ margin:0; font-size:.92rem; color:var(--ink-soft); }
+
+  footer.credit{
+    margin-top:70px; padding-top:22px; border-top:1px solid var(--rule);
+    font-size:.76rem; color:var(--ink-faint); letter-spacing:.02em;
+  }
+
+  ::selection{ background:var(--teal-soft); color:var(--ink); }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders:wght@600;700;800&family=Literata:opsz,wght@6..72,400;6..72,500;6..72,600;6..72,700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+</head>
+<body>
+
+<nav class="rail" aria-label="Jump to a stop">
+  <div class="rail-line"></div>
+  <div class="rail-dots" id="railDots"></div>
+</nav>
+
+<main class="page">
+
+  <section class="track hero">
+    <p class="kicker">A field guide to the metabolic-modeling pipeline &middot; start to finish</p>
+    <h1>The<br>Longevity<br><em>Line</em></h1>
+    <p class="dek">Somewhere in a petri dish, a worm the length of a comma is living five times longer than it should. This is the guided tour of how we built a computer simulation to ask <em>why</em> &mdash; starting from zero, ending at the actual mathematics.</p>
+    <p class="dek">No biology background required. No math background required. Every technical word gets stopped at, defined, and explained before we move on.</p>
+    <div class="promise">
+      <span class="chip">12 stops</span>
+      <span class="chip">Zero jargon left undefined</span>
+      <span class="chip">Real project data throughout</span>
+    </div>
+
+    <div class="routemap-wrap">
+      <p class="routemap-cap">The whole route, before you board &mdash; click any stop to jump ahead</p>
+      <div class="routemap-scroll">
+        <svg id="routemap" viewBox="0 0 1120 150" role="img" aria-label="Route map of the twelve stops in this guide">
+          <line x1="40" y1="75" x2="500" y2="75" class="svg-amber" stroke-width="3"/>
+          <line x1="500" y1="75" x2="620" y2="75" stroke-width="3" stroke="url(#grad)"/>
+          <line x1="620" y1="75" x2="1080" y2="75" class="svg-teal" stroke-width="3"/>
+          <defs>
+            <linearGradient id="grad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stop-color="var(--amber)"/>
+              <stop offset="1" stop-color="var(--teal)"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <p class="diagram-cap">amber = the biology track &nbsp;&middot;&nbsp; teal = the computation track &nbsp;&middot;&nbsp; they run in parallel, then merge</p>
+    </div>
+  </section>
+
+  <!-- STOP 01 -->
+  <section class="stop track" id="stop-01" data-stop="1" data-track="bio">
+    <p class="stop-eyebrow"><span class="dot bio"></span> Stop 01 &middot; The Hook</p>
+    <h2>A worm that refuses to grow old</h2>
+    <p class="lede">Picture a tiny transparent worm, about a millimetre long, called <em>C. elegans</em>. In a normal lab dish it lives about two to three weeks. Turn off two of its genes at once &mdash; <span class="mono">daf-2</span> and <span class="mono">rsks-1</span> &mdash; and it can live roughly <strong>five times longer</strong>. Not five percent longer. Five <em>times</em>.</p>
+    <p>That number is the whole reason this project exists. Turning off either gene alone gives a modest boost. Turning off both together gives something much bigger than the sum of the two &mdash; scientists call this <strong>synergy</strong>, when two changes combine into an effect neither one could produce by itself. Our job is to build a computer model that can show, in the language of chemistry and mathematics, roughly what is happening inside the worm's body when that switch gets flipped.</p>
+
+    <p class="pull amber">Think of the worm's body as a small city.</p>
+
+    <p>Every cell in that city runs on a constant flow of chemical "goods" &mdash; sugars, fats, amino acids &mdash; being built, broken down, shipped around, and spent. That flow has to be managed, the same way a city manages electricity, water, and traffic. Most of the time, the city is in <strong>growth mode</strong>: build new houses, expand the factories, keep the maintenance crews small. Growth mode is fast and productive, but it runs the infrastructure hard and defers repairs.</p>
+    <p>The two genes we're studying, <span class="mono">daf-2</span> and <span class="mono">rsks-1</span>, are part of the signal that keeps the city in growth mode. Switch them off, and the city government effectively declares an economic shift: less spending on expansion, more on maintenance, repair crews, and stockpiling reserves for hard times. A city run that way builds less, reproduces less &mdash; and its infrastructure lasts a great deal longer before it fails. That reallocation, scaled up across an entire body, is one of the leading explanations for why these worms live so much longer.</p>
+    <p>The rest of this guide is about how we translate "the city shifted its budget from growth to maintenance" into an actual, checkable, mathematical simulation.</p>
+  </section>
+
+  <!-- STOP 02 -->
+  <section class="stop track" id="stop-02" data-stop="2" data-track="bio">
+    <p class="stop-eyebrow"><span class="dot bio"></span> Stop 02 &middot; The Cast of Characters</p>
+    <h2>Genes, proteins, and factory workers</h2>
+    <p class="lede">Before we can talk about "turning off a gene," we need three quick definitions. We'll only need them once each &mdash; after this stop, we build on them rather than re-explaining them.</p>
+
+    <div class="placard placard--bio">
+      <p class="placard-label">Term &middot; Gene</p>
+      <p class="placard-term">Gene</p>
+      <p>A gene is an instruction, written in DNA, for how to build one specific molecular tool. Every cell in the worm carries the full instruction manual (its <strong>genome</strong>); which pages get read determines what that cell actually does.</p>
+    </div>
+    <div class="placard placard--bio">
+      <p class="placard-label">Term &middot; Protein / Enzyme</p>
+      <p class="placard-term">Protein, and its worker form: Enzyme</p>
+      <p>A protein is the physical tool built from a gene's instructions. Many proteins are <strong>enzymes</strong> &mdash; molecular machines whose entire job is to take one chemical and convert it into another, over and over, extremely fast. If a gene is a blueprint, an enzyme is the machine on the factory floor built from that blueprint.</p>
+    </div>
+    <div class="placard placard--bio">
+      <p class="placard-label">Term &middot; Metabolism</p>
+      <p class="placard-term">Metabolism</p>
+      <p>Metabolism is the entire web of chemical conversions happening inside a body at once &mdash; sugar into energy, amino acids into muscle, fat into storage, waste out the door. It is the city's entire economy of goods, running continuously, every cell a mixture of factories.</p>
+    </div>
+
+    <p>So: genes are blueprints, enzymes are the factory workers built from those blueprints, and metabolism is the whole factory floor's worth of chemical work happening at once. That's the entire biological vocabulary we need to get started &mdash; everything from here is built out of these three ideas.</p>
+  </section>
+
+  <!-- STOP 03 -->
+  <section class="stop track" id="stop-03" data-stop="3" data-track="bio">
+    <p class="stop-eyebrow"><span class="dot bio"></span> Stop 03 &middot; The Crucial Distinction</p>
+    <h2>Managers versus factory workers</h2>
+    <p class="lede">Here is the single most important distinction in this entire project, and the reason the simulation had to be built the clever way instead of the obvious way.</p>
+    <p>Not every gene builds a factory worker. Some genes build <strong>managers</strong> &mdash; molecules whose entire job is to relay instructions to other genes, rather than to do metabolic work themselves. <span class="mono">daf-2</span> is one of these. It builds a <strong>receptor</strong>, a molecular antenna sitting on the surface of a cell, that listens for a specific hormone (in worms, an insulin-like signal) and then passes a message inward: <em>"conditions are good &mdash; grow."</em> <span class="mono">rsks-1</span> sits further down that same internal messaging chain, relaying a related growth-and-nutrient signal.</p>
+
+    <div class="placard placard--bio">
+      <p class="placard-label">Term &middot; Signaling gene / Receptor</p>
+      <p class="placard-term">Signaling gene, and Receptor</p>
+      <p>A signaling gene builds a molecule whose job is to <em>send or relay a message</em> to other genes, rather than to directly process a chemical. A receptor is a common type of signaling molecule: an antenna on the outside of a cell that detects a signal and triggers a response inside.</p>
+    </div>
+
+    <p>Neither <span class="mono">daf-2</span> nor <span class="mono">rsks-1</span> is a factory worker. Neither one personally builds fat, breaks down sugar, or manufactures an amino acid. They're both <strong>managers</strong> &mdash; part of the city's policy-making office, not part of any individual factory. They issue the memo that says "expand production"; hundreds of separate metabolic enzymes downstream are the ones who actually read that memo and change what they're doing.</p>
+
+    <p class="pull">This one fact decides the entire shape of our simulation.</p>
+
+    <p>The computer model we're using &mdash; described in the next stop &mdash; is a detailed map of the city's <em>factories</em>: every metabolic enzyme, every chemical conversion. It is not a map of the mayor's office. <span class="mono">daf-2</span> and <span class="mono">rsks-1</span> simply do not appear on it, for the same reason a map of factories doesn't have a building labeled "policy meetings." An early draft of this project tried to directly "delete" these two genes from the factory map and failed for exactly this reason &mdash; you cannot erase a building from a map it was never drawn on.</p>
+    <p>So instead of erasing the managers, we do something more indirect and, as it turns out, more informative: we read the memo. We look at what actually changed on the factory floor &mdash; which workers sped up, which slowed down &mdash; after the managers' instructions changed, and we feed <em>that</em> information into the factory map. The next three stops explain exactly how.</p>
+  </section>
+
+  <!-- STOP 04 -->
+  <section class="stop track" id="stop-04" data-stop="4" data-track="comp">
+    <p class="stop-eyebrow"><span class="dot comp"></span> Stop 04 &middot; The Map</p>
+    <h2>A complete transit map of worm metabolism</h2>
+    <p class="lede">To simulate anything, you first need a map of everything that's possible. That map is called a genome-scale metabolic model, and for <em>C. elegans</em> it already exists &mdash; scientists built it by cataloguing, essentially, every known enzyme the worm's genome can produce and every chemical conversion each one performs.</p>
+
+    <div class="placard placard--comp">
+      <p class="placard-label">Term &middot; Genome-scale metabolic model</p>
+      <p class="placard-term">Genome-Scale Metabolic Model (GEM)</p>
+      <p>A complete, catalogued network of every chemical reaction an organism's enzymes are known to be capable of &mdash; and which genes build each enzyme. Think of it as a subway map of the entire metabolic economy: every station is a chemical (a sugar, a fat, an amino acid), every line between stations is a reaction one enzyme can perform, converting one into the other.</p>
+    </div>
+
+    <p>The specific map we use is called <strong><span class="mono">iCEL1314</span></strong>. The name is dense but the parts are readable: <span class="mono">i</span> for "in silico" (built inside a computer, from the Latin for silicon), <span class="mono">CEL</span> for <em>C. elegans</em>, and <span class="mono">1314</span> for the number of genes it accounts for.</p>
+
+    <div class="stats">
+      <div class="stat"><span class="stat-num">1,314</span><span class="stat-cap">genes on the map</span></div>
+      <div class="stat"><span class="stat-num">2,230</span><span class="stat-cap">chemical reactions</span></div>
+      <div class="stat"><span class="stat-num">1,533</span><span class="stat-cap">distinct chemicals tracked</span></div>
+      <div class="stat"><span class="stat-num">3</span><span class="stat-cap">cellular compartments modeled</span></div>
+    </div>
+
+    <div class="placard placard--comp">
+      <p class="placard-label">Term &middot; Metabolic flux</p>
+      <p class="placard-term">Metabolic Flux</p>
+      <p>Flux is simply <em>rate of flow</em> &mdash; how much material is moving through one particular reaction, per unit of time. On the subway-map analogy, flux is how many trains per hour are running on one specific line. A reaction can be running fast (high flux), slow (low flux), or not at all (zero flux) at any given moment.</p>
+    </div>
+
+    <p>Every one of the map's 2,230 "lines" has a matching gene &mdash; or, for reactions run by a team of enzymes, several genes &mdash; that builds the worker responsible for that specific conversion. Written out, this gene-to-reaction link is called a <strong>GPR rule</strong> (short for Gene-Protein-Reaction), and it will matter a great deal in Stop 07. For now, the one thing to hold onto is this: <strong>the map is built entirely out of factory workers.</strong> As Stop 03 established, our two genes of interest are managers, not workers &mdash; so they are absent from this map by design, not by omission.</p>
+  </section>
+
+  <!-- STOP 05 -->
+  <section class="stop track" id="stop-05" data-stop="5" data-track="bio">
+    <p class="stop-eyebrow"><span class="dot bio"></span> Stop 05 &middot; The Snapshot</p>
+    <h2>Photographing which lights are on</h2>
+    <p class="lede">If the map from Stop 04 shows every road that <em>could</em> carry traffic, we still need to know which roads a particular worm is actually using heavily right now. That's a separate kind of data entirely &mdash; not a map of possibilities, but a snapshot of activity.</p>
+
+    <div class="placard placard--bio">
+      <p class="placard-label">Term &middot; Gene expression</p>
+      <p class="placard-term">Gene Expression</p>
+      <p>A gene isn't simply "on" or "off" like a light switch &mdash; it's read, or <em>expressed</em>, at some rate, the way a factory can run one shift a week or three shifts a day. Expression level is a proxy for how much of that gene's protein the cell is actively producing right now.</p>
+    </div>
+
+    <div class="placard placard--bio">
+      <p class="placard-label">Term &middot; Transcriptomics / Microarray</p>
+      <p class="placard-term">Transcriptomics, measured by Microarray</p>
+      <p><strong>Transcriptomics</strong> is the measurement of gene expression across the whole genome at once &mdash; a full-city activity survey, not just one building. A <strong>microarray</strong> is one instrument for taking that survey: a chip dotted with thousands of molecular "traps," one per gene, each lighting up in proportion to how much of that gene's product is present in the sample. It produces, in effect, a photograph of every factory's shift-activity, all at the same instant.</p>
+    </div>
+
+    <p>The dataset this project uses is a public one called <strong><span class="mono">GSE52340</span></strong>, published alongside the original scientific paper on this exact worm strain. Researchers took that "activity photograph" of 47 individual worms, split across five genetic groups: ordinary wild-type worms, worms missing only <span class="mono">rsks-1</span>, worms missing only <span class="mono">daf-2</span>, worms missing both, and a fourth mutant group used as a scientific control.</p>
+
+    <div class="stats">
+      <div class="stat"><span class="stat-num">47</span><span class="stat-cap">worm samples photographed</span></div>
+      <div class="stat"><span class="stat-num">5</span><span class="stat-cap">genetic groups compared</span></div>
+      <div class="stat"><span class="stat-num">9&ndash;10</span><span class="stat-cap">worms per group</span></div>
+      <div class="stat"><span class="stat-num">2013</span><span class="stat-cap">year the data was published</span></div>
+    </div>
+
+    <p>With 47 of these photographs in hand &mdash; nine or ten per genetic group &mdash; we can finally ask the question that matters: compared to an ordinary worm, which factories does a <span class="mono">daf-2</span>-and-<span class="mono">rsks-1</span>-less worm run louder, and which does it run quieter?</p>
+  </section>
+
+  <!-- STOP 06 -->
+  <section class="stop track" id="stop-06" data-stop="6" data-track="bio">
+    <p class="stop-eyebrow"><span class="dot bio"></span> Stop 06 &middot; Reading the Memo</p>
+    <h2>Comparing photographs, department by department</h2>
+    <p class="lede">This is the stop where the biology track and the computation track start talking to each other.</p>
+
+    <div class="placard placard--bio">
+      <p class="placard-label">Term &middot; Differential expression</p>
+      <p class="placard-term">Differential Expression</p>
+      <p>Differential expression is simply the difference in a gene's activity between two groups &mdash; here, mutant worms versus ordinary ones. If a gene runs noticeably louder in the mutant group, it is <strong>upregulated</strong>; noticeably quieter, <strong>downregulated</strong>. The size of that change is usually reported as a <strong>fold-change</strong>: "twice as active" is a fold-change of 2; "half as active" is a fold-change of 0.5.</p>
+    </div>
+
+    <p>We run this comparison separately for each of the 1,314 factory-worker genes on our map, for each mutant group against the ordinary worms. Most genes barely move &mdash; noise, not signal. A meaningful minority shift clearly and consistently across all nine or ten worms in a group. We only trust a gene's shift as real evidence if it clears two bars at once: the shift has to be reasonably large (at least about 50% up or down), and it has to be statistically convincing given how consistent it was across every worm in the group, not just a fluke in one animal.</p>
+
+    <div class="stats">
+      <div class="stat"><span class="stat-num">40</span><span class="stat-cap">genes shifted in <span class="mono">rsks-1</span>-only worms</span></div>
+      <div class="stat"><span class="stat-num">156</span><span class="stat-cap">genes shifted in <span class="mono">daf-2</span>-only worms</span></div>
+      <div class="stat"><span class="stat-num">179</span><span class="stat-cap">genes shifted in the double mutant</span></div>
+      <div class="stat"><span class="stat-num">89</span><span class="stat-cap">genes shifted in the control mutant</span></div>
+    </div>
+
+    <p>Notice something already: removing <span class="mono">daf-2</span> alone reshuffles far more of the factory floor than removing <span class="mono">rsks-1</span> alone does. That asymmetry &mdash; visible before we've done a single unit of chemistry math &mdash; is itself a real, measured finding from this project's data, not a textbook fact we assumed going in.</p>
+
+    <p class="pull amber">We now have a list, per mutant, of which factories run louder and which run quieter. The next stop is turning that list into something a metabolic map can actually use.</p>
+  </section>
+
+  <!-- STOP 07 -->
+  <section class="stop track" id="stop-07" data-stop="7" data-track="comp">
+    <p class="stop-eyebrow"><span class="dot both"></span> Stop 07 &middot; Setting the Speed Limits</p>
+    <h2>Turning activity into road width</h2>
+    <p class="lede">This is the stop where the two tracks physically merge. We take the "louder / quieter" list from Stop 06 and use it to widen or narrow the roads on the map from Stop 04.</p>
+
+    <div class="placard placard--comp">
+      <p class="placard-label">Term &middot; Flux bound / Constraint</p>
+      <p class="placard-term">Flux Bound (a.k.a. Constraint)</p>
+      <p>Every road on the metabolic map has a speed limit &mdash; a maximum (and, for some roads, a minimum) amount of flux it is allowed to carry. Setting or changing that speed limit is called <strong>constraining</strong> the reaction. A reaction with almost no room to move is <em>tightly constrained</em>; one with plenty of headroom is <em>loosely constrained</em>.</p>
+    </div>
+
+    <p>The method is: a gene that was measured as twice as active gets a wider allowed road; one measured as half as active gets a narrower one; a gene with no meaningful change is left exactly as it was. This general approach &mdash; using measured gene activity to set flux speed limits &mdash; is known in the field as <strong>E-Flux</strong>, and it's the specific mathematical recipe this project's simulation runs on.</p>
+
+    <div class="diagram">
+      <div class="diagram-scroll">
+        <svg viewBox="0 0 900 210" width="900" role="img" aria-label="Diagram of road width changing with gene activity">
+          <text x="20" y="26" class="svg-faint" font-size="12">GENE ACTIVITY &#8594; ROAD WIDTH</text>
+
+          <text x="20" y="70" font-size="13">Upregulated gene</text>
+          <line x1="180" y1="66" x2="620" y2="66" stroke-width="22" class="svg-teal" opacity="0.85" stroke-linecap="round"/>
+          <text x="640" y="70" font-size="12" class="svg-soft">wide road, high speed limit</text>
+
+          <text x="20" y="120" font-size="13">Unchanged gene</text>
+          <line x1="180" y1="116" x2="620" y2="116" stroke-width="12" class="svg-teal" opacity="0.55" stroke-linecap="round"/>
+          <text x="640" y="120" font-size="12" class="svg-soft">original speed limit, untouched</text>
+
+          <text x="20" y="170" font-size="13">Downregulated gene</text>
+          <line x1="180" y1="166" x2="620" y2="166" stroke-width="4" class="svg-teal" opacity="0.85" stroke-linecap="round"/>
+          <text x="640" y="170" font-size="12" class="svg-soft">narrow road, low speed limit</text>
+        </svg>
+      </div>
+      <p class="diagram-cap">Every reaction's allowed flux range is scaled by how much its gene's activity changed &mdash; up, down, or not at all.</p>
+    </div>
+
+    <p>There's a wrinkle: many roads on the map aren't run by a single gene, but by a small crew. This is where the GPR rule mentioned in Stop 04 earns its keep. It comes in two flavors, and we borrow a railway-signalling idea to explain them:</p>
+
+    <div class="diagram">
+      <div class="diagram-scroll">
+        <svg viewBox="0 0 900 260" width="900" role="img" aria-label="Diagram of AND and OR gene logic as track switches">
+          <text x="20" y="30" font-size="14" font-weight="700">AND &mdash; an enzyme complex (every worker required)</text>
+          <line x1="40" y1="70" x2="220" y2="70" stroke-width="6" class="svg-teal"/>
+          <line x1="40" y1="110" x2="220" y2="110" stroke-width="6" class="svg-amber"/>
+          <line x1="220" y1="70" x2="300" y2="90" stroke-width="6" class="svg-teal"/>
+          <line x1="220" y1="110" x2="300" y2="90" stroke-width="6" class="svg-amber"/>
+          <line x1="300" y1="90" x2="520" y2="90" stroke-width="6" stroke="var(--ink-soft)"/>
+          <text x="40" y="60" font-size="11" class="svg-soft">gene A</text>
+          <text x="40" y="128" font-size="11" class="svg-soft">gene B</text>
+          <text x="540" y="94" font-size="12" class="svg-soft">both must be running, or the line closes entirely &mdash; score = the SLOWER of the two</text>
+
+          <text x="20" y="185" font-size="14" font-weight="700">OR &mdash; interchangeable backup workers (isozymes)</text>
+          <line x1="40" y1="222" x2="220" y2="222" stroke-width="6" class="svg-teal"/>
+          <line x1="40" y1="252" x2="220" y2="252" stroke-width="6" class="svg-amber" stroke-dasharray="2 6"/>
+          <line x1="220" y1="222" x2="520" y2="222" stroke-width="6" stroke="var(--ink-soft)"/>
+          <text x="40" y="212" font-size="11" class="svg-soft">gene A</text>
+          <text x="40" y="270" font-size="11" class="svg-soft">gene B (backup)</text>
+          <text x="540" y="226" font-size="12" class="svg-soft">either one keeps the line open &mdash; score = the FASTER of the two</text>
+        </svg>
+      </div>
+      <p class="diagram-cap">A reaction's own final "activity score" is computed from its genes' scores using this AND / OR logic before its road gets resized.</p>
+    </div>
+
+    <p>With every gene's activity score computed, and every reaction's GPR rule evaluated, each of the 2,230 roads on the map gets its own, individually resized speed limit &mdash; a complete, mutant-specific version of the map, ready to be driven on. That's the next stop.</p>
+  </section>
+
+  <!-- STOP 08 -->
+  <section class="stop track" id="stop-08" data-stop="8" data-track="comp">
+    <p class="stop-eyebrow"><span class="dot comp"></span> Stop 08 &middot; Finding the Best Route</p>
+    <h2>The city's most efficient possible day</h2>
+    <p class="lede">We now have a resized map for each mutant. The question left is: given these speed limits, what is the <em>best</em> this city's economy could possibly perform? That question has a name.</p>
+
+    <div class="placard placard--comp">
+      <p class="placard-label">Term &middot; Flux Balance Analysis</p>
+      <p class="placard-term">Flux Balance Analysis (FBA)</p>
+      <p>FBA is a method for finding the single best possible traffic pattern across an entire network of roads, given each road's speed limit and the rule that nothing can be created or destroyed at any intersection (what flows in must flow out). "Best" is defined by one chosen goal &mdash; here, maximum growth. Mathematically it's a well-studied kind of optimization called <strong>linear programming</strong>: searching an enormous number of legal traffic patterns for the single one that maximizes the goal.</p>
+    </div>
+
+    <p>Set loose on the unmodified, ordinary-worm map, FBA finds the traffic pattern &mdash; the exact flux through every one of the 2,230 reactions, simultaneously &mdash; that produces the fastest possible growth this worm's metabolism could sustain. Run the same search again on a mutant's resized map, with its particular set of widened and narrowed roads, and FBA finds <em>that</em> mutant's best possible traffic pattern instead. Compare the two, and you can see exactly how growth, and the specific routes traffic takes to get there, shift because of the mutation.</p>
+
+    <div class="fieldnote">
+      <p class="fieldnote-tag">&#9679; field notes &mdash; what actually happened when we ran this</p>
+      <p>The very first real run of this simulation came back with an anticlimactic result: every mutant's best-possible growth came out <em>identical</em> to the ordinary worm's, down to the decimal. Rather than accept that quietly, we tested it: we forcibly closed several of the resized roads completely, as a deliberately extreme check, and growth <em>did</em> change substantially for some of them &mdash; proof the traffic-finding machinery was working correctly.</p>
+      <p>The real explanation turned out to be a scale mismatch. The map's roads had been built with a generic, very generous default speed limit &mdash; wide enough that even a realistic gene-activity change could narrow it and still leave far more room than the city ever actually uses. It's as if every road were rated for 1,000 cars an hour by default, but this city's actual rush-hour traffic never exceeds a handful of cars &mdash; so narrowing the limit to 200 changes nothing observable. The fix was to stop comparing each resized road to its own generic default, and instead compare it to how much traffic that specific road realistically carries in a well-functioning city (found using a related technique called <strong>flux variability analysis</strong>, which explores the realistic range each road could carry). Once we made that fix, the double mutant showed real, differentiated traffic patterns &mdash; and a very slightly reduced growth rate, just as the "growth-for-maintenance trade" story from Stop 01 would predict.</p>
+    </div>
+
+    <p>This is, honestly, a fairly typical moment in computational science: a model runs, the first answer is suspiciously flat, and the flatness itself turns out to be diagnosable and fixable rather than mysterious. We're including it here rather than smoothing it out of the story, because it's a genuine and useful part of how this simulation was actually built.</p>
+  </section>
+
+  <!-- STOP 09 -->
+  <section class="stop track" id="stop-09" data-stop="9" data-track="comp">
+    <p class="stop-eyebrow"><span class="dot comp"></span> Stop 09 &middot; The Interchange</p>
+    <h2>The whole pipeline, in one breath</h2>
+    <p class="lede">Before the final leg &mdash; turning "growth changed a little" into a story about a whole lifespan &mdash; it's worth riding back over every stop so far in a single pass.</p>
+    <ol>
+      <li><strong>The map</strong> (Stop 04): a complete catalogue of every metabolic reaction the worm's enzymes can perform, called <span class="mono">iCEL1314</span>.</li>
+      <li><strong>The photograph</strong> (Stop 05): a measurement, called a microarray, of how active every gene is in ordinary worms versus each mutant strain, from the public dataset <span class="mono">GSE52340</span>.</li>
+      <li><strong>The comparison</strong> (Stop 06): for each mutant, a list of genes running meaningfully louder or quieter than in ordinary worms &mdash; differential expression.</li>
+      <li><strong>The resizing</strong> (Stop 07): using that list, plus each reaction's GPR rule, to widen or narrow every road's speed limit on a mutant-specific copy of the map.</li>
+      <li><strong>The optimum</strong> (Stop 08): Flux Balance Analysis, finding the single best possible traffic pattern &mdash; and resulting growth rate &mdash; on each version of the map.</li>
+    </ol>
+    <p>What we have at the end of this chain is a rigorous, checkable answer to a narrow question: <em>given what actually changed in gene activity, how does the best-possible metabolic traffic pattern differ between an ordinary worm and each mutant?</em> That is already a real, publishable result. It is <em>not</em> yet an answer to "how long does each worm live" &mdash; FBA has no concept of time or aging built into it at all. That gap is the subject of the final scientific stop.</p>
+  </section>
+
+  <!-- STOP 10 -->
+  <section class="stop track" id="stop-10" data-stop="10" data-track="bio">
+    <p class="stop-eyebrow"><span class="dot both"></span> Stop 10 &middot; Modeling Time</p>
+    <h2>From one snapshot to a whole lifetime</h2>
+    <p class="lede">Everything up to this point has been a single instant &mdash; one best-possible traffic pattern, frozen in time, for each mutant. Lifespan is not an instant; it's a curve stretched across weeks. To even sketch that curve, we need a different kind of mathematical tool.</p>
+
+    <div class="placard placard--bio">
+      <p class="placard-label">Term &middot; ODE</p>
+      <p class="placard-term">Ordinary Differential Equation (ODE)</p>
+      <p>An ODE is simply a mathematical rule for how something changes, moment to moment, based on its current state &mdash; the same kind of rule that describes compound interest growing a bank balance, or a cooling cup of coffee losing heat faster while it's hottest. Instead of stating "the balance at year five is $1,200," an ODE states "the balance always grows at a rate proportional to how large it currently is," and you can then calculate the whole curve from that one rule.</p>
+    </div>
+
+    <div class="placard placard--bio">
+      <p class="placard-label">Term &middot; Gompertz survival model</p>
+      <p class="placard-term">Gompertz Survival Model</p>
+      <p>A two-hundred-year-old rule, originally written for human actuarial life tables, stating that the risk of dying rises exponentially with age. It's the same shape insurance companies still use to price life insurance today. Feed it one number &mdash; how fast that risk rises for a given population &mdash; and it draws you a full survival curve: what fraction of the starting population is still alive at every future moment.</p>
+    </div>
+
+    <p>Our simulation borrows this two-hundred-year-old actuarial idea and gives it one number per mutant to work with: a simple combined score built from how that mutant's best-possible growth rate, and its flux through fat-related reactions, compared to an ordinary worm's. A mutant whose score suggests a more "maintenance-mode" metabolic profile is assigned a slower-rising risk curve; a more "growth-mode" profile gets a faster-rising one.</p>
+
+    <div class="diagram">
+      <div class="diagram-scroll">
+        <svg viewBox="0 0 760 260" width="760" role="img" aria-label="Illustrative survival curves for an ordinary worm versus a longevity mutant">
+          <line x1="60" y1="20" x2="60" y2="220" class="svg-rule" stroke-width="1"/>
+          <line x1="60" y1="220" x2="700" y2="220" class="svg-rule" stroke-width="1"/>
+          <text x="20" y="24" font-size="11" class="svg-faint">fraction</text>
+          <text x="20" y="36" font-size="11" class="svg-faint">alive</text>
+          <text x="660" y="240" font-size="11" class="svg-faint">time</text>
+
+          <path d="M60,30 C 220,32 300,60 340,140 C 370,190 400,214 460,219" fill="none" class="svg-amber" stroke-width="3"/>
+          <path d="M60,30 C 320,34 420,50 480,110 C 540,165 580,205 640,219" fill="none" class="svg-teal" stroke-width="3"/>
+
+          <circle cx="460" cy="219" r="4" class="svg-amber"/>
+          <circle cx="640" cy="219" r="4" class="svg-teal"/>
+          <text x="380" y="112" font-size="12" fill="var(--teal-ink)" font-weight="600">daf-2 ; rsks-1 mutant</text>
+          <text x="330" y="205" font-size="12" fill="var(--amber-ink)" font-weight="600">ordinary worm</text>
+        </svg>
+      </div>
+      <p class="diagram-cap">Illustrative shape only &mdash; drawn from this pipeline's real, corrected direction of effect, not a claim of exact days or percentages.</p>
+    </div>
+
+    <div class="fieldnote">
+      <p class="fieldnote-tag">&#9679; field notes &mdash; catching our own mistake</p>
+      <p>The first version of this final layer actually pointed the wrong way: it predicted the double mutant would die <em>sooner</em> than an ordinary worm, the opposite of the real, well-established finding. Tracing it back, the fat-related flux score for the long-lived mutants had gone <em>down</em>, not up &mdash; which is exactly what you'd expect if these worms are burning less stored fat (consistent with the published finding that these mutants hoard more fat rather than less), but our formula had assumed "more fat-pathway activity" meant "more favorable," backwards from what the direction of that specific measurement actually implies here. We corrected the sign, re-ran it, and the curve then correctly showed the mutants outliving the ordinary worm, matching the literature's reported ranking. We're telling you this not to bury it, but because a primer that hides its own bug-fixes teaches worse science than one that shows them.</p>
+    </div>
+
+    <p class="pull">This entire final stop is a deliberate, honest approximation &mdash; a plausible shape fitted to match a known outcome, not a prediction discovered from first principles. The next and last scientific stop is about being precise on exactly that point.</p>
+  </section>
+
+  <!-- STOP 11 -->
+  <section class="stop track" id="stop-11" data-stop="11" data-track="both">
+    <p class="stop-eyebrow"><span class="dot both"></span> Stop 11 &middot; Reading the Fine Print</p>
+    <h2>What this simulation can, and cannot, tell you</h2>
+    <p class="lede">A good model is honest about its own edges. Here is the plain-language version of where ours are.</p>
+
+    <p><strong>It's a snapshot compared to a snapshot, not a movie.</strong> Flux Balance Analysis has no clock inside it. It finds the single best traffic pattern for a fixed set of speed limits &mdash; it cannot show a road's traffic gradually changing over a worm's three-week life. The aging curve in Stop 10 is a separate, simplified add-on for exactly that reason, not something the map itself produces.</p>
+    <p><strong>The activity photograph is a proxy, not a direct measurement.</strong> A microarray tells us how much of a gene's instructions are being read &mdash; it does not directly measure how fast the resulting enzyme is actually working, which can depend on many other factors. We're using "how loudly is this gene talked about" as a stand-in for "how hard is this factory working," a reasonable but imperfect substitute.</p>
+    <p><strong>Real factory maps have backup routes.</strong> A large metabolic network usually has more than one way to get a job done. Removing or narrowing one road often just reroutes traffic rather than reducing total output &mdash; which is part of why the very first version of this simulation (Stop 08) showed no visible change at all.</p>
+    <p><strong>Nobody has independently measured this worm's actual internal traffic.</strong> Everything this simulation produces is a prediction, checked for internal consistency, not yet checked against a direct chemical measurement of real flux inside a real mutant worm. That kind of confirming experiment is technically possible but wasn't part of this project.</p>
+    <p><strong>The final lifespan curve is illustrative, said plainly.</strong> It was tuned, by choice of formula and sign, to land in the right qualitative order once we knew what that order should be. That makes it a teaching and hypothesis-generating tool &mdash; a way to make the biology concrete and checkable &mdash; not a scientific instrument for predicting the lifespan of a mutant nobody has tested yet.</p>
+
+    <p class="pull amber">None of this makes the project less worthwhile. It makes it a well-scoped, honestly-labeled first step: a real, reproducible link between measured gene activity and predicted metabolic behavior, with a clearly-marked illustrative extension toward lifespan on top of it.</p>
+  </section>
+
+  <section class="terminus track" id="stop-12">
+    <p class="stop-eyebrow"><span class="dot both"></span> Terminus &middot; Station Directory</p>
+    <h2>Every term, in one place</h2>
+    <p class="lede">Everything defined along the route, gathered here for quick reference.</p>
+    <div class="glossary">
+      <div class="gloss-item"><p class="gloss-term">Gene</p><p class="gloss-def">A DNA instruction for building one molecular tool.</p></div>
+      <div class="gloss-item"><p class="gloss-term">Protein / Enzyme</p><p class="gloss-def">The tool built from a gene; an enzyme converts one chemical into another.</p></div>
+      <div class="gloss-item"><p class="gloss-term">Metabolism</p><p class="gloss-def">The whole network of chemical conversions running in a body at once.</p></div>
+      <div class="gloss-item"><p class="gloss-term">Signaling gene / Receptor</p><p class="gloss-def">A gene that relays a message rather than doing metabolic work directly.</p></div>
+      <div class="gloss-item"><p class="gloss-term">Genome-scale metabolic model</p><p class="gloss-def">A full catalogued map of every reaction an organism's enzymes can perform.</p></div>
+      <div class="gloss-item"><p class="gloss-term">Metabolic flux</p><p class="gloss-def">The rate of flow through one specific chemical reaction.</p></div>
+      <div class="gloss-item"><p class="gloss-term">Gene expression</p><p class="gloss-def">How actively a gene's instructions are currently being read.</p></div>
+      <div class="gloss-item"><p class="gloss-term">Transcriptomics / Microarray</p><p class="gloss-def">Measuring whole-genome gene activity at once, via a chip that detects it.</p></div>
+      <div class="gloss-item"><p class="gloss-term">Differential expression</p><p class="gloss-def">The measured difference in a gene's activity between two groups.</p></div>
+      <div class="gloss-item"><p class="gloss-term">GPR rule</p><p class="gloss-def">The AND / OR logic linking a reaction to the gene(s) that run it.</p></div>
+      <div class="gloss-item"><p class="gloss-term">Flux bound / Constraint</p><p class="gloss-def">The allowed minimum-to-maximum flux range set on a reaction.</p></div>
+      <div class="gloss-item"><p class="gloss-term">Flux Balance Analysis (FBA)</p><p class="gloss-def">Finding the single best traffic pattern across the whole network, given the goal and the speed limits.</p></div>
+      <div class="gloss-item"><p class="gloss-term">Ordinary Differential Equation (ODE)</p><p class="gloss-def">A rule for how something changes moment-to-moment, used to compute a full curve over time.</p></div>
+      <div class="gloss-item"><p class="gloss-term">Gompertz survival model</p><p class="gloss-def">A classic actuarial curve where risk of death rises exponentially with age.</p></div>
+    </div>
+
+    <footer class="credit">
+      Built from the real <span class="mono">fluxworm</span> pipeline (model <span class="mono">iCEL1314</span>, dataset <span class="mono">GSE52340</span>) &mdash; including its actual diagnosed dead ends and fixes, described here in plain language.
+    </footer>
+  </section>
+
+</main>
+
+<script>
+(function(){
+  var stops = Array.prototype.slice.call(document.querySelectorAll('.stop[id]'));
+  var railDots = document.getElementById('railDots');
+  var total = stops.length;
+
+  if (railDots) {
+    stops.forEach(function(stop, i){
+      var track = stop.getAttribute('data-track');
+      var a = document.createElement('a');
+      a.href = '#' + stop.id;
+      a.className = 'rail-dot' + (track === 'bio' ? ' on-bio' : track === 'comp' ? ' on-comp' : ' on-bio on-comp');
+      a.style.top = (6 + (i / (total - 1)) * 88) + '%';
+      a.setAttribute('aria-label', stop.querySelector('h2') ? stop.querySelector('h2').textContent : ('Stop ' + (i+1)));
+      a.dataset.target = stop.id;
+      railDots.appendChild(a);
+    });
+  }
+
+  var dots = railDots ? Array.prototype.slice.call(railDots.children) : [];
+
+  if ('IntersectionObserver' in window && dots.length) {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        var dot = dots.find(function(d){ return d.dataset.target === entry.target.id; });
+        if (!dot) return;
+        if (entry.isIntersecting) {
+          dots.forEach(function(d){ d.classList.remove('active'); });
+          dot.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-45% 0px -45% 0px' });
+    stops.forEach(function(s){ io.observe(s); });
+  }
+
+  // route map (hero) clickable stops, mirroring the twelve sections
+  var svg = document.getElementById('routemap');
+  if (svg) {
+    var labels = ['Hook','Cast','Managers','The Map','Snapshot','Memo','Speed Limits','Best Route','Interchange','Time','Fine Print','Directory'];
+    var n = labels.length;
+    var x0 = 40, x1 = 1080;
+    for (var i = 0; i < n; i++) {
+      var x = x0 + (x1 - x0) * (i / (n - 1));
+      var id = 'stop-' + String(i+1).padStart(2,'0');
+      var g = document.createElementNS('http://www.w3.org/2000/svg','a');
+      g.setAttribute('href', '#' + id);
+      g.setAttribute('class','rm-stop');
+      var c = document.createElementNS('http://www.w3.org/2000/svg','circle');
+      c.setAttribute('cx', x); c.setAttribute('cy', 75); c.setAttribute('r', 7);
+      c.setAttribute('fill', i < 5 ? 'var(--amber)' : (i < 9 ? 'var(--teal)' : 'var(--ink-soft)'));
+      var t = document.createElementNS('http://www.w3.org/2000/svg','text');
+      t.setAttribute('x', x); t.setAttribute('y', 79); t.setAttribute('text-anchor','middle');
+      t.setAttribute('class','rm-num'); t.textContent = i+1;
+      var lab = document.createElementNS('http://www.w3.org/2000/svg','text');
+      lab.setAttribute('x', x); lab.setAttribute('y', i % 2 === 0 ? 58 : 106);
+      lab.setAttribute('text-anchor','middle'); lab.setAttribute('class','rm-label');
+      lab.textContent = labels[i];
+      g.appendChild(c); g.appendChild(t); g.appendChild(lab);
+      svg.appendChild(g);
+    }
+  }
+})();
+</script>
+</body>
+</html>
