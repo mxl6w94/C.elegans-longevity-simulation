@@ -1,0 +1,29 @@
+3 context free interview questions
+
+AI discloser: the AI gemini was used to improve my initial questions and refine 
+
+1 Who is the primary user of your current metabolic modeling or data analysis tools, and what is their technical background?
+2 What computational resources and environments do you currently rely on for running complex biological simulations?
+3 What would a highly successful predictive model allow you to achieve that your current workflow prevents?
+
+7 solution-context interview questions
+
+1 Interactive Controls: When selecting genes to knock out or overexpress in the UI, does selecting individual genes feel intuitive, or would preset pathway panels (e.g., insulin/IGF-1 signaling) be more useful?
+2 Visual Representation: How useful is the visual worm mockup at specific timepoints compared to traditional survival curves? What morphological cues (e.g., movement degradation, lipid accumulation) would make that mockup actionable rather than just decorative?
+3 Output Confidence: When the tool computes a change in median lifespan, what diagnostic details (such as rescaled reaction bounds or bottlenecked fluxes) do you need to inspect before trusting that prediction? 
+4 Exportability: How would you expect to save or share your simulation runs (e.g., a unique shareable URL, downloadable CSVs of flux distributions, or a PDF summary report)?
+
+AI disclaimer: the following are ideas and questions were praposed to me by Gemini. they were good enough that i kept them. 
+
+5 Pre-computation vs. Live Solvers: Running full Flux Balance Analysis in COBRApy on every UI click can introduce backend latency. Consider pre-computing common multi-gene knockout combinations or compiling a lightweight LP solver to WebAssembly for client-side execution.
+6 Grounding the Visual Representation: Tie the visual worm state directly to internal model metrics—such as driving body opacity, size, or lipid accumulation graphics from your functional group flux ratios and the Gompertz aging rate $C$.
+7 Dual Interface Modes: Provide a simple "Sandbox Mode" for instant gene toggling and visual aging summaries, alongside an "Audit Mode" where researchers can inspect underlying FVA bounds and biomass objective values.
+
+
+Brainstorming/ Identify features
+
+core features:
+
+researcher will turn a gene on or off from a preset list of 
+
+nice to have
