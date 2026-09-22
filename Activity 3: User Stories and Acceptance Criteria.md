@@ -18,23 +18,23 @@
 
 ## Acceptance Criteria:
 
-## User Story: As a User, I want to access the app's web page.
+> ## User Story: As a User, I want to access the app's web page.
+> 
+> *Access*
+> - **Given**: the user has a browser open
+> - **When**: the user enters the web address
+> - **Then**: the website page is displayed
 
-*Access*
-- **Given**: the user has a browser open
-- **When**: the user enters the web address
-- **Then**: the website page is displayed
+> ## User Story: As a User, I want to select genes for C. Elegans life expectancy predictions.
+> 
+> *Gene Selection*
+> - **Given**: the user is on the webpage
+> - **When**: the user selects a set of genes
+> - **Then**: a prediction is made
 
-## User Story: As a User, I want to select genes for C. Elegans life expectancy predictions.
-
-*Gene Selection*
-- **Given**: the user is on the webpage
-- **When**: the user selects a set of genes
-- **Then**: a prediction is made
-
-## User Story: As a User, I want to view C. Elegans life expectancy predictions.
-
-*Data Representation*
-- **Given**: a prediction has been made
-- **When**: the user requests to view the prediction
-- **Then**: the prediction data is represented on the user interface
+> ## User Story: As a User, I want to view C. Elegans life expectancy predictions.
+> 
+> *Data Representation*
+> - **Given**: a prediction has been made
+> - **When**: the user requests to view the prediction
+> - **Then**: the prediction data is represented on the user interface
