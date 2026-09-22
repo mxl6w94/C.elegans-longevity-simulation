@@ -13,28 +13,44 @@
 -
 
 
-# Users will be presented with a Web-Accessible User Interface for controlling gene selection and retrieve predictions
+# Users will be presented with a Web-Accessible User Interface for controlling gene selection and retrieve predictions [[Tyler Bullard]]
 
 
 ## Acceptance Criteria:
   
   #### User Story: As a User, I want to access the app's web page.
   
-> *Access*
+> *Access - Success*
 > - **Given**: the user has a browser open
 > - **When**: the user enters the web address
 > - **Then**: the website page is displayed
+
+> *Access - Failure*
+> - **Given**: the user has a browser open
+> - **When**: the user enters the web address and the server is down or unreachable
+> - **Then**: an error message is displayed indicating the service is temporarily unavailable
   
 #### User Story: As a User, I want to select genes for C. Elegans life expectancy predictions.
     
-> *Gene Selection*
+> *Gene Selection - Success*
 > - **Given**: the user is on the webpage
 > - **When**: the user selects a set of genes
 > - **Then**: a prediction is made
+
+> *Gene Selection - Failure (No Genes Selected)*
+> - **Given**: the user is on the webpage
+> - **When**: the user submits a request without selecting any genes
+> - **Then**: no prediction is made and the user is prompted to select at least one gene
+
   
 #### User Story: As a User, I want to view C. Elegans life expectancy predictions.
    
-> *Data Representation*
+> *Data Representation - Success*
 > - **Given**: a prediction has been made
 > - **When**: the user requests to view the prediction
 > - **Then**: the prediction data is represented on the user interface
+
+> *Data Representation - Failure*
+> - **Given**: no prediction has been made
+> - **When**: the user requests to view the prediction
+> - **Then**: a message is displayed indicating no prediction exists and prompting the user to select genes
