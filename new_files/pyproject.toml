@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fluxworm"
+version = "0.1.0"
+description = "Transcriptomics-constrained FBA pipeline for C. elegans daf-2/rsks-1 longevity"
+requires-python = ">=3.10"
+dependencies = [
+    "cobra>=0.29",
+    "pandas>=2.0",
+    "numpy>=1.24",
+    "scipy>=1.10",
+    "statsmodels>=0.14",
+    "matplotlib>=3.7",
+    "pyyaml>=6.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]

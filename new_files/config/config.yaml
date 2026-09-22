@@ -1,0 +1,49 @@
+# fluxworm pipeline configuration.
+# All paths are resolved relative to `data_dir` unless absolute. Override
+# `data_dir` with the FLUXWORM_DATA_DIR environment variable to run this
+# pipeline outside the original author's machine (no Colab/Drive paths).
+
+data_dir: "../.."   # config.yaml lives in new_files/config/, so ../.. reaches the project root
+
+paths:
+  model_xml: "fluxworm_iCEL_models/iCEL1314.xml"
+  series_matrix: "master_data_set/GSE52340_series_matrix.txt.gz"
+  results_dir: "new_files/results"
+
+genotypes:
+  reference: "wild type"
+  mutants:
+    - "rsks-1"
+    - "daf-2"
+    - "daf-2 rsks-1"
+    - "daf-16; daf-2 rsks-1"
+  # Expected sample counts per genotype, verified against the real GSE52340
+  # header rows (!Sample_characteristics_ch1, "genotype: ..." field). The
+  # pipeline raises an error if the parsed file does not match this exactly.
+  expected_counts:
+    "wild type": 9
+    "rsks-1": 9
+    "daf-2": 9
+    "daf-2 rsks-1": 10
+    "daf-16; daf-2 rsks-1": 10
+
+differential_expression:
+  log2fc_threshold: 0.585   # log2(1.5)
+  qvalue_threshold: 0.05
+
+constraints:
+  min_scale: 0.1
+  max_scale: 10.0
+
+fba:
+  biomass_reaction: "BIO0010"
+  solver: null   # null = cobra default (glpk via swiglpk)
+
+aging:
+  stress_subsystem_keywords:
+    - "Fatty acid"
+    - "Lipid"
+  biomass_weight: 0.5
+  stress_weight: 0.5
+  gompertz_B: 0.01
+  wt_gompertz_C: 0.10
