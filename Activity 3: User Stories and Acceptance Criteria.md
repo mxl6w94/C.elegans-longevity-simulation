@@ -13,7 +13,7 @@
 -
 
 
-## Users will be able to save the state of their predictions for later retrieval
+## Users will be presented with a Web-Accessible User Interface for controlling gene selection and retrieve predictions
 
 -
 -
