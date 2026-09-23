@@ -151,3 +151,79 @@ The user stories of the non-AI and AI versions are mostly the same. Both stories
 1. Similarities - Both describe behavior from the user's point of view and both pair each success path with at least one failure path that ends in a message to the user. They also address the same feature area.
 2. Differences - My stories cover the full workflow at a high level, from reaching the site to selecting genes and viewing results, with one success and one failure scenario each. The AI story is narrower as it covers a single interaction with five scenarios. The AI suggestions offer more of the explanation for user motivation.
 3. Revisions - We will possibly include the criteria that the AI suggested as it is useful.
+
+Users will be presented with a select few genes to turn on and off, with predicted growth rate responding accordingly. [[Michael LeBlanc]]
+Acceptance Criteria:
+User Story: As a User, I want the model to accurately predict a C. elegans growth rate based on chosen genes.
+Genes chosen for the model - Success
+
+Given: the user is on the webpage
+
+When: the user enters a gene or multiple genes to simulate
+
+Then: the worm's predicted growth rate and life expectancy is displayed
+
+Genes chosen for the model - Failure (Invalid Gene Identifier)
+
+Given: the user is on the webpage
+
+When: the user enters a gene identifier that does not map to the underlying metabolic reconstruction
+
+Then: no prediction is generated and an error message prompts the user to verify the gene name
+
+Genes chosen for the model - Failure (Model Infeasibility)
+
+Given: the user is on the webpage
+
+When: the user selects a combination of genes that results in an unsolvable or biologically non-viable metabolic state
+
+Then: a message is displayed indicating the simulation failed to find a valid solution for the specified parameters
+
+User Story: As a User, I want to toggle specific genes on and off so I can quickly compare changes to the predicted growth rate.
+Toggle Gene State - Success
+
+Given: the user has a baseline prediction loaded on the webpage
+
+When: the user toggles a selected gene from "on" to "off"
+
+Then: the model recalculates the metabolic routing and dynamically displays the updated growth rate
+
+Toggle Gene State - Failure (No Metabolic Impact)
+
+Given: the user has a baseline prediction loaded on the webpage
+
+When: the user toggles a gene that does not constrain any active reactions under the current simulated conditions
+
+Then: the displayed growth rate remains unchanged and a tooltip indicates the gene knockout has no impact on the objective function
+
+AI User Story
+User Story: As a User, I want to apply transcriptomic differential expression datasets to constrain reaction flux bounds, so the growth rate prediction reflects realistic metabolic rerouting rather than just binary knockouts.
+Transcriptomic Constraint - Success
+
+Given: the user is on the webpage
+
+When: the user applies a valid transcriptomic expression dataset
+
+Then: the system scales the model's reaction flux bounds accordingly and generates an updated growth rate prediction
+
+Transcriptomic Constraint - Failure (Invalid Format)
+
+Given: the user is on the webpage
+
+When: the user attempts to apply a dataset with improperly formatted expression fold changes
+
+Then: the system rejects the input and displays an error message detailing the required format
+
+Transcriptomic Constraint - Failure (Zero Biomass Production)
+
+Given: a transcriptomic dataset is successfully applied
+
+When: the constrained flux bounds strictly prevent the objective function from producing any biomass
+
+Then: the prediction returns a zero growth rate and flags the specific constrained reactions causing the halt
+
+Similarities - Both sets of stories utilize the standard BDD (Given/When/Then) format to outline clear success and failure pathways, maintaining a focus on user interaction with the C. elegans simulation interface and providing feedback when errors occur.
+
+Differences - The original stories focus on the high-level frontend interaction of simply inputting or toggling genes on and off to view a growth rate. The AI story introduces a deeper computational biology workflow, shifting the focus toward using transcriptomic data to constrain actual reaction flux bounds to simulate metabolic rerouting.
+
+Revisions - We will integrate the AI's criteria, as adjusting reaction flux bounds based on expression datasets provides a much more robust and biologically accurate simulation methodology for predicting growth rates than simple binary gene knockouts.
