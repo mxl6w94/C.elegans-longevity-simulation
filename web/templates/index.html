@@ -1,0 +1,18 @@
+<!doctype html>
+<title>Worm Lifespan</title>
+<h1>C. elegans lifespan predictor</h1>
+
+<form method="post">
+  {% for g in ["daf-2", "rsks-1", "daf-16"] %}
+    <label><input type="checkbox" name="genes" value="{{ g }}"> {{ g }} mutant</label><br>
+  {% endfor %}
+  <button>Predict</button>
+</form>
+
+{% if error %}<p style="color:red">{{ error }}</p>{% endif %}
+
+{% if result %}
+  <h2>{{ result.genotype }}</h2>
+  <p>Median lifespan (illustrative units): {{ "%.2f"|format(result.median) }}</p>
+  <p>Growth vs. wild type: {{ "%.4f"|format(result.growth) }}</p>
+{% endif %}

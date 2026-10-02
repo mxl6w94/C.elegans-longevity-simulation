@@ -1,7 +1,7 @@
 """End-to-end orchestration: model + microarray -> per-genotype constrained
 FBA -> comparison tables, figures, and an illustrative aging proxy.
 
-Run via `scripts/run_pipeline.py`. See new_files/README.md and the approved
+Run via `scripts/run_pipeline.py`. See core/README.md and the approved
 architecture document for the full biological/mathematical rationale behind
 each step; this module just wires the pieces together and writes outputs to
 disk under `config.results_dir`.

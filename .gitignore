@@ -1,0 +1,9 @@
+# Virtual environments (matches .venv/ in any folder: root, core/, web/)
+.venv/
+venv/
+
+# Python caches
+__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/

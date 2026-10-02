@@ -1,6 +1,6 @@
 """fluxworm: transcriptomics-constrained FBA pipeline for C. elegans daf-2/rsks-1 longevity.
 
-See new_files/README.md and the architecture document this package implements
+See core/README.md and the architecture document this package implements
 (the plan approved before any code here was written) for the full biological
 and mathematical rationale. In short: daf-2 and rsks-1 are insulin/IGF-1 and
 TOR/S6K signaling genes absent from the iCEL1314 metabolic reconstruction, so

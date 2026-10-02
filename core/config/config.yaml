@@ -3,12 +3,12 @@
 # `data_dir` with the FLUXWORM_DATA_DIR environment variable to run this
 # pipeline outside the original author's machine (no Colab/Drive paths).
 
-data_dir: "../.."   # config.yaml lives in new_files/config/, so ../.. reaches the project root
+data_dir: "../.."   # config.yaml lives in core/config/, so ../.. reaches the project root
 
 paths:
   model_xml: "fluxworm_iCEL_models/iCEL1314.xml"
   series_matrix: "master_data_set/GSE52340_series_matrix.txt.gz"
-  results_dir: "new_files/results"
+  results_dir: "core/results"
 
 genotypes:
   reference: "wild type"

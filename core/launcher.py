@@ -31,7 +31,7 @@ REQUIREMENTS = ROOT / "requirements.txt"
 RUN_PIPELINE = ROOT / "scripts" / "run_pipeline.py"
 TESTS_DIR = ROOT / "tests"
 
-# Expected relative to the project root (one level above new_files/), per
+# Expected relative to the project root (one level above core/), per
 # config\config.yaml's `data_dir: "../.."`. Only used for a friendly
 # preflight warning -- the pipeline itself is the source of truth.
 DATA_FILES = [
@@ -74,7 +74,7 @@ def check_data_files() -> None:
             print(f"    {m}")
         print(
             "[launcher] fluxworm_iCEL_models\\ and master_data_set\\ must sit next to "
-            "new_files\\ (i.e. keep this folder's location relative to the project root "
+            "core\\ (i.e. keep this folder's location relative to the project root "
             "intact), or set the FLUXWORM_DATA_DIR environment variable to point at the "
             "data location."
         )
