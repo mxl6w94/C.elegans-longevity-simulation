@@ -13,11 +13,11 @@ User story: As a user in the field of Biology, I want to see an image of what a 
 
 Acceptance criteria: 
 
+ Scenario 1: The user generates the image with no errors.
+
 Given: The user has already selected the desired genes and generated the predicted lifespan 
 
 And: is on the prediction graph with the option to see a visual of the worm. 
-
- Scenario 1: The user generates the image with no errors. 
 
 When: The user selects an age in the range of the predicted lifespan graph’s duration 
 
@@ -26,6 +26,10 @@ And: The user confirms their selection.
 Then: An image of the potential appearance of the worm is displayed. 
 
  Scenario 2: The age entered by the user is out of range of the lifespan graph’s duration. 
+
+Given: The user has already selected the desired genes and generated the predicted lifespan 
+
+And: is on the prediction graph with the option to see a visual of the worm. 
 
 When: The user selects an age not in the range of the lifespan graph’s duration 
 
