@@ -5,7 +5,7 @@ from flask import Flask, render_template, request
 
 RESULTS = Path(__file__).resolve().parent.parent / "core" / "results"
 
-# Checkbox combinations -> the genotype names the pipeline uses.
+# Checkbox combinations
 # Only these five exist in the dataset.
 GENOTYPES = {
     frozenset(): "wild type",
