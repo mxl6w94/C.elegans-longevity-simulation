@@ -1,0 +1,389 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Sprint 0 Report</title>
+<style>
+  @page { size: Letter; margin: 0.85in; }
+  body {
+    font-family: "Calibri", "Segoe UI", Arial, sans-serif;
+    color: #1a1a1a;
+    font-size: 11pt;
+    line-height: 1.45;
+    max-width: 7.8in;
+    margin: 0 auto;
+  }
+  h1 { font-size: 22pt; margin-bottom: 2px; color: #14213d; }
+  h2 {
+    font-size: 15pt; color: #14213d; border-bottom: 2px solid #fca311;
+    padding-bottom: 4px; margin-top: 34px;
+  }
+  h3 { font-size: 12.5pt; color: #14213d; margin-top: 20px; }
+  h4 { font-size: 11.5pt; margin-bottom: 4px; }
+  .cover {
+    text-align: center; padding-top: 2.4in; page-break-after: always;
+  }
+  .cover h1 { font-size: 26pt; }
+  .cover .sub { font-size: 13pt; color: #444; margin-top: 10px; }
+  .cover .meta { margin-top: 60px; font-size: 11pt; color: #333; }
+  .cover .meta div { margin: 4px 0; }
+  table {
+    border-collapse: collapse; width: 100%; margin: 10px 0 16px 0; font-size: 9.6pt;
+  }
+  th, td {
+    border: 1px solid #ccc; padding: 5px 7px; text-align: left; vertical-align: top;
+  }
+  th { background: #14213d; color: #fff; }
+  tr:nth-child(even) { background: #f6f7f9; }
+  .weighted { font-weight: bold; }
+  .priority-critical { color: #c1121f; font-weight: 600; }
+  .priority-important { color: #b5750a; font-weight: 600; }
+  .priority-useful { color: #2a6f3d; font-weight: 600; }
+  ol.features li { margin-bottom: 4px; }
+  img { max-width: 100%; display: block; margin: 12px auto; border: 1px solid #ddd; }
+  .caption { text-align: center; font-size: 9.5pt; color: #555; margin-top: -6px; margin-bottom: 18px; }
+  .box {
+    background: #f6f7f9; border-left: 4px solid #fca311; padding: 10px 14px;
+    margin: 12px 0; font-size: 10.3pt;
+  }
+  .story-block { border: 1px solid #ddd; border-radius: 4px; padding: 12px 16px; margin: 14px 0; }
+  .story-block h4 { color: #14213d; }
+  .ac { margin: 6px 0 10px 0; padding-left: 14px; border-left: 3px solid #e5e5e5; }
+  .ac b { color: #14213d; }
+  .points {
+    display: inline-block; background: #14213d; color: #fff; border-radius: 12px;
+    padding: 2px 11px; font-size: 10pt; font-weight: 600; margin-left: 8px;
+  }
+  .refs ol li { margin-bottom: 6px; font-size: 10pt; }
+  .toc { font-size: 10.5pt; }
+  .toc a { text-decoration: none; color: #14213d; }
+  .page-break { page-break-before: always; }
+  footer-note { font-size: 9pt; color: #777; }
+  .small-note { font-size: 9.5pt; color: #555; font-style: italic; }
+  code { background: #eee; padding: 1px 4px; border-radius: 3px; font-size: 9.5pt; }
+</style>
+</head>
+<body>
+
+<!-- COVER PAGE -->
+<div class="cover">
+  <h1>C. elegans Longevity Simulator</h1>
+  <div class="sub">Sprint 0 Report — Scope, Technology Stack, and Prototype</div>
+  <div class="meta">
+    <div><b>Team members:</b> Michael LeBlanc &nbsp;•&nbsp; Tyler Bullard &nbsp;•&nbsp; Caleb Walton</div>
+    <div><b>GitHub repository:</b> github.com/mxl6w94/C.elegans-longevity-simulation</div>
+    <div><b>Date:</b> October 5, 2026</div>
+  </div>
+</div>
+
+<!-- 1. REPO LINK -->
+<h2 id="repo">1. GitHub Repository</h2>
+<div class="box">
+  Repository: <a href="https://github.com/mxl6w94/C.elegans-longevity-simulation">https://github.com/mxl6w94/C.elegans-longevity-simulation</a><br>
+  Project primer (plain-language walkthrough, hosted on GitHub Pages): <a href="https://mxl6w94.github.io/C.elegans-longevity-simulation/PRIMER.html">mxl6w94.github.io/C.elegans-longevity-simulation/PRIMER.html</a>
+</div>
+
+<!-- 2. FEATURE LIST -->
+<h2 id="features">2. Feature List — Preliminary Scope</h2>
+<p>The project is a web tool for researchers and students studying <i>C. elegans</i> longevity. A user selects genes from a curated list and sees a predicted lifespan, growth rate, and a visual of the worm at a chosen age. Predictions are produced by a transcriptomics-constrained flux balance analysis (FBA) pipeline built on the iCEL1314 metabolic model and the GSE52340 microarray dataset. The preliminary scope totals 18 features: 8 critical, 6 important, 4 useful.</p>
+
+<ol class="features">
+  <li><span class="priority-critical">(Critical)</span> The user opens the web application in a browser.</li>
+  <li><span class="priority-critical">(Critical)</span> The user selects one or more genes from the curated gene list, or selects the wild-type baseline (no mutations) as its own option.</li>
+  <li><span class="priority-critical">(Critical)</span> The user submits the gene selection to request a prediction.</li>
+  <li><span class="priority-critical">(Critical)</span> The system displays the predicted life expectancy for the selected genes.</li>
+  <li><span class="priority-critical">(Critical)</span> The system displays the predicted growth rate for the selected genes.</li>
+  <li><span class="priority-critical">(Critical)</span> The user views the predicted survival curve as a graph.</li>
+  <li><span class="priority-critical">(Critical)</span> The user selects an age within the predicted lifespan and views an image of the worm at that age.</li>
+  <li><span class="priority-critical">(Critical)</span> The system displays an error message when input is invalid: no gene selected, an unsupported gene combination, an age outside the lifespan range, or the server being unreachable.</li>
+  <li><span class="priority-important">(Important)</span> The user toggles a selected gene on or off and sees the prediction update against the wild-type baseline.</li>
+  <li><span class="priority-important">(Important)</span> The user reads a short description of what each gene in the curated list does.</li>
+  <li><span class="priority-important">(Important)</span> The user downloads the prediction results (survival curve, growth rate, flux table) as CSV files.</li>
+  <li><span class="priority-important">(Important)</span> The user saves a prediction and retrieves it later.</li>
+  <li><span class="priority-important">(Important)</span> The system reports when the model finds no feasible solution for the selected genes.</li>
+  <li><span class="priority-important">(Important)</span> The researcher compares predicted lifespans against observed historical lifespan data to measure accuracy.</li>
+  <li><span class="priority-useful">(Useful)</span> The user searches the gene list by name or identifier.</li>
+  <li><span class="priority-useful">(Useful)</span> The user changes the selected age and the worm image updates in place.</li>
+  <li><span class="priority-useful">(Useful)</span> The system displays a predicted body size or weight for the worm.</li>
+  <li><span class="priority-useful">(Useful)</span> The user shares a saved prediction with others through a link.</li>
+</ol>
+
+<!-- 3. USE CASE DIAGRAM -->
+<h2 id="usecase">3. Use Case Diagram</h2>
+<p>The diagram below covers the preliminary-scope features using standard UML use-case notation, with two actors (<b>Biologist</b>, the end user, and <b>Admin</b>, who manages genes and users), <code>&lt;&lt;include&gt;&gt;</code> relationships for mandatory sub-steps (e.g. every prediction-related action includes logging in), and <code>&lt;&lt;extend&gt;&gt;</code> relationships for optional/exceptional paths (e.g. an invalid gene request or an age outside the lifespan range).</p>
+<img src="usecase_render_0.png" alt="Use case diagram">
+<div class="caption">Figure 1. C. elegans Lifespan Prediction App — use case diagram.</div>
+
+<!-- 4. DEV ENVIRONMENT REPORT -->
+<h2 class="page-break" id="devenv">4. Development Environment Report</h2>
+<p>This section evaluates alternatives for each major component of the stack and justifies the final selection. All scoring is on a 1 (poor) to 5 (excellent) scale per criterion; the weighted total is <code>&sum; (score/5 &times; weight)</code>, out of 100.</p>
+
+<h3>4.1 Evaluation Criteria</h3>
+<table>
+<tr><th>Criterion</th><th>Weight</th><th>What it means for this project</th></tr>
+<tr><td>Integration</td><td>25%</td><td>Works directly with the Python pipeline, COBRApy, and the CSV results, with no translation layer.</td></tr>
+<tr><td>Team experience / learning curve</td><td>20%</td><td>The team already knows it, or can learn it within a few weeks.</td></tr>
+<tr><td>Delivery time</td><td>15%</td><td>Gets critical features 1–8 working inside the semester.</td></tr>
+<tr><td>Community support</td><td>15%</td><td>Documentation, tutorials, maintained packages, help-forum answers.</td></tr>
+<tr><td>Scalability</td><td>10%</td><td>Handles more genes, more users, and a more complex interface later.</td></tr>
+<tr><td>Security</td><td>10%</td><td>Input validation, escaping, protection against common web attacks, safe storage.</td></tr>
+<tr><td>Cost</td><td>5%</td><td>Free to develop with and cheap or free to host.</td></tr>
+</table>
+
+<h3>4.2 Comparison of Alternatives</h3>
+
+<h4>Frontend</h4>
+<table>
+<tr><th>Criterion (weight)</th><th>HTML/CSS/JS + Jinja + Chart.js</th><th>Vue 3</th><th>React</th></tr>
+<tr><td>Integration (25%)</td><td>5</td><td>4</td><td>3</td></tr>
+<tr><td>Team experience (20%)</td><td>5</td><td>3</td><td>3</td></tr>
+<tr><td>Delivery time (15%)</td><td>5</td><td>4</td><td>3</td></tr>
+<tr><td>Community support (15%)</td><td>4</td><td>4</td><td>5</td></tr>
+<tr><td>Scalability (10%)</td><td>3</td><td>4</td><td>5</td></tr>
+<tr><td>Security (10%)</td><td>4</td><td>4</td><td>4</td></tr>
+<tr><td>Cost (5%)</td><td>5</td><td>5</td><td>5</td></tr>
+<tr class="weighted"><td>Weighted total</td><td>91</td><td>77</td><td>74</td></tr>
+</table>
+<p><b>Choice: HTML, CSS, and JavaScript (ES6+) rendered through Jinja templates, with Chart.js for the survival curve. No JavaScript framework.</b> Flask serves the templates directly, and a small amount of JavaScript calls the REST API so results update without a full page reload. Jinja auto-escapes output, which covers the most common injection risk. React scores higher on scalability and community support and remains the fallback if the interface grows into something like a side-by-side comparison dashboard — the REST API in 4.2 (Backend) keeps that migration open without a backend rewrite. Given the one-semester timeline and the team's existing HTML/CSS/JS experience, the no-framework approach was chosen.</p>
+
+<h4>Backend and API</h4>
+<table>
+<tr><th>Criterion (weight)</th><th>Python + Flask</th><th>Python + FastAPI</th><th>Python + Django</th></tr>
+<tr><td>Integration (25%)</td><td>5</td><td>5</td><td>4</td></tr>
+<tr><td>Team experience (20%)</td><td>5</td><td>4</td><td>2</td></tr>
+<tr><td>Delivery time (15%)</td><td>5</td><td>4</td><td>3</td></tr>
+<tr><td>Community support (15%)</td><td>5</td><td>4</td><td>5</td></tr>
+<tr><td>Scalability (10%)</td><td>3</td><td>4</td><td>4</td></tr>
+<tr><td>Security (10%)</td><td>3</td><td>4</td><td>5</td></tr>
+<tr><td>Cost (5%)</td><td>5</td><td>5</td><td>5</td></tr>
+<tr class="weighted"><td>Weighted total</td><td>92</td><td>86</td><td>75</td></tr>
+</table>
+<p><b>Choice: Python with Flask, exposing a REST API that returns JSON.</b> The backend must be Python because the prediction engine is COBRApy, a Python-only library. Flask wins on integration and delivery time — a working prototype already imports the <code>fluxworm</code> package directly (see Section 7.3). FastAPI is the closest alternative, with built-in request validation and automatic API docs, and remains an option if validation becomes a burden; its async support matters less here since FBA computation is CPU-bound, not I/O-bound. Django's admin site and ORM are more than this project needs.</p>
+<p><b>API approach: REST over HTTP with JSON bodies</b> was chosen over GraphQL. The planned surface is six fixed, well-understood endpoints (gene list, run/fetch a prediction, survival-curve points, worm image by age, CSV export) that don't need GraphQL's flexible querying, and REST is simpler for the team to test.</p>
+
+<h4>Database</h4>
+<table>
+<tr><th>Criterion (weight)</th><th>SQLite (relational)</th><th>PostgreSQL (relational)</th><th>Flat CSV/JSON files (current)</th></tr>
+<tr><td>Integration (25%)</td><td>5</td><td>4</td><td>5</td></tr>
+<tr><td>Team experience (20%)</td><td>4</td><td>4</td><td>5</td></tr>
+<tr><td>Delivery time (15%)</td><td>5</td><td>3</td><td>4</td></tr>
+<tr><td>Community support (15%)</td><td>5</td><td>5</td><td>3</td></tr>
+<tr><td>Scalability (10%)</td><td>3</td><td>5</td><td>1</td></tr>
+<tr><td>Security (10%)</td><td>3</td><td>5</td><td>2</td></tr>
+<tr><td>Cost (5%)</td><td>5</td><td>4</td><td>5</td></tr>
+<tr class="weighted"><td>Weighted total</td><td>88</td><td>84</td><td>77</td></tr>
+</table>
+<p><b>Choice: a relational database, SQLite, accessed through SQLAlchemy.</b> The data — genes, genotypes, predictions, survival-curve points, saved runs — has a fixed, linked-by-ID shape that fits relational tables better than a document store, which rules out something like MongoDB. SQLite ships with Python and needs no server, which keeps setup identical across every team machine. SQLAlchemy makes a later move to PostgreSQL mostly a connection-string change, which is planned if the app is hosted for many concurrent users. Flat files (the pipeline's current output format) work for precomputed results but can't safely handle saved predictions or concurrent writers.</p>
+
+<h4>Additional Tools</h4>
+<table>
+<tr><th>Area</th><th>Choice</th><th>Alternatives considered</th><th>Why</th></tr>
+<tr><td>Unit and API tests</td><td>pytest + Flask test client</td><td>unittest</td><td>Already used for the pipeline's 19 unit tests; the Flask test client exercises the API without starting a server.</td></tr>
+<tr><td>Acceptance tests</td><td>pytest-bdd</td><td>behave</td><td>User stories are already written as Given/When/Then, so each scenario converts to a test almost word for word.</td></tr>
+<tr><td>End-to-end browser tests</td><td>Playwright (Python)</td><td>Selenium, Cypress</td><td>Tests the real pages in CI; Cypress would require a separate JavaScript test stack.</td></tr>
+<tr><td>CI/CD</td><td>GitHub Actions</td><td>GitLab CI, Jenkins</td><td>Free for this repository, configured in-repo as YAML, runs on every push and pull request; Jenkins needs a server to maintain.</td></tr>
+<tr><td>Hosting</td><td>AWS EC2</td><td>PythonAnywhere, a university VM</td><td>Low-cost Python hosting that deploys from GitHub; Flask's built-in server is development-only.</td></tr>
+<tr><td>Containers (optional)</td><td>Docker</td><td>None</td><td>Pins the solver and Python versions so the hosted app matches every dev machine.</td></tr>
+<tr><td>Documentation</td><td>Markdown in-repo, GitHub Pages</td><td>None</td><td>The project primer is already published on GitHub Pages.</td></tr>
+</table>
+
+<h3>4.3 Final Technology Stack and Justification</h3>
+<table>
+<tr><th>Component</th><th>Final choice</th></tr>
+<tr><td>Frontend language</td><td>HTML5, CSS3, JavaScript (ES6+)</td></tr>
+<tr><td>Frontend framework</td><td>None — Jinja templates, plus Chart.js for graphs</td></tr>
+<tr><td>Backend language</td><td>Python 3.11</td></tr>
+<tr><td>Backend framework</td><td>Flask, rendering templates and calling the pipeline directly</td></tr>
+<tr><td>API</td><td>REST, JSON over HTTP</td></tr>
+<tr><td>Database</td><td>Relational — SQLite through SQLAlchemy, with PostgreSQL as the scale-up path</td></tr>
+<tr><td>Modeling engine</td><td>fluxworm pipeline (COBRApy + GLPK solver), results precomputed per genotype</td></tr>
+<tr><td>Testing</td><td>pytest, Flask test client, pytest-bdd, Playwright</td></tr>
+<tr><td>CI/CD</td><td>GitHub Actions, deploying to an AWS EC2 instance</td></tr>
+<tr><td>Supporting tools</td><td>Git/GitHub, Docker (optional), GitHub Pages</td></tr>
+</table>
+<p>The final stack keeps everything in Python except the browser code, which matches the team's existing experience, the already-working pipeline, and a one-semester timeline. It also removes the biggest delivery risk for a project like this: translating prediction logic between languages. Keeping the REST API and SQLAlchemy ORM in place leaves React or PostgreSQL open as later upgrades without a rewrite of the backend logic.</p>
+<p class="small-note">Proposed development environment: Windows 11 (team machines; macOS/Linux supported via <code>launcher.sh</code>), VS Code with Python/Pylance/Jinja extensions, Python 3.11+ in a per-project virtual environment created by <code>launcher.py</code>, local server via <code>flask --app app run --debug</code> at <code>http://127.0.0.1:5000</code>, Chrome/Firefox dev tools, Git with one feature branch per change and peer-reviewed pull requests into <code>main</code>.</p>
+
+<h3>4.4 References</h3>
+<div class="refs">
+<ol>
+<li>Evaluation and Selection of Off-the-Shelf Software (course reference document) — used as the basis for the weighted-criteria evaluation method applied in Section 4.2.</li>
+<li>Flask documentation. Pallets Projects. <i>https://flask.palletsprojects.com/</i></li>
+<li>COBRApy documentation. <i>https://cobrapy.readthedocs.io/</i></li>
+<li>SQLAlchemy documentation. <i>https://docs.sqlalchemy.org/</i></li>
+<li>Chart.js documentation. <i>https://www.chartjs.org/docs/</i></li>
+<li>GitHub Actions documentation. <i>https://docs.github.com/actions</i></li>
+<li>Yilmaz, L. S., &amp; Walhout, A. J. M. (2016). Metabolic network modeling with model organism genome-scale reconstructions: iCEL1314. <i>Worm research community reference for the iCEL1314 model used as the project's metabolic network.</i></li>
+<li>Chen, D. et al. (2013). Germline signaling mediates the synergistically prolonged longevity produced by double mutations in <i>daf-2</i> and <i>rsks-1</i> in <i>C. elegans</i>. <i>Cell Reports</i> — source of the biological phenotype (GSE52340 dataset) the pipeline models.</li>
+<li>AI-tool disclosure: Google Gemini was used to help refine requirements-interview questions (Activity 2); OpenAI ChatGPT was used to generate comparison user stories and acceptance criteria for review against the team's own versions (Activity 3). All AI-assisted content was reviewed, compared against team-authored material, and revised by the team before inclusion.</li>
+</ol>
+</div>
+
+<!-- 5. USER STORIES -->
+<h2 class="page-break" id="stories">5. User Stories and Acceptance Criteria</h2>
+<p>The team selected three critical user stories for prototyping, one per member. Each was revised after comparison against an AI-generated version (see <code>Activity_3_UserStoriesandAcceptanceCriteria.md</code> for the full side-by-side comparisons); the revisions below reflect the team's final, agreed wording and are the basis for the story-point estimates in Section 6 and the prototype work in Section 7.</p>
+
+<div class="story-block">
+<h4>Story 1 — Web-accessible UI for gene selection and predictions <span class="small-note">(Tyler Bullard)</span></h4>
+<p><b>As a</b> user, <b>I want</b> to access the app's web page, select genes, and view a lifespan/growth-rate prediction, <b>so that</b> I can run and read a prediction without any setup beyond a browser.</p>
+<div class="ac">
+<b>Access — Success.</b> Given the user has a browser open, when the user enters the web address, then the website page is displayed.<br>
+<b>Access — Failure.</b> Given the user has a browser open, when the user enters the web address and the server is down or unreachable, then an error message is displayed indicating the service is temporarily unavailable.<br>
+<b>Gene selection — Success.</b> Given the user is on the webpage, when the user selects a set of genes, then a prediction is made.<br>
+<b>Gene selection — Failure (no genes selected).</b> Given the user is on the webpage, when the user submits a request without selecting any genes, then no prediction is made and the user is prompted to select at least one gene.<br>
+<b>View prediction — Success.</b> Given a prediction has been made, when the user requests to view it, then the prediction data is shown on the interface.<br>
+<b>View prediction — Failure.</b> Given no prediction has been made, when the user requests to view the prediction, then a message indicates no prediction exists and prompts gene selection.<br>
+<i>Revision adopted from AI comparison:</i> gene search by name/identifier (feature 15) was accepted into the backlog as a follow-on scenario, with duplicate-selection and search-timeout failure paths, since it strengthens the same feature area without changing scope.
+</div>
+</div>
+
+<div class="story-block">
+<h4>Story 2 — Gene toggles with growth-rate response <span class="small-note">(Michael LeBlanc)</span></h4>
+<p><b>As a</b> user, <b>I want</b> the model to accurately predict a <i>C. elegans</i> growth rate based on chosen genes, and to toggle genes on/off and compare the result against the wild-type baseline, <b>so that</b> I can see how each gene affects the prediction.</p>
+<div class="ac">
+<b>Genes chosen — Success.</b> Given the user is on the webpage, when the user selects one or more genes to simulate, then the predicted growth rate and life expectancy are displayed.<br>
+<b>Genes chosen — Failure (invalid gene identifier).</b> Given the user is on the webpage, when the user enters a gene identifier that does not map to the underlying metabolic reconstruction, then no prediction is generated and an error prompts the user to verify the gene name.<br>
+<b>Genes chosen — Failure (model infeasibility).</b> Given the user is on the webpage, when the selected gene combination results in an unsolvable or biologically non-viable state, then a message indicates the simulation failed to find a valid solution.<br>
+<b>Toggle — Success.</b> Given a baseline prediction is loaded, when the user toggles a selected gene off, then the model recalculates and displays the updated growth rate.<br>
+<b>Toggle — Failure (no metabolic impact).</b> Given a baseline prediction is loaded, when the user toggles a gene that constrains no active reactions under current conditions, then the displayed growth rate is unchanged and a tooltip explains the knockout has no effect.<br>
+<i>Revision adopted from AI comparison:</i> the team agreed to integrate the AI-suggested criterion that growth-rate constraints should be driven by transcriptomic differential-expression data rather than binary knockouts alone — this is how the actual <code>fluxworm</code> pipeline (Section 7.2) already works, so the acceptance criteria were revised to match the real constraint-building logic instead of a simplified on/off model.
+</div>
+</div>
+
+<div class="story-block">
+<h4>Story 3 — Worm visual at a selected biological age <span class="small-note">(Caleb Walton)</span></h4>
+<p><b>As a</b> user in the field of biology, <b>I want</b> to see an image of what a worm with a specific age and gene set would look like, <b>so that</b> I have a visual of the worm at that biological age relative to chronological time.</p>
+<div class="ac">
+<b>Image generation — Success.</b> Given the user has selected genes and generated a predicted lifespan, and is on the prediction graph with the option to view the worm, when the user selects an age within the predicted lifespan range and confirms, then an image of the worm's predicted appearance is displayed.<br>
+<b>Age out of range — Failure.</b> Given the same starting state, when the user selects an age not within the predicted lifespan range and confirms, then an error is displayed signaling the age is out of range.<br>
+<b>Live update — Success.</b> Given the user is viewing the visual representation, when the user changes the selected biological age, then the display updates to the worm's predicted appearance at the new age.<br>
+<i>Revision adopted from AI comparison:</i> the AI version's single combined scenario was split into the two independent scenarios above (initial generation vs. in-place update) for clarity, and the out-of-range failure scenario was kept as its own case rather than folded into the success path, matching the team's original structure.
+</div>
+</div>
+
+<!-- 6. STORY POINTS -->
+<h2 id="points">6. Estimated Story Points</h2>
+<p>Estimates use a Fibonacci-like scale (1, 2, 3, 5, 8, 13) sized relative to the simplest critical feature, "open the web app" (1 point). Estimates reflect effort <i>and</i> uncertainty, not just lines of code — a story with a well-understood UI but an uncertain backend dependency scores higher than its UI alone would suggest.</p>
+<table>
+<tr><th>User story</th><th>Points</th><th>Rationale</th></tr>
+<tr>
+  <td>Story 1 — Web-accessible UI for gene selection and predictions</td>
+  <td><span class="points">5</span></td>
+  <td>Mostly well-understood Flask/Jinja routing and form handling; a minimal version already exists (Section 7.3). Points above the minimum account for input validation, the "no genes selected" and "server unreachable" error paths, and the gene-search follow-on scenario.</td>
+</tr>
+<tr>
+  <td>Story 2 — Gene toggles with growth-rate response</td>
+  <td><span class="points">8</span></td>
+  <td>Backend-heavy: each toggle has to re-run the transcriptomics-constrained FBA pipeline (or look up a precomputed genotype) and surface model infeasibility and no-impact cases correctly. The modeling logic exists in <code>core/</code>, but wiring live toggles to it, instead of a single static form submit, is new integration work with real uncertainty around solver behavior on edge-case gene combinations.</td>
+</tr>
+<tr>
+  <td>Story 3 — Worm visual at a selected biological age</td>
+  <td><span class="points">8</span></td>
+  <td>No visual assets or age-interpolation logic exist yet. Requires producing or selecting images per genotype/age bucket, range validation against the genotype's predicted lifespan, and an in-place update on age change — the most novel, least-prototyped of the three stories.</td>
+</tr>
+<tr class="weighted"><td>Total (3 stories)</td><td>21</td><td>&nbsp;</td></tr>
+</table>
+
+<!-- 7. PROTOTYPE -->
+<h2 class="page-break" id="prototype">7. Prototype Demonstration</h2>
+
+<h3>7.1 User Interface Design (Low-Fidelity Wireframe)</h3>
+<p>The wireframe below lays out the target interface for all 18 preliminary-scope features (numbered callouts match the feature list in Section 2): a gene-selection panel, a prediction panel with the survival-curve graph, and a worm-at-age viewer.</p>
+<img src="Wireframe_PredictionPage.png" alt="Low-fidelity wireframe of the prediction page">
+<div class="caption">Figure 2. Low-fidelity wireframe — prediction page, with feature callouts.</div>
+
+<h3>7.2 Initial Architectural Design</h3>
+<p>The architecture keeps the prediction logic in Python end to end. The browser talks to a thin Flask layer, which calls the <code>fluxworm</code> pipeline directly rather than through a network hop; the pipeline's precomputed, per-genotype results are read from CSV today, with SQLite/SQLAlchemy planned for saved and shared predictions (Section 4.3).</p>
+
+<svg viewBox="0 0 860 430" xmlns="http://www.w3.org/2000/svg" style="max-width:100%; border:1px solid #ddd; background:#fff; margin:16px 0;">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#14213d"/>
+    </marker>
+  </defs>
+
+  <rect x="30" y="30" width="200" height="90" rx="8" fill="#e8ecf5" stroke="#14213d" stroke-width="1.5"/>
+  <text x="130" y="60" text-anchor="middle" font-size="13" font-weight="bold" fill="#14213d">Browser</text>
+  <text x="130" y="80" text-anchor="middle" font-size="10.5" fill="#333">HTML / CSS / JS (ES6+)</text>
+  <text x="130" y="96" text-anchor="middle" font-size="10.5" fill="#333">Chart.js survival curve</text>
+
+  <rect x="330" y="30" width="200" height="90" rx="8" fill="#fff4e0" stroke="#fca311" stroke-width="1.5"/>
+  <text x="430" y="55" text-anchor="middle" font-size="13" font-weight="bold" fill="#14213d">Flask app</text>
+  <text x="430" y="73" text-anchor="middle" font-size="10.5" fill="#333">web/app.py</text>
+  <text x="430" y="89" text-anchor="middle" font-size="10.5" fill="#333">Jinja templates + REST JSON</text>
+  <text x="430" y="105" text-anchor="middle" font-size="10.5" fill="#333">routes: /, /api/*</text>
+
+  <rect x="630" y="30" width="200" height="90" rx="8" fill="#e6f4ea" stroke="#2a6f3d" stroke-width="1.5"/>
+  <text x="730" y="55" text-anchor="middle" font-size="13" font-weight="bold" fill="#14213d">fluxworm pipeline</text>
+  <text x="730" y="73" text-anchor="middle" font-size="10.5" fill="#333">core/src/fluxworm</text>
+  <text x="730" y="89" text-anchor="middle" font-size="10.5" fill="#333">COBRApy + GLPK (FBA)</text>
+  <text x="730" y="105" text-anchor="middle" font-size="10.5" fill="#333">pandas / NumPy / SciPy</text>
+
+  <rect x="330" y="190" width="200" height="80" rx="8" fill="#f6f7f9" stroke="#999" stroke-width="1.3"/>
+  <text x="430" y="213" text-anchor="middle" font-size="12" font-weight="bold" fill="#14213d">Precomputed results</text>
+  <text x="430" y="230" text-anchor="middle" font-size="10.5" fill="#333">core/results/*.csv, *.png</text>
+  <text x="430" y="246" text-anchor="middle" font-size="10.5" fill="#333">survival curves, growth, flux</text>
+
+  <rect x="630" y="190" width="200" height="80" rx="8" fill="#f6f7f9" stroke="#999" stroke-width="1.3"/>
+  <text x="730" y="213" text-anchor="middle" font-size="12" font-weight="bold" fill="#14213d">Source data</text>
+  <text x="730" y="230" text-anchor="middle" font-size="10.5" fill="#333">iCEL1314 SBML model</text>
+  <text x="730" y="246" text-anchor="middle" font-size="10.5" fill="#333">GSE52340 microarray (GEO)</text>
+
+  <rect x="30" y="190" width="200" height="80" rx="8" fill="#eef0ff" stroke="#4350af" stroke-width="1.3" stroke-dasharray="5,3"/>
+  <text x="130" y="213" text-anchor="middle" font-size="12" font-weight="bold" fill="#14213d">SQLite (planned)</text>
+  <text x="130" y="230" text-anchor="middle" font-size="10.5" fill="#333">via SQLAlchemy</text>
+  <text x="130" y="246" text-anchor="middle" font-size="10.5" fill="#333">saved / shared predictions</text>
+
+  <line x1="230" y1="75" x2="330" y2="75" stroke="#14213d" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <text x="280" y="68" text-anchor="middle" font-size="9.5" fill="#333">HTTP (REST/JSON)</text>
+
+  <line x1="530" y1="75" x2="630" y2="75" stroke="#14213d" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <text x="580" y="68" text-anchor="middle" font-size="9.5" fill="#333">in-process call</text>
+
+  <line x1="430" y1="190" x2="430" y2="120" stroke="#14213d" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <line x1="730" y1="190" x2="730" y2="120" stroke="#14213d" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <text x="630" y="155" text-anchor="middle" font-size="9.5" fill="#333">reads / writes</text>
+  <text x="820" y="155" text-anchor="middle" font-size="9.5" fill="#333" transform="rotate(0)"></text>
+
+  <line x1="230" y1="230" x2="330" y2="230" stroke="#4350af" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+
+  <text x="430" y="310" text-anchor="middle" font-size="10" fill="#555">Deployment: Git/GitHub &#8594; GitHub Actions (CI) &#8594; AWS EC2 (prod), Docker-pinned solver/runtime (optional)</text>
+  <rect x="130" y="330" width="600" height="46" rx="6" fill="#f6f7f9" stroke="#999"/>
+  <text x="430" y="358" text-anchor="middle" font-size="10.5" fill="#333">dev: per-member machine (venv via launcher.py) &#160;|&#160; test: GitHub Actions &#160;|&#160; prod: AWS EC2 (main branch)</text>
+</svg>
+<div class="caption">Figure 3. Initial architectural design — request flow, data sources, and environments.</div>
+
+<h3>7.3 Screenshots from the Implemented User Stories</h3>
+<p>To familiarize the team with the chosen environment, the Flask prototype in <code>web/app.py</code> was run end to end: it loads the pipeline's precomputed <code>survival_curves_illustrative.csv</code> and <code>growth_comparison.csv</code>, serves the gene-selection form from Story 1, computes a median lifespan and growth-rate figure for the selected genotype (Story 2), and returns a validation error for an unsupported combination. The screenshots below are captured directly from the running prototype, not mockups.</p>
+
+<img src="screenshot_prototype_home.png" alt="Prototype home page">
+<div class="caption">Figure 4. Prototype — initial page, gene-selection form (Story 1, feature 1 &amp; 2).</div>
+
+<img src="screenshot_prototype_result.png" alt="Prototype result page showing a successful prediction">
+<div class="caption">Figure 5. Prototype — successful prediction for the <code>daf-2</code> genotype: median lifespan and growth rate vs. wild type (Story 2, features 3–5).</div>
+
+<img src="screenshot_prototype_error.png" alt="Prototype error page for an unsupported gene combination">
+<div class="caption">Figure 6. Prototype — validation error for a gene combination outside the dataset (Story 1 &amp; 2, feature 8).</div>
+
+<p class="small-note">The worm-at-age visual (Story 3) is not yet implemented in the running prototype; Section 7.1's wireframe and Section 6's story-point estimate (8 points, the highest of the three) reflect that it is the least mature of the three stories going into Sprint 1.</p>
+
+<!-- 8. CONTRIBUTIONS -->
+<h2 id="contrib">8. Team Contribution List</h2>
+<table>
+<tr><th>Member</th><th>Contributions</th></tr>
+<tr>
+  <td>Michael LeBlanc</td>
+  <td>Built the <code>fluxworm</code> transcriptomics-constrained FBA pipeline (<code>core/</code>: model loading, microarray parsing, constraint building, FBA runner, 19 unit tests); ran the requirements-elicitation interviews (Activity 2); authored the gene-toggle/growth-rate user story and acceptance criteria (Story 2, Activity 3); README updates; assembled this Sprint 0 report.</td>
+</tr>
+<tr>
+  <td>Tyler Bullard</td>
+  <td>Built and tested the Flask web prototype (<code>web/app.py</code>, templates); authored the development-environment evaluation and final stack justification (Section 4, <code>PreliminaryDevEnvironment.md</code>); designed the low-fidelity wireframe (Figure 2); authored the web-UI user story and acceptance criteria (Story 1, Activity 3); README feature-list formatting.</td>
+</tr>
+<tr>
+  <td>Caleb Walton</td>
+  <td>Constructed and revised the use case diagram (Figure 1, Section 3); authored the worm-visual user story and acceptance criteria (Story 3, Activity 3), including the AI-comparison revision.</td>
+</tr>
+</table>
+
+</body>
+</html>
