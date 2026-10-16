@@ -36,3 +36,93 @@ The project is a web tool for researchers and students. A user picks genes from 
 16. The user changes the selected age and the worm image updates in place. (Useful)
 17. The system displays a predicted body size or weight for the worm. (Useful)
 18. The user shares a saved prediction with others through a link. (Useful)
+
+
+### Running the app
+
+The project has two parts. You only need the first one to use the website.
+
+- **`web/`** is the Flask website. It reads precomputed results from `core/results/`, which are already in the repository.
+- **`core/`** is the modeling pipeline that produces those results. Run it only if you change the model, the data or the settings in `core/config/config.yaml`.
+
+#### Requirements
+
+- [Python](https://www.python.org/downloads/) 3.11 or newer. On Windows, tick **"Add python.exe to PATH"** in the installer.
+- [Git](https://git-scm.com/downloads)
+- A web browser
+
+Check your Python version with `python --version` (Windows) or `python3 --version` (macOS/Linux).
+
+#### 1. Get the code
+
+```
+git clone https://github.com/mxl6w94/C.elegans-longevity-simulation.git
+cd C.elegans-longevity-simulation
+```
+
+#### 2. Set up the website (first time only)
+
+Windows (Command Prompt):
+
+```
+cd web
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+macOS / Linux:
+
+```
+cd web
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+This creates a private Python environment in `web/.venv` and installs Flask and pandas into it. The `.venv` folder is ignored by Git, so each person creates their own.
+
+#### 3. Run the website
+
+From the `web` folder, with the environment active (your prompt starts with `(.venv)`):
+
+```
+flask --app app run --debug
+```
+
+Open <http://127.0.0.1:5000> in your browser. `--debug` reloads the server when you save a file. Press `Ctrl+C` in the terminal to stop it.
+
+Next time, you only need to activate the environment and run the server:
+
+```
+cd web
+.venv\Scripts\activate          (Windows)
+source .venv/bin/activate       (macOS/Linux)
+flask --app app run --debug
+```
+
+#### 4. Re-run the modeling pipeline (optional)
+
+The launcher in `core/` creates its own environment, installs the scientific packages (COBRApy, SciPy and others) and runs the pipeline. The first run takes a few minutes.
+
+```
+cd core
+python launcher.py                 # run the pipeline
+python launcher.py --tests         # run the pipeline, then the test suite
+python launcher.py --tests-only    # run only the tests
+```
+
+On Windows you can also double-click `core\launcher.bat`. On macOS/Linux, run `chmod +x launcher.sh` once, then `./launcher.sh`.
+
+New results are written to `core/results/`. Restart the website to pick them up. See [`core/README.md`](core/README.md) for how the pipeline works.
+
+#### Troubleshooting
+
+| Problem | Fix |
+| --- | --- |
+| `'flask' is not recognized` or `command not found: flask` | The environment isn't active. Run the activate command from step 2 again. |
+| PowerShell says running scripts is disabled when activating | Use Command Prompt instead, or run `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` once in PowerShell. |
+| `pip install` fails on pandas or numpy | Your Python is older than 3.11. Install a newer version and recreate `.venv`. |
+| `Address already in use` / port 5000 busy | Run on another port: `flask --app app run --debug --port 5001`. On macOS, AirPlay Receiver also uses port 5000. |
+| `FileNotFoundError` for a file in `core/results` | Run the pipeline once (step 4) to regenerate the results. |
+| First pipeline run on Windows fails with `DLL load failed ... Application Control policy` | Windows Smart App Control is checking the new SciPy files. Run the launcher again; it passes on the second try. |
