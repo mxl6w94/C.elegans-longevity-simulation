@@ -1,0 +1,282 @@
+/* ==========================================================================
+   main stylesheet
+   Colors live in custom properties on :root.
+
+   Theme selection, in order of priority:
+     <html data-theme="dark">   force dark
+     <html data-theme="light">  force light
+     (no attribute)             follow the operating system setting
+   ========================================================================== */
+
+/* 1. Light theme (default) */
+:root {
+  color-scheme: light;
+
+  --bg-color: #ffffff;        /* page background */
+  --surface-color: #f4f5f7;   /* panels, cards */
+  --raised-color: #ffffff;    /* inputs, items sitting on a panel */
+  --border-color: #dde1e6;
+  --text-color: #15191d;
+  --muted-color: #5a6570;     /* secondary text, captions, axis labels */
+
+  --primary-color: #0066cc;
+  --primary-hover: #0052a3;
+  --primary-text: #ffffff;    /* text on a primary-colored button */
+
+  --danger-color: #c62828;
+  --danger-bg: #fdecea;
+  --warning-color: #9a5b00;
+  --warning-bg: #fff4e0;
+  --success-color: #2e7d32;
+  --success-bg: #e8f5e9;
+
+  --focus-ring: rgba(0, 102, 204, 0.45);
+  --shadow: 0 1px 2px rgba(16, 24, 32, 0.06), 0 2px 8px rgba(16, 24, 32, 0.06);
+
+  /* For Chart.js: read with getComputedStyle(document.documentElement) */
+  --chart-series-1: #0066cc;  /* selected genotype */
+  --chart-series-2: #8a96a3;  /* wild-type baseline */
+  --chart-grid: #e6e9ed;
+}
+
+
+/* Follow the system dark setting, unless the user picked light */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+
+    --bg-color: #0f1214;
+    --surface-color: #161a1e;
+    --raised-color: #1d2227;
+    --border-color: #2b3238;
+    --text-color: #e4e8eb;
+    --muted-color: #9aa5af;
+
+    --primary-color: #4dabf7;
+    --primary-hover: #74bdf9;
+    --primary-text: #0b1620;
+
+    --danger-color: #ff8a80;
+    --danger-bg: #2a1716;
+    --warning-color: #f2b84b;
+    --warning-bg: #2a2214;
+    --success-color: #81c995;
+    --success-bg: #14241a;
+
+    --focus-ring: rgba(77, 171, 247, 0.55);
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 4px 12px rgba(0, 0, 0, 0.35);
+
+    --chart-series-1: #4dabf7;
+    --chart-series-2: #7d8893;
+    --chart-grid: #262c32;
+  }
+}
+
+/* 2b. Dark chosen explicitly (e.g. a theme toggle sets data-theme="dark") */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg-color: #0f1214;
+  --surface-color: #161a1e;
+  --raised-color: #1d2227;
+  --border-color: #2b3238;
+  --text-color: #e4e8eb;
+  --muted-color: #9aa5af;
+
+  --primary-color: #4dabf7;
+  --primary-hover: #74bdf9;
+  --primary-text: #0b1620;
+
+  --danger-color: #ff8a80;
+  --danger-bg: #2a1716;
+  --warning-color: #f2b84b;
+  --warning-bg: #2a2214;
+  --success-color: #81c995;
+  --success-bg: #14241a;
+
+  --focus-ring: rgba(77, 171, 247, 0.55);
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 4px 12px rgba(0, 0, 0, 0.35);
+
+  --chart-series-1: #4dabf7;
+  --chart-series-2: #7d8893;
+  --chart-grid: #262c32;
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+html, body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.5;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body {
+  padding: 2rem 1.5rem;
+}
+
+h1, h2, h3 {
+  line-height: 1.25;
+  margin: 0 0 0.75rem;
+}
+
+h1 { font-size: 1.75rem; }
+h2 { font-size: 1.35rem; margin-top: 1.5rem; }
+
+p { margin: 0 0 0.5rem; }
+
+a { color: var(--primary-color); }
+a:hover { color: var(--primary-hover); }
+
+::selection {
+  background: var(--primary-color);
+  color: var(--primary-text);
+}
+
+/* Keyboard focus, visible in both themes */
+:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* ==========================================================================
+   Form (gene selection)
+   ========================================================================== */
+
+form {
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+  max-width: 28rem;
+  box-shadow: var(--shadow);
+}
+
+label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0;
+  cursor: pointer;
+}
+
+/* Native checkboxes/radios pick up the theme color; color-scheme above
+   makes their unchecked state dark too */
+input[type="checkbox"],
+input[type="radio"] {
+  accent-color: var(--primary-color);
+  width: 1.1rem;
+  height: 1.1rem;
+  cursor: pointer;
+}
+
+input[type="text"],
+input[type="search"],
+input[type="number"],
+select {
+  background: var(--raised-color);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 0.5rem 0.65rem;
+  font: inherit;
+}
+
+input::placeholder { color: var(--muted-color); }
+
+input[type="range"] { accent-color: var(--primary-color); }
+
+/* ==========================================================================
+   Buttons
+   ========================================================================== */
+
+button,
+.btn {
+  display: inline-block;
+  margin-top: 0.75rem;
+  padding: 0.6rem 1.25rem;
+  font: inherit;
+  font-weight: 600;
+  color: var(--primary-text);
+  background: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+button:hover,
+.btn:hover {
+  background: var(--primary-hover);
+  border-color: var(--primary-hover);
+}
+
+button:disabled,
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Secondary buttons: Download CSV, Save, Share */
+.btn-secondary {
+  color: var(--text-color);
+  background: var(--raised-color);
+  border-color: var(--border-color);
+}
+
+.btn-secondary:hover {
+  background: var(--surface-color);
+  border-color: var(--muted-color);
+}
+
+/* ==========================================================================
+   Results and messages
+   ========================================================================== */
+
+.card {
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  box-shadow: var(--shadow);
+}
+
+.muted { color: var(--muted-color); }
+
+/* Error banner (feature 8). Use <p class="alert alert-error"> in place of
+   the inline style="color:red", which can't adapt to the theme. */
+.alert {
+  border: 1px solid currentColor;
+  border-radius: 6px;
+  padding: 0.6rem 0.85rem;
+  margin-top: 1rem;
+  max-width: 28rem;
+}
+
+.alert-error   { color: var(--danger-color);  background: var(--danger-bg); }
+.alert-warning { color: var(--warning-color); background: var(--warning-bg); }  /* no feasible solution */
+.alert-success { color: var(--success-color); background: var(--success-bg); }  /* prediction saved */
+
+/* Tables (model accuracy) */
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  text-align: left;
+  padding: 0.5rem 0.6rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+th {
+  color: var(--muted-color);
+  font-weight: 600;
+}
+
+
