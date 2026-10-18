@@ -280,3 +280,86 @@ th {
 }
 
 
+
+/* ==========================================================================
+   Page text and gene options
+   ========================================================================== */
+
+.intro {
+  max-width: 40rem;
+  color: var(--muted-color);
+  margin-bottom: 1.25rem;
+}
+
+fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+legend {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+label.option {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 0.45rem 0;
+}
+
+label.option input { margin-top: 0.2rem; flex: none; }
+
+.hint {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--muted-color);
+  line-height: 1.35;
+}
+
+.divider {
+  font-size: 0.85rem;
+  color: var(--muted-color);
+  margin: 0.5rem 0 0.15rem;
+}
+
+.result {
+  max-width: 40rem;
+  margin-top: 1.5rem;
+}
+
+.result h2 { margin-top: 0; }
+
+.note {
+  font-size: 0.9rem;
+  color: var(--muted-color);
+  border-left: 3px solid var(--primary-color);
+  padding-left: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.explainer {
+  max-width: 40rem;
+  margin-top: 1.25rem;
+}
+
+.explainer summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.explainer ol,
+.explainer ul {
+  margin: 0.5rem 0 0;
+  padding-left: 1.25rem;
+}
+
+.explainer li { margin-bottom: 0.35rem; }
+
+.footnote {
+  max-width: 40rem;
+  font-size: 0.85rem;
+  margin-top: 1.5rem;
+}

@@ -1,6 +1,20 @@
-## Placeholder for sprint1 docs
+# Sprint1 Tasks
 
-# Scrum 1
+## Scrum 1
+  
 - Michael:
 - Tyler:
 - Caleb: 
+  
+## Scrum 2
+  
+- Michael: 
+- Tyler: 
+- Caleb: 
+  
+
+## Scrum 3
+ 
+- Michael:
+- Tyler: 
+- Caleb:   

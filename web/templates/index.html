@@ -6,23 +6,99 @@
   <title>Worm Lifespan</title>
 
   <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+  <script src="{{ url_for('static', filename='scripts/main.js') }}" defer></script>
 </head>
 <body>
   <h1>C. elegans lifespan predictor</h1>
 
+  <p class="intro">
+    This site estimates how long a small roundworm, <em>C. elegans</em>, lives when some of its
+    genes are changed. Pick a worm below and press Predict.
+  </p>
+
   <form method="post">
-    {% for g in ["daf-2", "rsks-1", "daf-16"] %}
-      <label><input type="checkbox" name="genes" value="{{ g }}"> {{ g }} mutant</label><br>
-    {% endfor %}
+    <fieldset>
+      <legend>Choose a worm</legend>
+
+      {% for value, label, hint in options %}
+        {% if loop.index == 2 %}<p class="divider">or change one or more genes:</p>{% endif %}
+        <label class="option">
+          <input type="checkbox" name="genes" value="{{ value }}"
+                 {% if value in picked %}checked{% endif %}
+                 {% if value == "wild type" %}data-wild-type{% endif %}>
+          <span>
+            <strong>{{ label }}</strong>
+            <span class="hint">{{ hint }}</span>
+          </span>
+        </label>
+      {% endfor %}
+    </fieldset>
+
     <button>Predict</button>
   </form>
 
-  {% if error %}<p style="color:red">{{ error }}</p>{% endif %}
+  {% if error %}<p class="alert alert-error" role="alert">{{ error }}</p>{% endif %}
 
   {% if result %}
-    <h2>{{ result.genotype }}</h2>
-    <p>Median lifespan (illustrative units): {{ "%.2f"|format(result.median) }}</p>
-    <p>Growth vs. wild type: {{ "%.4f"|format(result.growth) }}</p>
+    <section class="card result" aria-live="polite">
+      <h2>{{ result.name }}</h2>
+
+      <p>
+        <strong>Median lifespan:</strong> {{ "%.2f"|format(result.median) }} units
+        {% if not result.is_wild_type %}
+          {% if result.median_diff|abs < 0.00005 %}
+            <span class="muted">(same as a normal worm)</span>
+          {% else %}
+            <span class="muted">({{ "%+.4f"|format(result.median_diff) }} compared with a normal worm)</span>
+          {% endif %}
+        {% endif %}
+      </p>
+      <p>
+        <strong>Growth compared with a normal worm:</strong> {{ "%.4f"|format(result.growth) }}
+      </p>
+
+      {% if result.is_wild_type %}
+        <p class="note">This is the baseline. Every other worm's results are compared with these numbers.</p>
+      {% elif result.matches_wild_type %}
+        <p class="note">
+          This estimate is the same as for a normal worm. The {{ 'changed genes' if result.gene_count > 1 else 'gene' }} may still matter: the model just
+          didn't find a change in metabolism large enough to move the estimate.
+        </p>
+      {% else %}
+        <p class="note">
+          The current model finds only very small differences between worm types, so the lifespans
+          look almost the same. The sign of the difference is the useful part: a plus means this worm
+          is estimated to live a little longer than a normal one.
+        </p>
+      {% endif %}
+    </section>
   {% endif %}
+
+  <details class="explainer">
+    <summary>How does this work?</summary>
+    <ol>
+      <li>Researchers measured how active each gene was in five kinds of worms: normal worms and four
+          strains with changed genes.</li>
+      <li>Those measurements go into a computer model of the worm's metabolism (the chemical reactions
+          that keep it alive), which works out how fast the worm can grow.</li>
+      <li>From the model's output, the site estimates how quickly the worm ages and how long a typical
+          worm of that kind lives.</li>
+    </ol>
+  </details>
+
+  <details class="explainer">
+    <summary>What do the results mean?</summary>
+    <ul>
+      <li><strong>Median lifespan</strong> is the age at which half the worms have died. It's in the
+          model's time units, not days.</li>
+      <li><strong>Growth compared with a normal worm</strong>: 1.0000 means the same as a normal worm,
+          and lower means slower.</li>
+    </ul>
+  </details>
+
+  <p class="muted footnote">
+    These numbers come from a research model, not lab measurements. The model only covers the five
+    worm types in the dataset, so other gene combinations can't be predicted yet.
+  </p>
 </body>
 </html>
