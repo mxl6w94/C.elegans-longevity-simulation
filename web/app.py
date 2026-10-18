@@ -3,6 +3,11 @@ from pathlib import Path
 import pandas as pd
 from flask import Flask, render_template, request
 
+from matplotlib.figure import Figure
+import base64
+from io import BytesIO
+import numpy as np
+
 RESULTS = Path(__file__).resolve().parent.parent / "core" / "results"
 
 # Checkbox combinations
@@ -26,6 +31,23 @@ def median_lifespan(genotype):
     return float(below.iloc[0]) if not below.empty else None
 
 
+def worm_graph(l_span, g_rate):
+    """ 
+    * Worm lifespan graph function
+    * Use the median lifespan and growth rate to create a graph
+    """
+    X = np.linspace(0, l_span, 200)
+    y = X*g_rate
+    fig = Figure()
+    ax = fig.subplots()
+    ax.plot(X, y)
+    buf = BytesIO()
+    fig.savefig(buf, format="png")
+    buf.seek(0)
+    w_graph = base64.b64encode(buf.read()).decode('utf-8')
+    return w_graph
+
+
 @app.route("/", methods=["GET", "POST"])
 def index():
     result = error = None
@@ -39,5 +61,6 @@ def index():
                 "genotype": genotype,
                 "median": median_lifespan(genotype),
                 "growth": growth.loc[genotype, "fold_change_vs_wt"],
+                "graph": worm_graph(median_lifespan(genotype), growth.loc[genotype, "fold_change_vs_wt"]),
             }
     return render_template("index.html", result=result, error=error)

@@ -23,6 +23,16 @@
     <h2>{{ result.genotype }}</h2>
     <p>Median lifespan (illustrative units): {{ "%.2f"|format(result.median) }}</p>
     <p>Growth vs. wild type: {{ "%.4f"|format(result.growth) }}</p>
+    <!-- A matplotlib graph is created and displayed using the growth rate and median lifespan. -->
+    <img src="data:image/png;base64,{{ result.graph }}" alt="result graph">
+    <!-- Placeholder images for before the final worm visuals are finalized.
+     Perhaps add a ruler somewhere between the two images so the user would be able to
+     compare the sizes of the wild type and genetically modified type easily.
+     Also adjust the size of the modified image based on its age and growth rate.
+     Both images are the same file, at least for now.
+     Image source: https://commons.wikimedia.org/wiki/File:Adult_Caenorhabditis_elegans.jpg#filelinks -->
+    <p>Wild type size (placeholder): </p><img src="static/C_E_IMG.jpg">
+    <p>Size of selected genes (placeholder): </p><img src="static/C_E_IMG.jpg" width="600" height="200">
   {% endif %}
 </body>
 </html>
