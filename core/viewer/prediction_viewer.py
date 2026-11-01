@@ -35,6 +35,28 @@ COLORS = {
     "daf-2 rsks-1": "#C44E52",
     "daf-16; daf-2 rsks-1": "#55A868",
 }
+MAX_SUBPLOT_PARAMETER = 0.9
+
+# add max values for graph size parameters
+# prevents the user from cutting off the text surrounding the graphs
+class BoundedNavigationToolbar2Tk(NavigationToolbar2Tk):
+    def configure_subplots(self, *args):
+        super().configure_subplots(*args)
+        tool = self.subplot_tool
+        sliders = (
+            tool.sliderleft,
+            tool.sliderbottom,
+            tool.sliderright,
+            tool.slidertop,
+            tool.sliderwspace,
+            tool.sliderhspace,
+        )
+        for slider in sliders:
+            slider.valmax = MAX_SUBPLOT_PARAMETER
+            slider.ax.set_xlim(slider.valmin, slider.valmax)
+        tool.sliderright.valmax = 0.983
+        tool.sliderright.ax.set_xlim(tool.sliderright.valmin, tool.sliderright.valmax)
+        return tool
 
 
 # ---------------------------------------------------------------- data ----
@@ -219,22 +241,50 @@ class ViewerApp(tk.Tk):
     # --- tabs ---
 
     def _add_plot_tab(self, notebook: ttk.Notebook, title: str, draw) -> None:
+        # added scrolling mechanism to graphs (and this method's code also needed reorganizing)
+        # entire graph should be visible by scrolling if the window is small
         frame = ttk.Frame(notebook)
         notebook.add(frame, text=title)
+
+        container = ttk.Frame(frame)
+        container.pack(fill="both", expand=True)
+        canvas = tk.Canvas(container, highlightthickness=0)
+        scrollbar = ttk.Scrollbar(container, orient="vertical", command=canvas.yview)
+        canvas.configure(yscrollcommand=scrollbar.set)
+        scrollbar.pack(side="right", fill="y")
+        canvas.pack(side="left", fill="both", expand=True)
+
+        content = ttk.Frame(canvas)
+        content_window = canvas.create_window((0, 0), window=content, anchor="nw")
+
+        def update_scroll_region(_event=None) -> None:
+            height = max(canvas.winfo_height(), content.winfo_reqheight())
+            canvas.itemconfigure(content_window, height=height)
+            canvas.configure(scrollregion=canvas.bbox("all"))
+
+        def resize_content(event) -> None:
+            canvas.itemconfigure(content_window, width=event.width)
+            update_scroll_region()
+
+        content.bind("<Configure>", update_scroll_region)
+        canvas.bind("<Configure>", resize_content)
+
         fig = Figure(figsize=(9, 5), dpi=100)
         draw(fig)
         fig.tight_layout()
-        canvas = FigureCanvasTkAgg(fig, master=frame)
-        NavigationToolbar2Tk(canvas, frame).update()
+
+        fig_canvas = FigureCanvasTkAgg(fig, master=content)
+        BoundedNavigationToolbar2Tk(fig_canvas, content).update()
         ttk.Label(
-            frame,
+            content,
             text="Toolbar: Pan (cross arrows) or Zoom (magnifier) is a mode; click it, then drag on the graph. "
                  "Back/Forward/Home stay inactive until you have zoomed or panned. Save exports a PNG.",
             foreground="#666666",
-            padding=(6, 0),
+            padding=(2, 0),
         ).pack(side="bottom", anchor="w")
-        canvas.get_tk_widget().pack(fill="both", expand=True)
-        canvas.draw()
+
+        fig_canvas.get_tk_widget().pack(fill="both", expand=True)
+        fig_canvas.draw()
 
     def _add_explanation_tab(self, notebook: ttk.Notebook) -> None:
         frame = ttk.Frame(notebook)
