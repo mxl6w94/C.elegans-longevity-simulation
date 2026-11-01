@@ -7,98 +7,200 @@
 
   <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
   <script src="{{ url_for('static', filename='scripts/main.js') }}" defer></script>
-</head>
-<body>
-  <h1>C. elegans lifespan predictor</h1>
-
-  <p class="intro">
-    This site estimates how long a small roundworm, <em>C. elegans</em>, lives when some of its
-    genes are changed. Pick a worm below and press Predict.
-  </p>
-
-  <form method="post">
-    <fieldset>
-      <legend>Choose a worm</legend>
-
-      {% for value, label, hint in options %}
-        {% if loop.index == 2 %}<p class="divider">or change one or more genes:</p>{% endif %}
-        <label class="option">
-          <input type="checkbox" name="genes" value="{{ value }}"
-                 {% if value in picked %}checked{% endif %}
-                 {% if value == "wild type" %}data-wild-type{% endif %}>
-          <span>
-            <strong>{{ label }}</strong>
-            <span class="hint">{{ hint }}</span>
-          </span>
-        </label>
-      {% endfor %}
-    </fieldset>
-
-    <button>Predict</button>
-  </form>
-
-  {% if error %}<p class="alert alert-error" role="alert">{{ error }}</p>{% endif %}
-
   {% if result %}
-    <section class="card result" aria-live="polite">
-      <h2>{{ result.name }}</h2>
-
-      <p>
-        <strong>Median lifespan:</strong> {{ "%.2f"|format(result.median) }} units
-        {% if not result.is_wild_type %}
-          {% if result.median_diff|abs < 0.00005 %}
-            <span class="muted">(same as a normal worm)</span>
-          {% else %}
-            <span class="muted">({{ "%+.4f"|format(result.median_diff) }} compared with a normal worm)</span>
-          {% endif %}
-        {% endif %}
-      </p>
-      <p>
-        <strong>Growth compared with a normal worm:</strong> {{ "%.4f"|format(result.growth) }}
-      </p>
-
-      {% if result.is_wild_type %}
-        <p class="note">This is the baseline. Every other worm's results are compared with these numbers.</p>
-      {% elif result.matches_wild_type %}
-        <p class="note">
-          This estimate is the same as for a normal worm. The {{ 'changed genes' if result.gene_count > 1 else 'gene' }} may still matter: the model just
-          didn't find a change in metabolism large enough to move the estimate.
-        </p>
-      {% else %}
-        <p class="note">
-          The current model finds only very small differences between worm types, so the lifespans
-          look almost the same. The sign of the difference is the useful part: a plus means this worm
-          is estimated to live a little longer than a normal one.
-        </p>
-      {% endif %}
-    </section>
+    <script src="{{ url_for('static', filename='vendor/chart.umd.min.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='scripts/timelapse.js') }}" defer></script>
   {% endif %}
+</head>
+<body class="dashboard-page">
+  <header class="dash-header">
+    <h1>C. elegans lifespan predictor</h1>
+    <p class="intro">
+      This site estimates how long a small roundworm, <em>C. elegans</em>, lives when some of its
+      genes are changed. Pick a worm on the left and press Predict.
+    </p>
+  </header>
 
-  <details class="explainer">
-    <summary>How does this work?</summary>
-    <ol>
-      <li>Researchers measured how active each gene was in five kinds of worms: normal worms and four
-          strains with changed genes.</li>
-      <li>Those measurements go into a computer model of the worm's metabolism (the chemical reactions
-          that keep it alive), which works out how fast the worm can grow.</li>
-      <li>From the model's output, the site estimates how quickly the worm ages and how long a typical
-          worm of that kind lives.</li>
-    </ol>
-  </details>
+  <div class="dashboard">
+    <!-- Left: controls and explanations -->
+    <aside class="dash-sidebar">
+      <section class="card panel">
+        <form method="post">
+          <fieldset>
+            <legend>Choose a worm</legend>
 
-  <details class="explainer">
-    <summary>What do the results mean?</summary>
-    <ul>
-      <li><strong>Median lifespan</strong> is the age at which half the worms have died. It's in the
-          model's time units, not days.</li>
-      <li><strong>Growth compared with a normal worm</strong>: 1.0000 means the same as a normal worm,
-          and lower means slower.</li>
-    </ul>
-  </details>
+            {% for value, label, hint in options %}
+              {% if loop.index == 2 %}<p class="divider">or change one or more genes:</p>{% endif %}
+              <label class="option">
+                <input type="checkbox" name="genes" value="{{ value }}"
+                       {% if value in picked %}checked{% endif %}
+                       {% if value == "wild type" %}data-wild-type{% endif %}>
+                <span>
+                  <strong>{{ label }}</strong>
+                  <span class="hint">{{ hint }}</span>
+                </span>
+              </label>
+            {% endfor %}
+          </fieldset>
 
-  <p class="muted footnote">
-    These numbers come from a research model, not lab measurements. The model only covers the five
-    worm types in the dataset, so other gene combinations can't be predicted yet.
-  </p>
+          <button class="btn-block">Predict</button>
+        </form>
+
+        {% if error %}<p class="alert alert-error" role="alert">{{ error }}</p>{% endif %}
+      </section>
+
+      <section class="card panel panel-quiet">
+        <details class="explainer">
+          <summary>How does this work?</summary>
+          <ol>
+            <li>Researchers measured how active each gene was in five kinds of worms: normal worms and four
+                strains with changed genes.</li>
+            <li>Those measurements go into a computer model of the worm's metabolism (the chemical reactions
+                that keep it alive), which works out how fast the worm can grow.</li>
+            <li>From the model's output, the site estimates how quickly the worm ages and how long a typical
+                worm of that kind lives.</li>
+          </ol>
+        </details>
+
+        <details class="explainer">
+          <summary>What do the results mean?</summary>
+          <ul>
+            <li><strong>Median lifespan</strong> is the age at which half the worms have died. It's in the
+                model's time units, not days.</li>
+            <li><strong>Mean lifespan</strong> is the average age at death across all the worms.</li>
+            <li><strong>Growth compared with a normal worm</strong>: 1.0000 means the same as a normal worm,
+                and lower means slower.</li>
+          </ul>
+        </details>
+
+        <p class="muted footnote">
+          These numbers come from a research model, not lab measurements. The model only covers the five
+          worm types in the dataset, so other gene combinations can't be predicted yet.
+        </p>
+      </section>
+    </aside>
+
+    <!-- Right: results and the time-lapse graph -->
+    <main class="dash-main">
+      {% if result %}
+        <section class="dash-result" style="--accent: var({{ result.color_var }})" aria-live="polite">
+          <div class="dash-result-head">
+            <span class="dash-swatch" aria-hidden="true"></span>
+            <h2>{{ result.name }}</h2>
+          </div>
+
+          <div class="tiles">
+            <div class="tile">
+              <span class="tile-label">Median lifespan</span>
+              <span class="tile-value">{{ "%.2f"|format(result.median) }}<small> units</small></span>
+              {% if result.is_wild_type %}
+                <span class="tile-delta">Baseline</span>
+              {% elif result.median_pct|abs < 0.0005 %}
+                <span class="tile-delta">Same as normal worm</span>
+              {% else %}
+                <span class="tile-delta {{ 'up' if result.median_pct > 0 else 'down' }}">
+                  {{ "&#9650;"|safe if result.median_pct > 0 else "&#9660;"|safe }}
+                  {{ "%+.3f"|format(result.median_pct) }}% vs normal worm
+                </span>
+              {% endif %}
+            </div>
+
+            <div class="tile">
+              <span class="tile-label">Mean lifespan</span>
+              <span class="tile-value">{{ "%.2f"|format(result.mean) }}<small> units</small></span>
+              {% if result.is_wild_type %}
+                <span class="tile-delta">Baseline</span>
+              {% elif result.mean_pct|abs < 0.0005 %}
+                <span class="tile-delta">Same as normal worm</span>
+              {% else %}
+                <span class="tile-delta {{ 'up' if result.mean_pct > 0 else 'down' }}">
+                  {{ "&#9650;"|safe if result.mean_pct > 0 else "&#9660;"|safe }}
+                  {{ "%+.3f"|format(result.mean_pct) }}% vs normal worm
+                </span>
+              {% endif %}
+            </div>
+
+            <div class="tile">
+              <span class="tile-label">Growth vs normal worm</span>
+              <span class="tile-value">{{ "%.4f"|format(result.growth) }}<small>&times;</small></span>
+              {% if result.is_wild_type %}
+                <span class="tile-delta">Baseline</span>
+              {% elif result.growth_pct|abs < 0.0005 %}
+                <span class="tile-delta">Same as normal worm</span>
+              {% else %}
+                <span class="tile-delta neutral">{{ "%+.3f"|format(result.growth_pct) }}% growth rate</span>
+              {% endif %}
+            </div>
+          </div>
+
+          {% if result.is_wild_type %}
+            <p class="note">This is the baseline. Every other worm's results are compared with these numbers.</p>
+          {% elif result.matches_wild_type %}
+            <p class="note">
+              This estimate is the same as for a normal worm. The {{ 'changed genes' if result.gene_count > 1 else 'gene' }} may still matter: the model just
+              didn't find a change in metabolism large enough to move the estimate.
+            </p>
+          {% else %}
+            <p class="note">
+              The current model finds only very small differences between worm types, so the lifespans
+              look almost the same. The sign of the difference is the useful part: a plus means this worm
+              is estimated to live a little longer than a normal one.
+            </p>
+          {% endif %}
+        </section>
+
+        <section class="card timelapse" id="timelapse"
+                 data-genotype="{{ result.genotype }}"
+                 data-curves-url="{{ url_for('api_curves') }}">
+          <div class="tl-header">
+            <h2>Watch the worms age</h2>
+            <div class="tl-views" role="group" aria-label="Graph view">
+              <button type="button" class="btn btn-secondary" data-view="survival" aria-pressed="true">Survival</button>
+              <button type="button" class="btn btn-secondary" data-view="diff" aria-pressed="false">Difference from normal worm</button>
+            </div>
+          </div>
+          <p class="muted tl-caption" id="tl-caption"></p>
+          <p class="alert alert-error" id="tl-status" role="alert" hidden></p>
+
+          <div class="tl-body">
+            <div class="tl-chart">
+              <canvas id="tl-canvas" role="img" aria-label="Predicted survival over model time"></canvas>
+            </div>
+            <div class="tl-pops" id="tl-pops"></div>
+          </div>
+
+          <div class="tl-controls">
+            <button type="button" class="btn" id="tl-play">Play</button>
+            <input type="range" id="tl-scrub" min="0" max="199" step="1" value="0" aria-label="Model time">
+            <span class="tl-time" id="tl-time">Model time 0.0</span>
+            <label class="tl-inline">Speed
+              <select id="tl-speed">
+                <option value="0.5">0.5&times;</option>
+                <option value="1" selected>1&times;</option>
+                <option value="2">2&times;</option>
+                <option value="4">4&times;</option>
+              </select>
+            </label>
+            <label class="tl-inline"><input type="checkbox" id="tl-all"> Show all worm types</label>
+          </div>
+
+          <p class="muted tl-footnote">
+            Each panel shows 100 worms, so one worm stands for 1% of the population. A worm fades out when the
+            model predicts it has died by that time. Differences smaller than one worm only show up in the
+            numbers under each panel. Time is in the model's own units, not days.
+          </p>
+        </section>
+      {% else %}
+        <section class="card dash-empty">
+          <svg class="dash-empty-worm" viewBox="0 0 28 18" aria-hidden="true"><path d="M3 12 C 7 4, 11 4, 14 10 S 21 16, 25 8"/></svg>
+          <h2>Your results will appear here</h2>
+          <p class="muted">
+            Choose a worm on the left and press Predict. You'll get its predicted lifespan and growth, and a
+            time-lapse of a population of 100 worms aging next to normal worms.
+          </p>
+        </section>
+      {% endif %}
+    </main>
+  </div>
 </body>
 </html>

@@ -15,9 +15,9 @@
   --bg-color: #ffffff;        /* page background */
   --surface-color: #f4f5f7;   /* panels, cards */
   --raised-color: #ffffff;    /* inputs, items sitting on a panel */
-  --border-color: #dde1e6;
+  --border-color: #c9d0d8;
   --text-color: #15191d;
-  --muted-color: #5a6570;     /* secondary text, captions, axis labels */
+  --muted-color: #4b5661;     /* secondary text, captions, axis labels */
 
   --primary-color: #0066cc;
   --primary-hover: #0052a3;
@@ -36,7 +36,14 @@
   /* For Chart.js: read with getComputedStyle(document.documentElement) */
   --chart-series-1: #0066cc;  /* selected genotype */
   --chart-series-2: #8a96a3;  /* wild-type baseline */
-  --chart-grid: #e6e9ed;
+  --chart-grid: #e2e6ea;
+
+  /* Worm-type colors (high contrast, colorblind-safe hues) */
+  --g-wild-type: #3d4852;
+  --g-rsks-1: #0057a8;
+  --g-daf-2: #c24e00;
+  --g-daf-2-rsks-1: #b0136b;
+  --g-triple: #00785a;
 }
 
 
@@ -48,9 +55,9 @@
     --bg-color: #0f1214;
     --surface-color: #161a1e;
     --raised-color: #1d2227;
-    --border-color: #2b3238;
-    --text-color: #e4e8eb;
-    --muted-color: #9aa5af;
+    --border-color: #3a434c;
+    --text-color: #eef1f4;
+    --muted-color: #b0bac4;
 
     --primary-color: #4dabf7;
     --primary-hover: #74bdf9;
@@ -68,7 +75,13 @@
 
     --chart-series-1: #4dabf7;
     --chart-series-2: #7d8893;
-    --chart-grid: #262c32;
+    --chart-grid: #2c333a;
+
+    --g-wild-type: #d0d7de;
+    --g-rsks-1: #4fb3ff;
+    --g-daf-2: #ff9a3d;
+    --g-daf-2-rsks-1: #ff6fb5;
+    --g-triple: #3ddc97;
   }
 }
 
@@ -79,9 +92,9 @@
   --bg-color: #0f1214;
   --surface-color: #161a1e;
   --raised-color: #1d2227;
-  --border-color: #2b3238;
-  --text-color: #e4e8eb;
-  --muted-color: #9aa5af;
+  --border-color: #3a434c;
+  --text-color: #eef1f4;
+  --muted-color: #b0bac4;
 
   --primary-color: #4dabf7;
   --primary-hover: #74bdf9;
@@ -99,7 +112,13 @@
 
   --chart-series-1: #4dabf7;
   --chart-series-2: #7d8893;
-  --chart-grid: #262c32;
+  --chart-grid: #2c333a;
+
+  --g-wild-type: #d0d7de;
+  --g-rsks-1: #4fb3ff;
+  --g-daf-2: #ff9a3d;
+  --g-daf-2-rsks-1: #ff6fb5;
+  --g-triple: #3ddc97;
 }
 
 /* ==========================================================================
@@ -362,4 +381,256 @@ label.option input { margin-top: 0.2rem; flex: none; }
   max-width: 40rem;
   font-size: 0.85rem;
   margin-top: 1.5rem;
+}
+
+/* ==========================================================================
+   Time-lapse graph and worm population
+   ========================================================================== */
+
+.timelapse {
+  max-width: 64rem;
+  margin-top: 1.5rem;
+}
+
+.tl-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.tl-header h2 { margin: 0; }
+
+.tl-views { display: flex; gap: 0.4rem; }
+.tl-views .btn { margin-top: 0; padding: 0.4rem 0.8rem; font-size: 0.85rem; }
+.tl-views .btn[aria-pressed="true"] {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: var(--primary-text);
+}
+
+.tl-caption { font-size: 0.9rem; margin: 0.6rem 0 0.9rem; max-width: 48rem; }
+
+.tl-body {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.tl-chart {
+  position: relative;
+  height: 340px;
+  background: var(--raised-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 0.5rem;
+}
+
+.tl-pops {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 1rem;
+}
+
+.tl-pop h4 {
+  margin: 0 0 0.4rem;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.tl-swatch { width: 0.8rem; height: 0.8rem; border-radius: 2px; display: inline-block; }
+
+.tl-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 2px 4px;
+  background: var(--raised-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 0.5rem;
+}
+
+.tl-worm { width: 100%; height: auto; display: block; }
+.tl-worm path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 3.2;
+  stroke-linecap: round;
+  transition: opacity 0.25s ease, stroke 0.25s ease;
+}
+.tl-worm.dead path { stroke: var(--border-color); opacity: 0.55; }
+
+.tl-count { font-size: 0.85rem; color: var(--muted-color); margin: 0.35rem 0 0; }
+
+.tl-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.tl-controls .btn { margin-top: 0; min-width: 5.5rem; }
+.tl-controls input[type="range"] { flex: 1 1 14rem; }
+.tl-time { font-variant-numeric: tabular-nums; min-width: 8.5rem; color: var(--muted-color); font-size: 0.9rem; }
+.tl-inline { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.9rem; padding: 0; }
+.tl-inline select { padding: 0.3rem 0.4rem; }
+.tl-footnote { font-size: 0.8rem; margin-top: 0.75rem; }
+
+@media (max-width: 760px) {
+  .tl-chart { height: 280px; }
+}
+
+
+/* ==========================================================================
+   Dashboard layout: controls on the left, results and graph on the right
+   ========================================================================== */
+
+body.dashboard-page { padding: 0; }
+
+.dash-header {
+  padding: 1.1rem 1.75rem;
+  background: var(--surface-color);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.dash-header h1 { margin: 0 0 0.2rem; font-size: 1.6rem; }
+.dash-header .intro { margin: 0; max-width: none; }
+
+.dashboard {
+  display: grid;
+  grid-template-columns: minmax(17rem, 21rem) minmax(0, 1fr);
+  gap: 1.5rem;
+  align-items: start;
+  max-width: 96rem;
+  margin: 0 auto;
+  padding: 1.5rem 1.75rem 2.5rem;
+}
+
+.dash-sidebar {
+  display: grid;
+  gap: 1rem;
+  position: sticky;
+  top: 1rem;
+}
+
+/* The form sits inside a panel now, so it drops its own card styling */
+.panel form {
+  background: none;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+  max-width: none;
+}
+
+.panel .alert { max-width: none; }
+.panel-quiet .explainer:first-child { margin-top: 0; }
+.panel-quiet .footnote { margin-top: 1rem; }
+.btn-block { width: 100%; }
+
+.dash-main {
+  display: grid;
+  gap: 1.25rem;
+  min-width: 0;
+}
+
+.dash-main .timelapse { max-width: none; margin-top: 0; }
+.dash-main .tl-chart { height: 380px; }
+
+/* Selected worm: name, summary tiles and note */
+.dash-result { --accent: var(--primary-color); }
+
+.dash-result-head {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.75rem;
+}
+
+.dash-result-head h2 { margin: 0; }
+
+.dash-swatch {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 3px;
+  background: var(--accent);
+  flex: none;
+}
+
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: 1rem;
+}
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.9rem 1.1rem;
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-left: 6px solid var(--accent);
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+}
+
+.tile-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted-color);
+}
+
+.tile-value {
+  font-size: 2.1rem;
+  font-weight: 750;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+.tile-value small { font-size: 0.95rem; font-weight: 500; color: var(--muted-color); }
+
+.tile-delta { font-size: 0.85rem; font-weight: 600; color: var(--muted-color); }
+.tile-delta.up { color: var(--success-color); }
+.tile-delta.down { color: var(--danger-color); }
+.tile-delta.neutral { color: var(--text-color); }
+
+.dash-result .note { margin-top: 1rem; border-left-color: var(--accent); }
+
+/* Before the first prediction */
+.dash-empty {
+  text-align: center;
+  padding: 4.5rem 2rem;
+  border-style: dashed;
+  box-shadow: none;
+}
+
+.dash-empty h2 { margin-top: 0.75rem; }
+.dash-empty p { max-width: 32rem; margin: 0 auto; }
+
+.dash-empty-worm { width: 5.5rem; height: auto; }
+.dash-empty-worm path {
+  fill: none;
+  stroke: var(--primary-color);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+/* Wide screens: lay each population out as 20 x 5 so both panels and the
+   controls fit on one screen under the graph */
+@media (min-width: 1100px) {
+  .dash-main .tl-grid { grid-template-columns: repeat(20, 1fr); gap: 3px 4px; }
+}
+
+/* Tablets and phones: one column, controls first */
+@media (max-width: 900px) {
+  .dashboard { grid-template-columns: 1fr; padding: 1rem; }
+  .dash-sidebar { position: static; }
+  .dash-header { padding: 1rem; }
+  .dash-main .tl-chart { height: 300px; }
 }
