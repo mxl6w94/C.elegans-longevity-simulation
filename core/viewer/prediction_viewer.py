@@ -13,6 +13,7 @@ Run directly with `python viewer\\prediction_viewer.py`, or build the
 from __future__ import annotations
 
 import csv
+from email.mime import text
 import sys
 import tkinter as tk
 from pathlib import Path
@@ -329,9 +330,10 @@ class ViewerApp(tk.Tk):
                         ha="center", fontsize=9)
         ax.axhline(0, color="#333333", lw=0.8)
         ax.set_ylabel("Biomass flux vs wild type (% change)")
-        ax.set_title("Constrained-FBA growth flux by genotype\n(wild type = 0.0717 model units)")
+        ax.set_title("Constrained-FBA growth flux by genotype\n(wild type = 0.0717 model units)", pad=18) # added padding to prevent text from clipping through each other
         ax.tick_params(axis="x", rotation=15)
         ax.grid(axis="y", alpha=0.3)
+        ax.set_ylim(min(pct)*1.25, 0) # added y limit from 0 to slightly below minimum bar value to make pct text further from graph boundary
 
 
 def main() -> None:
