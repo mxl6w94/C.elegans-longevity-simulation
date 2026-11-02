@@ -81,7 +81,7 @@ DIFF_MIN_SURVIVAL = 0.01  # stop the difference line when <1% of wild-type worms
 
 
 def curve_payload():
-    """Everything the time-lapse chart needs, built once from the pipeline CSVs."""
+    """Everything the time-lapse chart needs, built from the pipeline CSVs."""
     t = survival["t"].to_numpy()
     wt = survival[WILD_TYPE].to_numpy()
     genotypes = [c for c in survival.columns if c != "t"]
