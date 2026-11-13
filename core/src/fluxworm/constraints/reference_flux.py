@@ -19,12 +19,22 @@ against 1000 can never shrink that bound down to where it would constrain a
 
 The fix: instead of scaling the reaction's literal (placeholder) bound,
 scale a per-reaction *reference capacity* derived from flux variability
-analysis (FVA) on the unconstrained wild-type model at a high fraction of
-optimal growth (default 0.9 -- the range of flux each reaction could carry
-while the network still achieves at least 90% of max WT growth). This
-grounds the scaling in a magnitude the model actually uses, while still
-allowing headroom for a mutant's rerouted flux to exceed the WT range when
-an upregulated gene's score pushes it there.
+analysis (FVA) on the unconstrained wild-type model at a set fraction of
+optimal growth. This grounds the scaling in a magnitude the model actually
+uses.
+
+Which fraction matters a great deal. The pipeline first used 0.9 (the range
+of flux each reaction could carry while the network still reaches 90% of
+max WT growth). That range is far wider than the flux a reaction carries at
+full growth, so a down-regulated enzyme kept more capacity than it needed
+and almost nothing limited growth: every mutant came out within 0.12% of
+wild type. The pipeline now passes 1.0 (`reference_fraction_of_optimum` in
+config.yaml): the capacity is what the reaction carries at full wild-type
+growth, i.e. wild type is assumed to have no spare enzyme. With that, a
+down-regulated enzyme on an essential pathway limits growth in proportion
+to its fold change (daf-2: growth 0.44x, limited by the phospholipid
+synthesis enzymes cept-1 and pmt-2). Reactions with alternative routes at
+the optimum still get the larger capacity FVA finds for them.
 
 This is a deliberate deviation from the originally approved formula (which
 scaled the reaction's own model bound directly) -- made only after the null

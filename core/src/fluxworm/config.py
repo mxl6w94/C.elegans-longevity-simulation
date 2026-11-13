@@ -24,6 +24,7 @@ class PipelineConfig:
     model_xml: Path
     series_matrix: Path
     results_dir: Path
+    lifespan_reference: Path | None
     reference_genotype: str
     mutant_genotypes: list[str]
     expected_counts: dict[str, int]
@@ -31,11 +32,12 @@ class PipelineConfig:
     qvalue_threshold: float
     min_scale: float
     max_scale: float
+    reference_fraction_of_optimum: float
     biomass_reaction: str
     solver: str | None
     stress_subsystem_keywords: list[str]
-    biomass_weight: float
-    stress_weight: float
+    lifespan_exponent: float
+    max_lifespan_scale: float
     gompertz_B: float
     wt_gompertz_C: float
 
@@ -65,6 +67,7 @@ def load_config(config_path: str | Path) -> PipelineConfig:
         model_xml=(data_dir / paths["model_xml"]).resolve(),
         series_matrix=(data_dir / paths["series_matrix"]).resolve(),
         results_dir=(data_dir / paths["results_dir"]).resolve(),
+        lifespan_reference=(data_dir / paths["lifespan_reference"]).resolve() if paths.get("lifespan_reference") else None,
         reference_genotype=genotypes["reference"],
         mutant_genotypes=list(genotypes["mutants"]),
         expected_counts=dict(genotypes["expected_counts"]),
@@ -72,11 +75,12 @@ def load_config(config_path: str | Path) -> PipelineConfig:
         qvalue_threshold=float(de["qvalue_threshold"]),
         min_scale=float(constraints["min_scale"]),
         max_scale=float(constraints["max_scale"]),
+        reference_fraction_of_optimum=float(constraints.get("reference_fraction_of_optimum", 1.0)),
         biomass_reaction=fba["biomass_reaction"],
         solver=fba.get("solver"),
         stress_subsystem_keywords=list(aging["stress_subsystem_keywords"]),
-        biomass_weight=float(aging["biomass_weight"]),
-        stress_weight=float(aging["stress_weight"]),
+        lifespan_exponent=float(aging.get("lifespan_exponent", 1.0)),
+        max_lifespan_scale=float(aging.get("max_lifespan_scale", 10.0)),
         gompertz_B=float(aging["gompertz_B"]),
         wt_gompertz_C=float(aging["wt_gompertz_C"]),
     )

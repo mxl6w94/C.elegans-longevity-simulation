@@ -1,0 +1,112 @@
+name: System tests
+
+# Runs on every push to main, on every pull request, and on demand from the Actions tab.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# A newer push to the same branch cancels the run still in progress
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  core-unit-tests:
+    name: Core pipeline unit tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: core/requirements.txt
+
+      - name: Install pipeline dependencies
+        run: pip install -r core/requirements.txt
+
+      - name: Run unit tests
+        run: pytest core/tests -v --junitxml=reports/core-unit-tests.xml
+
+      - name: Upload test report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: core-unit-tests
+          path: reports/
+
+  system-tests:
+    name: Web app system tests (Docker)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      IMAGE: wormlife-web:ci
+      SYSTEM_TEST_BASE_URL: http://localhost:8000
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Build the image
+        run: docker build --tag "$IMAGE" .
+
+      - name: Start the container
+        # Same hardening as on EC2: read-only file system, no extra privileges,
+        # published on localhost only.
+        run: >
+          docker run --detach --name wormlife
+          --publish 127.0.0.1:8000:8000
+          --read-only --tmpfs /tmp
+          --security-opt no-new-privileges
+          --cap-drop ALL
+          "$IMAGE"
+
+      - name: Wait until the container is healthy
+        run: |
+          for i in $(seq 1 60); do
+            status=$(docker inspect --format '{{.State.Health.Status}}' wormlife)
+            if [ "$status" = "healthy" ]; then echo "healthy after ${i}s"; exit 0; fi
+            if [ "$status" = "unhealthy" ]; then break; fi
+            sleep 1
+          done
+          echo "Container did not become healthy (status: $status)"
+          docker logs wormlife
+          exit 1
+
+      - name: Check the app does not run as root
+        run: |
+          uid=$(docker exec wormlife id -u)
+          echo "app user id: $uid"
+          test "$uid" != "0"
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: tests/system/requirements.txt
+
+      - name: Install test dependencies
+        run: pip install -r tests/system/requirements.txt
+
+      - name: Run system tests
+        run: pytest tests/system -v -rxX --junitxml=reports/system-tests.xml
+
+      - name: Show container logs
+        if: failure()
+        run: docker logs wormlife
+
+      - name: Upload test report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: system-tests
+          path: reports/
+
+      - name: Stop the container
+        if: always()
+        run: docker rm --force wormlife

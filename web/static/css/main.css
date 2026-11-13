@@ -634,3 +634,15 @@ body.dashboard-page { padding: 0; }
   .dash-header { padding: 1rem; }
   .dash-main .tl-chart { height: 300px; }
 }
+
+/* ==========================================================================
+   Measured vs model
+   ========================================================================== */
+
+/* Tiles that hold wording instead of a number */
+.tile-value-text { font-size: 1.35rem; line-height: 1.3; padding: 0.3rem 0; }
+
+/* Model-based tiles get a dashed edge, matching the dashed model line on the graph */
+.tile-model { border-left-style: dashed; }
+
+.source-line { font-size: 0.85rem; margin-top: 0.6rem; }

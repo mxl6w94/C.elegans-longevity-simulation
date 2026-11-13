@@ -144,3 +144,53 @@ All of the above -- the null result, the diagnosis, the fix, and the sign
 correction -- is a legitimate part of this project's methodology and should
 be described as such in any manuscript text drawn from this code, not
 edited out as if the pipeline worked correctly on the first attempt.
+
+## Restructure of the lifespan step (November 2026)
+
+The sections above describe the pipeline's first version. Its lifespan
+predictions were compared with the lifespans measured in the source study
+(Chen et al. 2013; `data/lifespan_reference.csv`) and were 2,000 to 6,000
+times too small. Two parts were restructured. Both changes were made
+knowing the measured lifespans, so the comparison below is a description of
+fit, not an independent test.
+
+**1. Reference capacity (`constraints.reference_fraction_of_optimum`, 0.9 -> 1.0).**
+Each reaction's limit is its wild-type capacity times its gene score. The
+capacity used to be the most flux the reaction can carry while growth stays
+at 90% of maximum, which is far more than it carries at full growth, so a
+down-regulated enzyme almost never limited anything. It is now the flux the
+reaction carries at full wild-type growth: wild type is assumed to have no
+spare enzyme. In daf-2 and daf-2;rsks-1 this makes two phospholipid
+synthesis enzymes limiting (cept-1, 0.43x; pmt-2, 0.60x) and growth falls
+to 0.44x and 0.46x of wild type. rsks-1 and the daf-16 triple mutant stay
+at 1.00x.
+
+**2. Lifespan model (`aging/survival_model.py`).** The score
+`Z = 0.5*growth + 0.5*(2 - lipid flux)` was replaced by one rule:
+lifespan = 1 / (growth relative to wild type), and each survival curve is
+the wild-type curve stretched in time by that factor. The old growth term
+pushed the wrong way for these mutants, and the lipid term's sign had been
+chosen after seeing the ranking. The new exponent (`aging.lifespan_exponent`,
+1.0) is fixed, not fitted.
+
+**Result** (`results/lifespan_model_vs_lab.csv`, written on every run):
+
+| Genotype | Model | Lab | Model error |
+| --- | --- | --- | --- |
+| rsks-1 | 1.00x | 1.20x | -17% |
+| daf-2 | 2.26x | 2.69x | -16% |
+| daf-2;rsks-1 | 2.17x | 5.54x | -61% |
+| daf-16;daf-2;rsks-1 | 1.00x | "fully suppressed" (no number) | agrees in direction |
+
+Mean absolute error is 31% over the three genotypes with a number.
+
+**What the model still gets wrong.** It sees no effect of rsks-1 alone, and
+it puts the double mutant slightly below daf-2 when the lab found it lives
+twice as long as daf-2. The synergy acts through germline and AMPK
+signaling, which a metabolic model does not contain. Fitting the exponent
+to the three lab values gives 1.69, but its leave-one-out error is 65%, so
+it is not used. The daf-2 result also rests on one or two enzymes: without
+the cept-1 and pmt-2 limits, predicted growth rises to 0.59x.
+
+`viewer/prediction_viewer.py` still explains the old score Z in its
+Explanation tab and should be updated to match.

@@ -1,6 +1,16 @@
 import numpy as np
+import pytest
 
-from fluxworm.aging.survival_model import build_aging_proxies, gompertz_survival, survival_curves_table
+from fluxworm.aging.survival_model import (
+    build_aging_proxies,
+    gompertz_survival,
+    lifespan_scale,
+    survival_curves_table,
+)
+
+
+def _mean_lifespan(t, s):
+    return float(np.sum((s[1:] + s[:-1]) * np.diff(t)) / 2.0)
 
 
 def test_gompertz_survival_starts_at_one_and_decreases():
@@ -20,19 +30,32 @@ def test_higher_rate_constant_shortens_half_survival_time():
     assert t_half_fast < t_half_slow
 
 
-def test_higher_composite_score_yields_longer_illustrative_survival():
-    growth = {"wild type": 10.0, "long_lived_mutant": 10.0}
-    # Reduced lipid-pathway flux (ratio < 1) is treated as favorable -- see
-    # survival_model's module docstring for why (matches the direction
-    # observed for daf-2/daf-2;rsks-1 in this pipeline's real output).
-    stress = {"wild type": 1.0, "long_lived_mutant": 0.5}
+def test_lifespan_scale_is_inverse_growth_by_default():
+    assert lifespan_scale(1.0) == 1.0
+    assert lifespan_scale(0.5) == pytest.approx(2.0)
+    assert lifespan_scale(0.5, exponent=2.0) == pytest.approx(4.0)
 
-    proxies = build_aging_proxies(
-        growth, stress, reference_genotype="wild type",
-        biomass_weight=0.5, stress_weight=0.5, wt_gompertz_c=0.1,
-    )
-    assert proxies["long_lived_mutant"].composite_score_z > proxies["wild type"].composite_score_z
-    assert proxies["long_lived_mutant"].gompertz_c < proxies["wild type"].gompertz_c
 
-    table = survival_curves_table(proxies, gompertz_b=0.01)
-    assert table["long_lived_mutant"].iloc[-1] > table["wild type"].iloc[-1]
+def test_lifespan_scale_is_capped_and_rejects_no_growth():
+    assert lifespan_scale(0.001, max_scale=10.0) == 10.0
+    with pytest.raises(ValueError):
+        lifespan_scale(0.0)
+
+
+def test_lower_growth_capacity_gives_longer_life_and_wild_type_is_baseline():
+    proxies = build_aging_proxies({"wild type": 10.0, "slow_grower": 5.0, "same": 10.0}, "wild type")
+    assert proxies["wild type"].lifespan_scale == 1.0
+    assert proxies["same"].lifespan_scale == pytest.approx(1.0)
+    assert proxies["slow_grower"].lifespan_scale == pytest.approx(2.0)
+
+
+def test_survival_curve_is_wild_type_curve_stretched_in_time():
+    """Temporal scaling: mean lifespan scales by exactly the lifespan scale."""
+    proxies = build_aging_proxies({"wild type": 10.0, "slow_grower": 4.0}, "wild type")
+    table = survival_curves_table(proxies, gompertz_b=0.01, wt_gompertz_c=0.1, n_points=4000)
+    t = table["t"].to_numpy()
+    wt_mean = _mean_lifespan(t, table["wild type"].to_numpy())
+    mutant_mean = _mean_lifespan(t, table["slow_grower"].to_numpy())
+    assert mutant_mean / wt_mean == pytest.approx(2.5, rel=1e-3)
+    # every curve has died out by the end of the table
+    assert table["slow_grower"].iloc[-1] < 1e-3

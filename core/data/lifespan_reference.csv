@@ -1,0 +1,6 @@
+genotype,mean_lifespan_change_pct,temperature_c,alleles,source,doi,notes
+wild type,0,25,N2,"Chen et al. 2013, Cell Reports 5(6):1600-1610",10.1016/j.celrep.2013.11.018,"Reference strain. Worms were grown at 15 or 20 C to late L4, then kept at 25 C as adults."
+rsks-1,20,25,rsks-1(ok1255),"Chen et al. 2013, Cell Reports 5(6):1600-1610",10.1016/j.celrep.2013.11.018,Mean lifespan change compared with N2.
+daf-2,169,25,daf-2(e1370),"Chen et al. 2013, Cell Reports 5(6):1600-1610",10.1016/j.celrep.2013.11.018,Mean lifespan change compared with N2.
+daf-2 rsks-1,454,25,daf-2(e1370) rsks-1(ok1255),"Chen et al. 2013, Cell Reports 5(6):1600-1610",10.1016/j.celrep.2013.11.018,"Mean lifespan change compared with N2 (nearly five-fold longer)."
+daf-16; daf-2 rsks-1,,25,daf-16 deletion; daf-2(e1370) rsks-1(ok1255),"Chen et al. 2013, Cell Reports 5(6):1600-1610",10.1016/j.celrep.2013.11.018,"The paper says the daf-16 deletion fully suppressed the lifespan extension but the article text gives no percentage. Fill in from the paper's Table S1."
