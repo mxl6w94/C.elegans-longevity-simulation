@@ -396,7 +396,8 @@
       pause(true);
     } else {
       setIndex(0);
-      play();
+      // Let the browser paint the initial chart before starting playback.
+      requestAnimationFrame(() => requestAnimationFrame(play));
     }
   }
 
