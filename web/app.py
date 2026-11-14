@@ -80,7 +80,7 @@ def mean_lifespan(genotype):
     return float(np.sum((s[1:] + s[:-1]) * np.diff(t)) / 2.0)
 
 
-GRID_POINTS = 600         # points on the shared time axis sent to the page
+GRID_POINTS = 4800        # points on the shared time axis sent to the page
 
 
 def measured_change_pct(genotype):
