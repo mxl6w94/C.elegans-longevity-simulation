@@ -1,0 +1,11 @@
+Name: Caleb Walton
+
+This is my work with security testing so far.
+
+I used Claude to help interpret the results from the Semgrep and OWASP ZAP scans. The responses from Claude's analysis
+of the Semgrep report pointed out security issues
+with our .yml file and CSRF issues with the web application.
+Claude's analysis of OWASP ZAP's report included CSRF, CSP header, and clickjacking security issues.
+While the semgrep results before and after my security
+adjustments are the same, for the OWASP ZAP results I helped eliminate issues with CSP headers and clickjacking while fixing other minor
+security issues. Claude generated and suggested some code that I then used to help fix these security vulnerabilities.

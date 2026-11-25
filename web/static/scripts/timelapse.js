@@ -96,8 +96,10 @@
     if (ds.kind === "measured") return g.measured;
     // The model line is drawn for the selected worm only, to keep the graph readable.
     // Wild type's model and measured curves are the same line, so it is skipped there.
-    if (ds.genotype !== state.selected) return null;
-    return isReference(ds.genotype) ? null : g.model;
+    if (isReference(ds.genotype)) return null;
+    if (ds.genotype !== state.selected &&
+        !(els.all.checked && ds.genotype === "daf-16; daf-2 rsks-1")) return null;
+    return g.model;
   }
 
   // Last time index worth showing: where every visible line has run out.

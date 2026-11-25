@@ -51,6 +51,18 @@ ERROR_UNKNOWN = ("That combination isn't in the dataset. You can choose wild typ
                  "daf-2 with rsks-1, or all three genes.")
 
 app = Flask(__name__)
+
+# reduces security vulnerabilities (db4)
+@app.after_request
+def set_security_headers(response):
+    response.headers["Content-Security-Policy"] = (
+        "default-src 'self'; object-src 'none'; base-uri 'self'; "
+        "form-action 'self'; frame-ancestors 'none'"
+    )
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    return response
+
 app.json.sort_keys = False  # keep genotypes in the pipeline's order (wild type first)
 survival = pd.read_csv(RESULTS / "survival_curves_illustrative.csv", index_col=0)
 growth = pd.read_csv(RESULTS / "growth_comparison.csv", index_col="genotype")
@@ -80,7 +92,7 @@ def mean_lifespan(genotype):
     return float(np.sum((s[1:] + s[:-1]) * np.diff(t)) / 2.0)
 
 
-GRID_POINTS = 600         # points on the shared time axis sent to the page
+GRID_POINTS = 4800        # points on the shared time axis sent to the page
 
 
 def measured_change_pct(genotype):
