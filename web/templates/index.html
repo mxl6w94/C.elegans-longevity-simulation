@@ -57,25 +57,29 @@
                 strains with changed genes.</li>
             <li>Those measurements go into a computer model of the worm's metabolism (the chemical reactions
                 that keep it alive), which works out how fast the worm can grow.</li>
-            <li>From the model's output, the site estimates how quickly the worm ages and how long a typical
-                worm of that kind lives.</li>
+            <li>The slower the model says a worm can grow, the longer it is predicted to live. This is the
+                "model estimate".</li>
+            <li>The same researchers also measured how long each kind of worm lived. Those measured
+                lifespans set the main survival curve.</li>
           </ol>
         </details>
 
         <details class="explainer">
           <summary>What do the results mean?</summary>
           <ul>
-            <li><strong>Median lifespan</strong> is the age at which half the worms have died. It's in the
-                model's time units, not days.</li>
-            <li><strong>Mean lifespan</strong> is the average age at death across all the worms.</li>
-            <li><strong>Growth compared with a normal worm</strong>: 1.0000 means the same as a normal worm,
-                and lower means slower.</li>
+            <li><strong>Measured lifespan</strong> is how long this worm lived in the lab, compared with a
+                normal worm. 2.00&times; means twice as long.</li>
+            <li><strong>Model estimate</strong> is what this project's metabolic model predicts for the same
+                worm. It is a simple model and can be far off.</li>
+            <li><strong>Measured vs model</strong> shows how far the model is from the lab result.</li>
+            <li><strong>Growth compared with a normal worm</strong> comes from the model: 1.0000 means the
+                same as a normal worm, and lower means slower.</li>
           </ul>
         </details>
 
         <p class="muted footnote">
-          These numbers come from a research model, not lab measurements. The model only covers the five
-          worm types in the dataset, so other gene combinations can't be predicted yet.
+          Measured numbers come from a published lab study. Model numbers come from a simple research
+          model, shown with its error. Only the five worm types in the dataset are covered so far.
         </p>
       </section>
     </aside>
@@ -91,62 +95,94 @@
 
           <div class="tiles">
             <div class="tile">
-              <span class="tile-label">Median lifespan</span>
-              <span class="tile-value">{{ "%.2f"|format(result.median) }}<small> units</small></span>
+              <span class="tile-label">Measured lifespan</span>
+              {% if result.measured_ratio is none %}
+                <span class="tile-value tile-value-text">Not reported</span>
+                <span class="tile-delta">The paper gives no number for this worm</span>
+              {% else %}
+                <span class="tile-value">{{ "%.2f"|format(result.measured_ratio) }}<small>&times; a normal worm</small></span>
+                {% if result.is_wild_type %}
+                  <span class="tile-delta">Baseline</span>
+                {% else %}
+                  <span class="tile-delta {{ 'up' if result.measured_pct > 0 else 'down' }}">
+                    {{ "&#9650;"|safe if result.measured_pct > 0 else "&#9660;"|safe }}
+                    {{ "%+.0f"|format(result.measured_pct) }}% mean lifespan, measured in the lab
+                  </span>
+                {% endif %}
+              {% endif %}
+            </div>
+
+            <div class="tile tile-model">
+              <span class="tile-label">Model estimate</span>
+              <span class="tile-value">{{ "%.2f"|format(result.model_ratio) }}<small>&times; a normal worm</small></span>
               {% if result.is_wild_type %}
                 <span class="tile-delta">Baseline</span>
-              {% elif result.median_pct|abs < 0.0005 %}
-                <span class="tile-delta">Same as normal worm</span>
+              {% elif result.model_flat %}
+                <span class="tile-delta">The model finds no change</span>
               {% else %}
-                <span class="tile-delta {{ 'up' if result.median_pct > 0 else 'down' }}">
-                  {{ "&#9650;"|safe if result.median_pct > 0 else "&#9660;"|safe }}
-                  {{ "%+.3f"|format(result.median_pct) }}% vs normal worm
+                <span class="tile-delta {{ 'up' if result.model_pct > 0 else 'down' }}">
+                  {{ "&#9650;"|safe if result.model_pct > 0 else "&#9660;"|safe }}
+                  {{ "%+.0f"|format(result.model_pct) }}% mean lifespan, predicted
                 </span>
               {% endif %}
             </div>
 
             <div class="tile">
-              <span class="tile-label">Mean lifespan</span>
-              <span class="tile-value">{{ "%.2f"|format(result.mean) }}<small> units</small></span>
+              <span class="tile-label">Measured vs model</span>
               {% if result.is_wild_type %}
-                <span class="tile-delta">Baseline</span>
-              {% elif result.mean_pct|abs < 0.0005 %}
-                <span class="tile-delta">Same as normal worm</span>
+                <span class="tile-value tile-value-text">Baseline</span>
+                <span class="tile-delta">Both start from this worm</span>
+              {% elif result.model_error_pct is none %}
+                <span class="tile-value tile-value-text">Can't compare</span>
+                <span class="tile-delta">No measured number yet</span>
+              {% elif result.model_error_pct|abs < 0.5 %}
+                <span class="tile-value tile-value-text">Model matches</span>
+                <span class="tile-delta">Both: {{ "%.2f"|format(result.measured_ratio) }}&times; a normal worm</span>
               {% else %}
-                <span class="tile-delta {{ 'up' if result.mean_pct > 0 else 'down' }}">
-                  {{ "&#9650;"|safe if result.mean_pct > 0 else "&#9660;"|safe }}
-                  {{ "%+.3f"|format(result.mean_pct) }}% vs normal worm
-                </span>
+                <span class="tile-value">{{ "%.0f"|format(result.model_error_pct|abs) }}<small>% too {{ 'low' if result.model_error_pct < 0 else 'high' }}</small></span>
+                <span class="tile-delta">Model {{ "%.2f"|format(result.model_ratio) }}&times;, lab {{ "%.2f"|format(result.measured_ratio) }}&times;</span>
               {% endif %}
             </div>
 
-            <div class="tile">
+            <div class="tile tile-model">
               <span class="tile-label">Growth vs normal worm</span>
               <span class="tile-value">{{ "%.4f"|format(result.growth) }}<small>&times;</small></span>
               {% if result.is_wild_type %}
                 <span class="tile-delta">Baseline</span>
               {% elif result.growth_pct|abs < 0.0005 %}
-                <span class="tile-delta">Same as normal worm</span>
+                <span class="tile-delta">Same as normal worm (model)</span>
               {% else %}
-                <span class="tile-delta neutral">{{ "%+.3f"|format(result.growth_pct) }}% growth rate</span>
+                <span class="tile-delta neutral">{{ "%+.1f"|format(result.growth_pct) }}% growth rate (model)</span>
               {% endif %}
             </div>
           </div>
 
           {% if result.is_wild_type %}
-            <p class="note">This is the baseline. Every other worm's results are compared with these numbers.</p>
-          {% elif result.matches_wild_type %}
+            <p class="note">This is the baseline. Every other worm's results are compared with this one.</p>
+          {% elif result.measured_pct is none %}
             <p class="note">
-              This estimate is the same as for a normal worm. The {{ 'changed genes' if result.gene_count > 1 else 'gene' }} may still matter: the model just
-              didn't find a change in metabolism large enough to move the estimate.
+              The lab study reports that removing daf-16 cancelled the longer life of the daf-2 + rsks-1 worm,
+              but it doesn't give a number. The model agrees in direction: it predicts
+              {{ "%.2f"|format(result.model_ratio) }}&times; a normal lifespan.
+            </p>
+          {% elif result.model_flat %}
+            <p class="note">
+              In the lab this worm lived {{ "%.0f"|format(result.measured_pct) }}% longer than a normal worm. The model
+              predicts no change, because none of the genes that changed limits growth in its metabolism.
             </p>
           {% else %}
             <p class="note">
-              The current model finds only very small differences between worm types, so the lifespans
-              look almost the same. The sign of the difference is the useful part: a plus means this worm
-              is estimated to live a little longer than a normal one.
+              In the lab this worm lived {{ "%.0f"|format(result.measured_pct) }}% longer than a normal worm. The model
+              predicts {{ "%.0f"|format(result.model_pct) }}% longer, from how much the worm's changed genes slow
+              its growth. The graph shows both.
             </p>
           {% endif %}
+
+          <p class="muted source-line">
+            Measured values: <a href="{{ source.url }}" rel="noopener">{{ source.label }}</a>
+            (adult worms at {{ "%.0f"|format(source.temperature_c) }}&deg;C).
+            Model values: this project's metabolic model.
+          </p>
         </section>
 
         <section class="card timelapse" id="timelapse"
@@ -154,25 +190,21 @@
                  data-curves-url="{{ url_for('api_curves') }}">
           <div class="tl-header">
             <h2>Watch the worms age</h2>
-            <div class="tl-views" role="group" aria-label="Graph view">
-              <button type="button" class="btn btn-secondary" data-view="survival" aria-pressed="true">Survival</button>
-              <button type="button" class="btn btn-secondary" data-view="diff" aria-pressed="false">Difference from normal worm</button>
-            </div>
           </div>
           <p class="muted tl-caption" id="tl-caption"></p>
           <p class="alert alert-error" id="tl-status" role="alert" hidden></p>
 
           <div class="tl-body">
             <div class="tl-chart">
-              <canvas id="tl-canvas" role="img" aria-label="Predicted survival over model time"></canvas>
+              <canvas id="tl-canvas" role="img" aria-label="Share of worms alive over time"></canvas>
             </div>
             <div class="tl-pops" id="tl-pops"></div>
           </div>
 
           <div class="tl-controls">
             <button type="button" class="btn" id="tl-play">Play</button>
-            <input type="range" id="tl-scrub" min="0" max="199" step="1" value="0" aria-label="Model time">
-            <span class="tl-time" id="tl-time">Model time 0.0</span>
+            <input type="range" id="tl-scrub" min="0" max="199" step="1" value="0" aria-label="Time">
+            <span class="tl-time" id="tl-time">Time 0.00</span>
             <label class="tl-inline">Speed
               <select id="tl-speed">
                 <option value="0.5">0.5&times;</option>
@@ -185,9 +217,9 @@
           </div>
 
           <p class="muted tl-footnote">
-            Each panel shows 100 worms, so one worm stands for 1% of the population. A worm fades out when the
-            model predicts it has died by that time. Differences smaller than one worm only show up in the
-            numbers under each panel. Time is in the model's own units, not days.
+            Each panel shows 100 worms, so one worm stands for 1% of the population. A worm fades out when
+            it would have died by that time, based on the measured lifespan where one exists. Time is shown
+            relative to a normal worm: 1.0 is the average normal lifespan.
           </p>
         </section>
       {% else %}
@@ -195,7 +227,7 @@
           <svg class="dash-empty-worm" viewBox="0 0 28 18" aria-hidden="true"><path d="M3 12 C 7 4, 11 4, 14 10 S 21 16, 25 8"/></svg>
           <h2>Your results will appear here</h2>
           <p class="muted">
-            Choose a worm on the left and press Predict. You'll get its predicted lifespan and growth, and a
+            Choose a worm on the left and press Predict. You'll get its measured lifespan, the model's estimate, and a
             time-lapse of a population of 100 worms aging next to normal worms.
           </p>
         </section>

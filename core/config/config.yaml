@@ -9,6 +9,7 @@ paths:
   model_xml: "fluxworm_iCEL_models/iCEL1314.xml"
   series_matrix: "master_data_set/GSE52340_series_matrix.txt.gz"
   results_dir: "core/results"
+  lifespan_reference: "core/data/lifespan_reference.csv"   # measured lifespans, used for validation
 
 genotypes:
   reference: "wild type"
@@ -34,6 +35,14 @@ differential_expression:
 constraints:
   min_scale: 0.1
   max_scale: 10.0
+  # Each reaction's limit is its wild-type capacity times the gene score. The
+  # capacity is the most flux the reaction carries in any wild-type solution
+  # reaching this fraction of maximum growth.
+  #   1.0 = no spare capacity: wild type has just enough enzyme for full growth,
+  #         so a down-regulated enzyme on an essential pathway limits growth.
+  #   0.9 = the previous setting. It left so much headroom that realistic
+  #         fold changes never limited anything (growth within 0.12% of wild type).
+  reference_fraction_of_optimum: 1.0
 
 fba:
   biomass_reaction: "BIO0010"
@@ -43,7 +52,9 @@ aging:
   stress_subsystem_keywords:
     - "Fatty acid"
     - "Lipid"
-  biomass_weight: 0.5
-  stress_weight: 0.5
+  # Lifespan = (growth vs wild type) ^ -lifespan_exponent. Fixed, not fitted to the
+  # lifespan data; the pipeline reports what a fitted value would be.
+  lifespan_exponent: 1.0
+  max_lifespan_scale: 10.0
   gompertz_B: 0.01
   wt_gompertz_C: 0.10

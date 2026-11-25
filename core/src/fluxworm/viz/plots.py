@@ -47,7 +47,7 @@ def plot_survival_curves(survival_table: pd.DataFrame, out_path: str | Path) -> 
         ax.plot(survival_table["t"], survival_table[genotype], label=genotype)
     ax.set_xlabel("Model time (arbitrary units, not calibrated to days)")
     ax.set_ylabel("Survival probability")
-    ax.set_title("Illustrative Aging Proxy (Not Validated)\nGompertz survival curves derived from FBA flux signature")
+    ax.set_title("Model survival curves (see lifespan_model_vs_lab.csv for error)\nWild-type Gompertz curve rescaled by constrained-FBA growth capacity")
     ax.legend(fontsize=8)
     fig.tight_layout()
     fig.savefig(out_path, dpi=150)

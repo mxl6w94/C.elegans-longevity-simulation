@@ -1,53 +1,56 @@
-"""An explicitly illustrative link from a genotype's FBA flux profile to a
-Gompertz survival curve.
+"""Links a genotype's constrained-FBA growth capacity to a survival curve.
 
-*** THIS MODULE DOES NOT PREDICT OR VALIDATE C. ELEGANS LIFESPAN. ***
+*** THIS IS A SIMPLE SCALING MODEL, NOT A VALIDATED LIFESPAN PREDICTOR. ***
+Its error against measured lifespans is reported by
+`fluxworm.aging.validation` every time the pipeline runs.
 
-FBA is a steady-state method; it has no mechanism for representing a
-time-dependent process like aging. Everything in this module is a
-deliberately simple, clearly-labeled proxy layered on top of the FBA
-results, built only to qualitatively reproduce the known ordering from
-Chen et al. 2013 (WT shortest-lived < single mutants < daf-2;rsks-1 double
-mutant longest-lived, with the daf-16;daf-2;rsks-1 triple mutant partially
-reverting toward WT because daf-16 is required for the longevity effect).
-It has no predictive validity for any genotype whose ranking is not already
-known, and every output of this module is labeled "Illustrative Aging Proxy
-(Not Validated)".
+Method (restructured; see "What changed" below):
 
-Method:
+1. Lifespan scale. Each genotype gets one number, how many times longer it
+   lives than wild type:
 
-1. Composite score per genotype:
-       Z = biomass_weight * (growth_m / growth_WT)
-         + stress_weight  * (2.0 - stress_flux_m / stress_flux_WT)
-   where stress_flux is total absolute flux through the keyword-tagged
-   "lipid_metabolism" reaction group (see
-   `fluxworm.analysis.subsystem_summary`).
+       scale = (growth_m / growth_WT) ** (-lifespan_exponent)
 
-   The (2.0 - ratio) form, rather than the ratio directly, is a sign choice
-   calibrated post-hoc against the real pipeline output, exactly as
-   documented below for the Gompertz rate constant: the first real run
-   showed daf-2 and daf-2;rsks-1 (the genotypes reported as longer-lived in
-   Chen et al. 2013) had *reduced* flux through lipid/fatty-acid-tagged
-   reactions relative to WT, not increased -- directionally consistent with
-   the literature's report that these mutants increase fat storage via
-   *reduced* fatty acid oxidation/turnover. A direct positive ratio term
-   would therefore have scored the longer-lived mutants as metabolically
-   *less* favorable, inverting the intended ranking. (2.0 - ratio) makes a
-   below-WT lipid-pathway flux score above the WT baseline of 1.0 instead,
-   which is what "reduced turnover is treated as favorable for the
-   illustrative longevity score" requires. This is stated plainly because
-   it is a real, consequential modeling choice, not an implementation
-   detail: it only reflects the *direction* observed in this one dataset
-   and reaction-tagging heuristic, not a general biological law, and a
-   different dataset or subsystem definition could reasonably flip it back.
+   With the default exponent of 1, lifespan is inversely proportional to
+   the genotype's maximum growth (biosynthetic) capacity. This encodes the
+   growth/longevity trade-off: reduced insulin/IGF-1 or TOR signaling lowers
+   anabolic capacity and extends life. It is an assumption of this model,
+   not something FBA derives. The exponent is NOT fitted to the lifespan
+   data by default; `validation.py` reports what a fitted value would be.
 
-2. Per-genotype Gompertz rate constant: C_m = C_WT / Z_m (higher Z -> slower
-   assumed aging rate). This inverse relationship, and the specific
-   weights, are a chosen functional form fit to reproduce the qualitative
-   ranking above -- not derived from any mechanistic aging theory.
+2. Temporal scaling. The genotype's survival curve is the wild-type
+   Gompertz curve stretched in time by that scale:
 
-3. Gompertz survival curve: S(t) = exp(-(B/C) * (exp(C*t) - 1)), evaluated
-   over an arbitrary dimensionless time axis (not calibrated to real days).
+       S_m(t) = S_WT(t / scale),   S_WT(t) = exp(-(B/C) * (exp(C*t) - 1))
+
+   Stroustrup et al. 2016 (Nature) found that C. elegans survival curves
+   under many interventions, including insulin-signaling mutants, differ by
+   a time rescaling only. Stretching time is the same as dividing both
+   Gompertz constants by the scale.
+
+   The time axis is arbitrary model units, not days.
+
+What changed, and why:
+
+The first version combined growth and lipid-pathway flux into a score
+Z = w1 * growth_ratio + w2 * (2 - lipid_ratio) and set C = C_WT / Z. Three
+problems showed up when its output was compared with the measured lifespans
+(Chen et al. 2013: rsks-1 +20%, daf-2 +169%, daf-2 rsks-1 +454%):
+
+* The growth term had the wrong sign for these mutants. Lower growth
+  capacity lowered Z, which shortened predicted life, while the long-lived
+  mutants are the ones with reduced growth capacity.
+* The lipid term's sign had been flipped after the first run to recover
+  the known ranking, so it could not count as a prediction.
+* Changing only C altered the curve's shape instead of rescaling time, and
+  a ~0.1% change in Z gave a ~0.07% change in lifespan against measured
+  changes of 20% to 454%.
+
+Limits that remain (see validation output): the scale is capped at
+`max_scale`, because a reaction constraint that nearly abolishes growth
+would otherwise predict an unbounded lifespan when it should predict a sick
+or dead worm. The model applies to expression-derived constraints in viable
+genotypes, not to lethal knockouts.
 """
 
 from __future__ import annotations
@@ -61,57 +64,59 @@ import pandas as pd
 @dataclass
 class AgingProxyResult:
     genotype: str
-    composite_score_z: float
-    gompertz_c: float
+    growth_ratio: float
+    lifespan_scale: float  # predicted lifespan as a multiple of wild type
 
 
-def composite_score(
-    growth_ratio: float,
-    stress_flux_ratio: float,
-    biomass_weight: float,
-    stress_weight: float,
-) -> float:
-    # See module docstring for why the stress term is (2.0 - ratio) rather
-    # than the ratio itself: a reduced lipid-pathway flux ratio (< 1) is
-    # treated as favorable, matching what was observed for the longer-lived
-    # genotypes in this pipeline's real output.
-    return biomass_weight * growth_ratio + stress_weight * (2.0 - stress_flux_ratio)
+def lifespan_scale(growth_ratio: float, exponent: float = 1.0, max_scale: float = 10.0) -> float:
+    """Predicted lifespan as a multiple of wild type for a given growth ratio."""
+    if not np.isfinite(growth_ratio) or growth_ratio <= 0:
+        raise ValueError(
+            f"Growth ratio must be positive to derive a lifespan scale, got {growth_ratio}. "
+            "A genotype with no growth is not viable; no lifespan is predicted for it."
+        )
+    return float(min(growth_ratio ** (-exponent), max_scale))
 
 
-def gompertz_rate_constant(z_score: float, wt_gompertz_c: float) -> float:
-    if z_score <= 0:
-        raise ValueError(f"Composite score Z must be positive to invert into a Gompertz rate constant, got {z_score}")
-    return wt_gompertz_c / z_score
-
-
-def gompertz_survival(t: np.ndarray, gompertz_b: float, gompertz_c: float) -> np.ndarray:
-    return np.exp(-(gompertz_b / gompertz_c) * (np.exp(gompertz_c * t) - 1.0))
+def gompertz_survival(t: np.ndarray, gompertz_b: float, gompertz_c: float, scale: float = 1.0) -> np.ndarray:
+    """Gompertz survival, optionally stretched in time by `scale`."""
+    return np.exp(-(gompertz_b / gompertz_c) * (np.exp(gompertz_c * np.asarray(t) / scale) - 1.0))
 
 
 def build_aging_proxies(
     growth_by_genotype: dict[str, float],
-    stress_flux_by_genotype: dict[str, float],
     reference_genotype: str,
-    biomass_weight: float,
-    stress_weight: float,
-    wt_gompertz_c: float,
+    lifespan_exponent: float = 1.0,
+    max_scale: float = 10.0,
 ) -> dict[str, AgingProxyResult]:
     wt_growth = growth_by_genotype[reference_genotype]
-    wt_stress = stress_flux_by_genotype[reference_genotype]
+    if not wt_growth or wt_growth <= 0:
+        raise ValueError(f"Wild-type growth must be positive, got {wt_growth}")
 
     proxies: dict[str, AgingProxyResult] = {}
-    for genotype in growth_by_genotype:
-        growth_ratio = growth_by_genotype[genotype] / wt_growth if wt_growth else np.nan
-        stress_ratio = stress_flux_by_genotype[genotype] / wt_stress if wt_stress else np.nan
-        z = composite_score(growth_ratio, stress_ratio, biomass_weight, stress_weight)
-        c = gompertz_rate_constant(z, wt_gompertz_c) if genotype != reference_genotype else wt_gompertz_c
-        proxies[genotype] = AgingProxyResult(genotype=genotype, composite_score_z=z, gompertz_c=c)
+    for genotype, growth in growth_by_genotype.items():
+        ratio = growth / wt_growth
+        scale = 1.0 if genotype == reference_genotype else lifespan_scale(ratio, lifespan_exponent, max_scale)
+        proxies[genotype] = AgingProxyResult(genotype=genotype, growth_ratio=ratio, lifespan_scale=scale)
     return proxies
 
 
-def survival_curves_table(proxies: dict[str, AgingProxyResult], gompertz_b: float, t_max: float = 50.0, n_points: int = 200) -> pd.DataFrame:
+def survival_curves_table(
+    proxies: dict[str, AgingProxyResult],
+    gompertz_b: float,
+    wt_gompertz_c: float,
+    t_max: float | None = None,
+    n_points: int = 400,
+) -> pd.DataFrame:
+    """Survival curve per genotype on a shared time axis.
+
+    `t_max` defaults to 50 model-time units (where the wild-type curve has
+    died out) times the largest lifespan scale, so every curve reaches zero.
+    """
+    if t_max is None:
+        t_max = 50.0 * max(p.lifespan_scale for p in proxies.values())
     t = np.linspace(0, t_max, n_points)
     data = {"t": t}
     for genotype, proxy in proxies.items():
-        data[genotype] = gompertz_survival(t, gompertz_b, proxy.gompertz_c)
+        data[genotype] = gompertz_survival(t, gompertz_b, wt_gompertz_c, proxy.lifespan_scale)
     return pd.DataFrame(data)

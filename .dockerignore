@@ -1,0 +1,13 @@
+# Send only what the image needs: the web app and the data files it reads.
+# Everything else (data sets, reports, the model, virtual environments) stays out.
+*
+!web/
+!core/results/
+!core/data/
+
+# Never copy local environments or caches, even inside web/
+**/.venv
+**/venv
+**/__pycache__
+**/*.pyc
+**/.pytest_cache

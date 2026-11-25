@@ -13,6 +13,7 @@ import logging
 from pathlib import Path
 
 from fluxworm.aging.survival_model import build_aging_proxies, survival_curves_table
+from fluxworm.aging.validation import load_lifespan_reference, validate_against_reference
 from fluxworm.analysis.flux_comparison import flux_fold_change_vs_wt, flux_table, growth_comparison_table
 from fluxworm.analysis.subsystem_summary import functional_group_reroute_summary, tag_reactions_by_keyword
 from fluxworm.config import PipelineConfig, load_config
@@ -66,8 +67,13 @@ def run_pipeline(config: PipelineConfig) -> None:
         de_table.to_csv(config.results_dir / f"de_{_safe_name(genotype)}_vs_wt.csv")
         logger.info("%s: %d genes with expression evidence", genotype, int(de_table["evidence"].sum()))
 
-    logger.info("Computing wild-type reference flux capacities via FVA (fraction_of_optimum=0.9)...")
-    reference_capacities = compute_wt_reference_capacities(model, fraction_of_optimum=0.9)
+    logger.info(
+        "Computing wild-type reference flux capacities via FVA (fraction_of_optimum=%s)...",
+        config.reference_fraction_of_optimum,
+    )
+    reference_capacities = compute_wt_reference_capacities(
+        model, fraction_of_optimum=config.reference_fraction_of_optimum
+    )
     reference_capacities.to_csv(config.results_dir / "wt_reference_capacities.csv")
 
     bounds_by_genotype = {}
@@ -92,20 +98,34 @@ def run_pipeline(config: PipelineConfig) -> None:
     reroute_summary = functional_group_reroute_summary(fold_change_df, reaction_tags)
     reroute_summary.to_csv(config.results_dir / "functional_group_reroute_summary.csv")
 
-    stress_reactions = reaction_tags.index[reaction_tags == "lipid_metabolism"]
-    stress_flux_by_genotype = flux_df.loc[flux_df.index.intersection(stress_reactions)].abs().sum().to_dict()
     growth_by_genotype = growth_table["biomass_flux"].to_dict()
 
     proxies = build_aging_proxies(
         growth_by_genotype,
-        stress_flux_by_genotype,
         config.reference_genotype,
-        config.biomass_weight,
-        config.stress_weight,
-        config.wt_gompertz_C,
+        config.lifespan_exponent,
+        config.max_lifespan_scale,
     )
-    survival_table = survival_curves_table(proxies, config.gompertz_B)
+    survival_table = survival_curves_table(proxies, config.gompertz_B, config.wt_gompertz_C)
     survival_table.to_csv(config.results_dir / "survival_curves_illustrative.csv")
+
+    # How far is the model from lifespans measured in the lab?
+    if config.lifespan_reference and config.lifespan_reference.exists():
+        measured = load_lifespan_reference(config.lifespan_reference)
+        validation_table, summary = validate_against_reference(proxies, measured, config.reference_genotype)
+        validation_table.to_csv(config.results_dir / "lifespan_model_vs_lab.csv")
+        logger.info("Model vs measured lifespan (multiples of wild type):\n%s", validation_table.round(3))
+        logger.info(
+            "Mean absolute error %.0f%% over %d genotypes. A fitted exponent would be %.2f "
+            "(leave-one-out error %.0f%%); the pipeline uses the fixed value %.2f.",
+            summary["mean_abs_error_pct"],
+            int(summary["n_genotypes"]),
+            summary["fitted_exponent"],
+            summary["fitted_exponent_loo_mean_abs_error_pct"],
+            config.lifespan_exponent,
+        )
+    else:
+        logger.warning("No lifespan reference file found; skipping validation against measured lifespans.")
 
     plot_growth_comparison(growth_table, config.results_dir / "growth_comparison.png")
     plot_functional_group_heatmap(reroute_summary, config.results_dir / "functional_group_reroute_heatmap.png")

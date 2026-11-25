@@ -5,6 +5,7 @@ import pandas as pd
 from flask import Flask, jsonify, render_template, request
 
 RESULTS = Path(__file__).resolve().parent.parent / "core" / "results"
+REFERENCE_DATA = Path(__file__).resolve().parent.parent / "core" / "data" / "lifespan_reference.csv"
 
 WILD_TYPE = "wild type"
 
@@ -53,6 +54,8 @@ app = Flask(__name__)
 app.json.sort_keys = False  # keep genotypes in the pipeline's order (wild type first)
 survival = pd.read_csv(RESULTS / "survival_curves_illustrative.csv", index_col=0)
 growth = pd.read_csv(RESULTS / "growth_comparison.csv", index_col="genotype")
+# Lifespans measured in the lab (see core/data/lifespan_reference.csv for sources)
+reference = pd.read_csv(REFERENCE_DATA, index_col="genotype")
 
 
 def median_lifespan(genotype):
@@ -77,39 +80,79 @@ def mean_lifespan(genotype):
     return float(np.sum((s[1:] + s[:-1]) * np.diff(t)) / 2.0)
 
 
-DIFF_MIN_SURVIVAL = 0.01  # stop the difference line when <1% of wild-type worms are alive
+GRID_POINTS = 600         # points on the shared time axis sent to the page
+
+
+def measured_change_pct(genotype):
+    """Measured mean lifespan change vs wild type in percent, or None if not reported."""
+    if genotype not in reference.index:
+        return None
+    value = reference.loc[genotype, "mean_lifespan_change_pct"]
+    return None if pd.isna(value) else float(value)
+
+
+def reference_source():
+    """Citation for the measured values (all rows currently share one source)."""
+    row = reference.loc[WILD_TYPE]
+    return {
+        "label": str(row["source"]),
+        "doi": str(row["doi"]),
+        "url": f"https://doi.org/{row['doi']}",
+        "temperature_c": float(row["temperature_c"]),
+    }
 
 
 def curve_payload():
-    """Everything the time-lapse chart needs, built from the pipeline CSVs."""
-    t = survival["t"].to_numpy()
-    wt = survival[WILD_TYPE].to_numpy()
+    """Everything the time-lapse chart needs, built once at startup.
+
+    Time is relative to wild type: 1.0 = the wild-type mean lifespan. Each
+    genotype gets two curves on the same time grid:
+
+    * measured: the wild-type curve stretched in time by the genotype's measured
+      mean lifespan ratio (temporal scaling, Stroustrup et al. 2016). None when
+      the lab value is not in lifespan_reference.csv.
+    * model: the pipeline's prediction from core/results (wild-type curve
+      rescaled by the genotype's constrained-FBA growth capacity).
+    """
+    t_model = survival["t"].to_numpy()
+    wt_model = survival[WILD_TYPE].to_numpy()
     genotypes = [c for c in survival.columns if c != "t"]
     wt_median, wt_mean = median_lifespan(WILD_TYPE), mean_lifespan(WILD_TYPE)
+    t_rel = t_model / wt_mean  # model time -> multiples of the wild-type mean
+
+    ratios = {g: 1.0 + pct / 100.0 for g in genotypes if (pct := measured_change_pct(g)) is not None}
+
+    # The grid runs until the longest-lived measured worm has (almost) died out
+    nearly_gone = np.nonzero(wt_model < 0.001)[0]
+    wt_end = t_rel[nearly_gone[0]] if nearly_gone.size else t_rel[-1]
+    # ... and until every model curve has died out too
+    model_end = max(
+        (t_rel[np.nonzero(survival[g].to_numpy() >= 0.001)[0][-1]] for g in genotypes), default=wt_end
+    )
+    grid = np.linspace(0.0, max(wt_end * max(ratios.values(), default=1.0), model_end), GRID_POINTS)
+
+    def on_grid(curve, stretch=1.0):
+        return np.interp(grid / stretch, t_rel, curve, right=0.0)
 
     data = {
-        "t": [round(float(x), 6) for x in t],
+        "t": [round(float(x), 5) for x in grid],
+        "time_unit": "multiples of the wild-type mean lifespan",
         "reference": WILD_TYPE,
-        "diff_min_survival": DIFF_MIN_SURVIVAL,
+        "source": reference_source(),
         "genotypes": {},
     }
     for g in genotypes:
-        s = survival[g].to_numpy()
-        # % change in survival vs wild type at each time point. Once fewer than
-        # 1% of wild-type worms are alive, the ratio is a percentage of almost
-        # nothing and swings wildly, so those points are sent as null.
-        with np.errstate(divide="ignore", invalid="ignore"):
-            diff = np.where(wt >= DIFF_MIN_SURVIVAL, (s / wt - 1.0) * 100.0, np.nan)
+        model = on_grid(survival[g].to_numpy())
         median, mean = median_lifespan(g), mean_lifespan(g)
+        pct = measured_change_pct(g)
         data["genotypes"][g] = {
             "name": DISPLAY_NAMES.get(g, g),
             "color_var": COLORS.get(g, "--primary-color"),
-            "survival": [float(x) for x in s],
-            "diff_pct": [None if np.isnan(x) else float(x) for x in diff],
-            "median": median,
-            "mean": mean,
-            "median_pct": (median / wt_median - 1.0) * 100.0,
-            "mean_pct": (mean / wt_mean - 1.0) * 100.0,
+            "measured_pct": pct,
+            "measured": None if pct is None else [round(float(x), 6) for x in on_grid(wt_model, ratios[g])],
+            "model": [round(float(x), 6) for x in model],
+            "model_median_pct": (median / wt_median - 1.0) * 100.0,
+            "model_mean_pct": (mean / wt_mean - 1.0) * 100.0,
             "growth_pct": (float(growth.loc[g, "fold_change_vs_wt"]) - 1.0) * 100.0,
         }
     return data
@@ -138,26 +181,34 @@ def index():
         picked = set(request.form.getlist("genes"))
         genotype, error = resolve_genotype(picked)
         if genotype:
-            median = median_lifespan(genotype)
-            wt_median = median_lifespan(WILD_TYPE)
             growth_ratio = float(growth.loc[genotype, "fold_change_vs_wt"])
             summary = CURVES["genotypes"][genotype]
+            measured_pct = summary["measured_pct"]
+            model_pct = summary["model_mean_pct"]
+            model_ratio = 1.0 + model_pct / 100.0
+            # Model lifespan relative to the measured one: -20 means the model is 20% too low
+            model_error_pct = None
+            if measured_pct is not None:
+                model_error_pct = (model_ratio / (1.0 + measured_pct / 100.0) - 1.0) * 100.0
             result = {
                 "genotype": genotype,
                 "name": DISPLAY_NAMES[genotype],
                 "color_var": COLORS[genotype],
-                "mean": summary["mean"],
-                "median_pct": summary["median_pct"],
-                "mean_pct": summary["mean_pct"],
-                "growth_pct": summary["growth_pct"],
                 "is_wild_type": genotype == WILD_TYPE,
-                "median": median,
-                "median_diff": median - wt_median,
+                "measured_pct": measured_pct,
+                "measured_ratio": None if measured_pct is None else 1.0 + measured_pct / 100.0,
+                "measured_note": str(reference.loc[genotype, "notes"]) if genotype in reference.index else "",
+                "model_pct": model_pct,
+                "model_ratio": model_ratio,
+                "model_flat": abs(model_pct) < 0.05,
+                "model_error_pct": model_error_pct,
                 "growth": growth_ratio,
+                "growth_pct": summary["growth_pct"],
                 "gene_count": len(picked),
-                "matches_wild_type": genotype != WILD_TYPE and abs(growth_ratio - 1.0) < 1e-6,
             }
-    return render_template("index.html", options=OPTIONS, picked=picked, result=result, error=error)
+    return render_template(
+        "index.html", options=OPTIONS, picked=picked, result=result, error=error, source=CURVES["source"]
+    )
 
 
 @app.route("/api/curves")
