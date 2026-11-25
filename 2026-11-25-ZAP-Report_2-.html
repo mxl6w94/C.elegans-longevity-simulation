@@ -1,0 +1,3080 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>zap_report_2.html</title>
+<link
+	href="2026-11-25-ZAP-Report_2-/normalize/normalize.css" rel="stylesheet">
+<link
+	href="2026-11-25-ZAP-Report_2-/themes/original/main.css" rel="stylesheet">
+<link
+	href="2026-11-25-ZAP-Report_2-/themes/original/colors.css" rel="stylesheet">
+</head>
+<body>
+	<header>
+		<h1>zap_report_2.html</h1>
+		<p>
+			<span>Generated with</span> <a href="https://zaproxy.org"><img
+				src="2026-11-25-ZAP-Report_2-/zap32x32.png" alt="The ZAP logo" class="zap-logo">ZAP</a>
+			<span>on Wed 25 Nov 2026, at 14:45:13</span>
+		</p>
+		<p>ZAP Version: 2.17.0</p>
+		<p>
+			ZAP by <a href="https://checkmarx.com/">Checkmarx</a>
+		</p>
+	</header>
+
+	<main>
+
+		<section id="contents" class="contents">
+			<h2>Contents</h2>
+			<nav>
+				<ol>
+					<li><a
+						href="#about-this-report">About This Report</a>
+						<ol>
+							
+							<li><a
+								href="#report-parameters">Report Parameters</a></li>
+						</ol></li>
+					<data-th-block>
+					<li><a
+						href="#summaries">Summaries</a>
+						<ol>
+							<li><a
+								href="#risk-confidence-counts">Alert Counts by Risk and Confidence</a></li>
+							<li><a
+								href="#site-risk-counts">Alert Counts by Site and Risk</a></li>
+							<li><a
+								href="#alert-type-counts">Alert Counts by Alert Type</a></li>
+							<li><a
+								href="#insights">Insights</a></li>
+						</ol></li>
+					<li><a
+						href="#alerts">Alerts</a>
+						<ol>
+							
+							 
+							
+							
+							
+							
+							
+							
+							
+							
+							<li><a
+								href="#alerts--risk-2-confidence-1"><span>Risk</span>=<span
+									class="risk-level">Medium</span>, <span>Confidence</span>=<span
+									class="confidence-level">Low</span> <span>(1)</span></a></li>
+							  
+							
+							
+							
+							
+							<li><a
+								href="#alerts--risk-1-confidence-3"><span>Risk</span>=<span
+									class="risk-level">Low</span>, <span>Confidence</span>=<span
+									class="confidence-level">High</span> <span>(1)</span></a></li>
+							
+							
+							
+							
+							  
+							
+							
+							
+							
+							
+							
+							<li><a
+								href="#alerts--risk-0-confidence-2"><span>Risk</span>=<span
+									class="risk-level">Informational</span>, <span>Confidence</span>=<span
+									class="confidence-level">Medium</span> <span>(2)</span></a></li>
+							
+							<li><a
+								href="#alerts--risk-0-confidence-1"><span>Risk</span>=<span
+									class="risk-level">Informational</span>, <span>Confidence</span>=<span
+									class="confidence-level">Low</span> <span>(1)</span></a></li>
+							  
+						</ol></li>
+					<li><a
+						href="#appendix">Appendix</a>
+						<ol>
+							<li><a
+								href="#alert-types">Alert Types</a></li>
+						</ol></li>
+					</data-th-block>
+				</ol>
+			</nav>
+		</section>
+
+		<section
+			id="about-this-report" class="about-this-report">
+			<h2>About This Report</h2>
+
+			
+
+			<section
+				id="report-parameters">
+				<h3>Report Parameters</h3>
+				<div class="report-parameters--container">
+					<h4>Contexts</h4>
+					
+					
+					<p>No contexts were selected, so all contexts were included by default.</p>
+					  
+
+					<h4>Sites</h4>
+					
+					<p>The following sites were included:</p>
+					<ul class="sites-list">
+						<li><span class="site">http://127.0.0.1:5000</span></li>
+					</ul>
+					
+					<p>(If no sites were selected, all sites were included by default.)</p>
+					<p>An included site must also be within one of the included contexts for its data to be included in the report.</p>
+
+					<h4>Risk levels</h4>
+					<p>
+						<span>Included</span>:
+						 
+						<span class="included-risk-codes"><span class="risk-level">High</span>, <span class="risk-level">Medium</span>, <span class="risk-level">Low</span>, <span class="risk-level">Informational</span></span>
+					</p>
+					<p>
+						<span>Excluded</span>:
+						 <span>None</span>
+						
+					</p>
+
+					<h4>Confidence levels</h4>
+					<p>
+						<span>Included</span>:
+						
+						
+						<span class="included-confidence-codes"><span class="confidence-level">User Confirmed</span>, <span class="confidence-level">High</span>, <span class="confidence-level">Medium</span>, <span class="confidence-level">Low</span></span>
+					</p>
+					<p>
+						<span>Excluded</span>:
+						
+						
+						<span class="included-confidence-codes"> <span class="confidence-level">User Confirmed</span>, <span class="confidence-level">High</span>, <span class="confidence-level">Medium</span>, <span class="confidence-level">Low</span>, <span class="confidence-level">False Positive</span></span>
+					</p>
+				</div>
+			</section>
+		</section>
+
+		
+		<section>
+			
+		</section>
+		
+		<section id="summaries" class="summaries">
+			<h2>Summaries</h2>
+
+			<section
+				id="risk-confidence-counts">
+				<h3>Alert Counts by Risk and Confidence</h3>
+				<table class="risk-confidence-counts-table">
+					<caption>
+						<p>This table shows the number of alerts for each level of risk and confidence included in the report.</p>
+						<p>(The percentages in brackets represent the count as a percentage of the total number of alerts included in the report, rounded to one decimal place.)</p>
+					</caption>
+					<colgroup>
+						<col>
+						<col>
+					</colgroup>
+					<colgroup>
+						<col
+							style="width: 14.0%"><col
+							style="width: 14.0%"><col
+							style="width: 14.0%"><col
+							style="width: 14.0%">
+						<col style="width: 14.0%">
+					</colgroup>
+					<thead>
+						<tr>
+							<td colspan="2" rowspan="2"></td>
+							<th scope="colgroup"
+								colspan="5">Confidence</th>
+						</tr>
+						<tr>
+							<th scope="col">User Confirmed</th>
+							<th scope="col">High</th>
+							<th scope="col">Medium</th>
+							<th scope="col">Low</th>
+							<th scope="col">Total</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th scope="rowgroup"
+								rowspan="5">Risk</th>
+							<th scope="row">High</th>
+							<td><span>0</span><br> <span
+								class="additional-info-percentages">(0.0%)</span></td>
+							<td><span>0</span><br> <span
+								class="additional-info-percentages">(0.0%)</span></td>
+							<td><span>0</span><br> <span
+								class="additional-info-percentages">(0.0%)</span></td>
+							<td><span>0</span><br> <span
+								class="additional-info-percentages">(0.0%)</span></td>
+							<td><span>0</span><br> <span class="additional-info-percentages">(0.0%)</span></td>
+						</tr>
+						<tr>
+							
+							<th scope="row">Medium</th>
+							<td><span>0</span><br> <span
+								class="additional-info-percentages">(0.0%)</span></td>
+							<td><span>0</span><br> <span
+								class="additional-info-percentages">(0.0%)</span></td>
+							<td><span>0</span><br> <span
+								class="additional-info-percentages">(0.0%)</span></td>
+							<td><span>1</span><br> <span
+								class="additional-info-percentages">(20.0%)</span></td>
+							<td><span>1</span><br> <span class="additional-info-percentages">(20.0%)</span></td>
+						</tr>
+						<tr>
+							
+							<th scope="row">Low</th>
+							<td><span>0</span><br> <span
+								class="additional-info-percentages">(0.0%)</span></td>
+							<td><span>1</span><br> <span
+								class="additional-info-percentages">(20.0%)</span></td>
+							<td><span>0</span><br> <span
+								class="additional-info-percentages">(0.0%)</span></td>
+							<td><span>0</span><br> <span
+								class="additional-info-percentages">(0.0%)</span></td>
+							<td><span>1</span><br> <span class="additional-info-percentages">(20.0%)</span></td>
+						</tr>
+						<tr>
+							
+							<th scope="row">Informational</th>
+							<td><span>0</span><br> <span
+								class="additional-info-percentages">(0.0%)</span></td>
+							<td><span>0</span><br> <span
+								class="additional-info-percentages">(0.0%)</span></td>
+							<td><span>2</span><br> <span
+								class="additional-info-percentages">(40.0%)</span></td>
+							<td><span>1</span><br> <span
+								class="additional-info-percentages">(20.0%)</span></td>
+							<td><span>3</span><br> <span class="additional-info-percentages">(60.0%)</span></td>
+						</tr>
+						<tr>
+							<th scope="row">Total</th>
+							<td><span>0</span><br> <span
+								class="additional-info-percentages">(0.0%)</span></td>
+							<td><span>1</span><br> <span
+								class="additional-info-percentages">(20.0%)</span></td>
+							<td><span>2</span><br> <span
+								class="additional-info-percentages">(40.0%)</span></td>
+							<td><span>2</span><br> <span
+								class="additional-info-percentages">(40.0%)</span></td>
+							<td><span>5</span><br> <span
+								class="additional-info-percentages">(100%)</span></td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
+
+			<section
+				id="site-risk-counts">
+				<h3>Alert Counts by Site and Risk</h3>
+				<table class="site-risk-counts-table">
+					<caption>
+						<p>This table shows, for each site for which one or more alerts were raised, the number of alerts raised at each risk level.</p>
+						<p>Alerts with a confidence level of &quot;False Positive&quot; have been excluded from these counts.</p>
+						<p>(The numbers in brackets are the number of alerts raised for the site at or above that risk level.)</p>
+					</caption>
+					<colgroup>
+						<col>
+						<col>
+					</colgroup>
+					<colgroup>
+						<col
+							style="width: 16.25%"><col
+							style="width: 16.25%"><col
+							style="width: 16.25%"><col
+							style="width: 16.25%">
+					</colgroup>
+					<thead>
+						<tr>
+							<td colspan="2" rowspan="2"></td>
+							<th scope="colgroup" colspan="4">Risk</th>
+						</tr>
+						<tr>
+							<th scope="col">
+								<span>High</span><br>  <span
+									class="additional-info-percentages">(= High)</span>  
+							</th>
+							<th scope="col">
+								<span>Medium</span><br>   <span
+									class="additional-info-percentages">(&gt;= Medium)</span> 
+							</th>
+							<th scope="col">
+								<span>Low</span><br>   <span
+									class="additional-info-percentages">(&gt;= Low)</span> 
+							</th>
+							<th scope="col">
+								<span>Informational</span><br>   <span
+									class="additional-info-percentages">(&gt;= Informational)</span> 
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th scope="rowgroup"
+								rowspan="1">Site</th>
+							<th scope="row">http://127.0.0.1:5000</th>
+							
+							<td><span>0</span><br> <span
+								class="additional-info-percentages">(0)</span></td>
+							<td><span>1</span><br> <span
+								class="additional-info-percentages">(1)</span></td>
+							<td><span>1</span><br> <span
+								class="additional-info-percentages">(2)</span></td>
+							<td><span>3</span><br> <span
+								class="additional-info-percentages">(5)</span></td>
+							
+						</tr>
+					</tbody>
+				</table>
+			</section>
+
+			<section
+				id="alert-type-counts">
+				<h3>Alert Counts by Alert Type</h3>
+				<table class="alert-type-counts-table">
+					<caption>
+						<p>This table shows the number of alerts of each alert type, together with the alert type&#39;s risk level.</p>
+						<p>(The percentages in brackets represent each count as a percentage, rounded to one decimal place, of the total number of alerts included in this report.)</p>
+					</caption>
+					<thead>
+						<tr>
+							<th scope="col">Alert type</th>
+							<th scope="col">Risk</th>
+							<th scope="col">Count</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th scope="row"><a
+								href="#alert-type-0">Absence of Anti-CSRF Tokens</a></th>
+							<td class="risk-level">Medium</td>
+							<td><span>2</span><br> <span
+								class="additional-info-percentages">(40.0%)</span></td>
+						</tr>
+						<tr>
+							<th scope="row"><a
+								href="#alert-type-1">Server Leaks Version Information via &quot;Server&quot; HTTP Response Header Field</a></th>
+							<td class="risk-level">Low</td>
+							<td><span>5</span><br> <span
+								class="additional-info-percentages">(100.0%)</span></td>
+						</tr>
+						<tr>
+							<th scope="row"><a
+								href="#alert-type-2">Information Disclosure - Suspicious Comments</a></th>
+							<td class="risk-level">Informational</td>
+							<td><span>2</span><br> <span
+								class="additional-info-percentages">(40.0%)</span></td>
+						</tr>
+						<tr>
+							<th scope="row"><a
+								href="#alert-type-3">Modern Web Application</a></th>
+							<td class="risk-level">Informational</td>
+							<td><span>1</span><br> <span
+								class="additional-info-percentages">(20.0%)</span></td>
+						</tr>
+						<tr>
+							<th scope="row"><a
+								href="#alert-type-4">User Controllable HTML Element Attribute (Potential XSS)</a></th>
+							<td class="risk-level">Informational</td>
+							<td><span>1</span><br> <span
+								class="additional-info-percentages">(20.0%)</span></td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<tr>
+							<th scope="row">Total</th>
+							<td></td>
+							<td>5</td>
+						</tr>
+					</tfoot>
+				</table>
+			</section>
+			
+			<section
+				id="insights">
+				<h3 class="left-header">Insights</h3>
+				
+				<table class="insights-table">
+						<caption>
+						<p>This table shows information that is likely to be very relevant to you, but which is not related to vulnerabilities, or potentially even related to the application in question.</p>
+					</caption>
+					<thead>
+					<tr>
+						<th scope="col">Level</th>
+						<th scope="col">Reason</th>
+						<th scope="col">Site</th>
+						<th scope="col">Description</th>
+						<th scope="col">Statistic</th>
+					</tr>
+					</thead>
+					<tbody>
+					
+						<tr>
+						<td class="risk-1">
+							<div>Low</div>
+						</td>
+						<td>
+							<div>Warning</div>
+						</td>
+						<td>
+							<div></div>
+						</td>
+						<td>
+							<div>ZAP warnings logged - see the zap.log file for details</div>
+						</td>
+						<td align="center">
+							<div>1   </div>
+						</td>
+						</tr>
+					
+						<tr>
+						<td class="risk-0">
+							<div>Info</div>
+						</td>
+						<td>
+							<div>Informational</div>
+						</td>
+						<td>
+							<div>http://127.0.0.1:5000</div>
+						</td>
+						<td>
+							<div>Percentage of responses with status code 2xx</div>
+						</td>
+						<td align="center">
+							<div>68 %</div>
+						</td>
+						</tr>
+					
+						<tr>
+						<td class="risk-0">
+							<div>Info</div>
+						</td>
+						<td>
+							<div>Informational</div>
+						</td>
+						<td>
+							<div>http://127.0.0.1:5000</div>
+						</td>
+						<td>
+							<div>Percentage of responses with status code 4xx</div>
+						</td>
+						<td align="center">
+							<div>31 %</div>
+						</td>
+						</tr>
+					
+						<tr>
+						<td class="risk-0">
+							<div>Info</div>
+						</td>
+						<td>
+							<div>Informational</div>
+						</td>
+						<td>
+							<div>http://127.0.0.1:5000</div>
+						</td>
+						<td>
+							<div>Percentage of endpoints with content type text/css</div>
+						</td>
+						<td align="center">
+							<div>12 %</div>
+						</td>
+						</tr>
+					
+						<tr>
+						<td class="risk-0">
+							<div>Info</div>
+						</td>
+						<td>
+							<div>Informational</div>
+						</td>
+						<td>
+							<div>http://127.0.0.1:5000</div>
+						</td>
+						<td>
+							<div>Percentage of endpoints with content type text/html</div>
+						</td>
+						<td align="center">
+							<div>50 %</div>
+						</td>
+						</tr>
+					
+						<tr>
+						<td class="risk-0">
+							<div>Info</div>
+						</td>
+						<td>
+							<div>Informational</div>
+						</td>
+						<td>
+							<div>http://127.0.0.1:5000</div>
+						</td>
+						<td>
+							<div>Percentage of endpoints with content type text/javascript</div>
+						</td>
+						<td align="center">
+							<div>37 %</div>
+						</td>
+						</tr>
+					
+						<tr>
+						<td class="risk-0">
+							<div>Info</div>
+						</td>
+						<td>
+							<div>Informational</div>
+						</td>
+						<td>
+							<div>http://127.0.0.1:5000</div>
+						</td>
+						<td>
+							<div>Percentage of endpoints with method GET</div>
+						</td>
+						<td align="center">
+							<div>87 %</div>
+						</td>
+						</tr>
+					
+						<tr>
+						<td class="risk-0">
+							<div>Info</div>
+						</td>
+						<td>
+							<div>Informational</div>
+						</td>
+						<td>
+							<div>http://127.0.0.1:5000</div>
+						</td>
+						<td>
+							<div>Percentage of endpoints with method POST</div>
+						</td>
+						<td align="center">
+							<div>12 %</div>
+						</td>
+						</tr>
+					
+						<tr>
+						<td class="risk-0">
+							<div>Info</div>
+						</td>
+						<td>
+							<div>Informational</div>
+						</td>
+						<td>
+							<div>http://127.0.0.1:5000</div>
+						</td>
+						<td>
+							<div>Count of total endpoints</div>
+						</td>
+						<td align="center">
+							<div>8   </div>
+						</td>
+						</tr>
+					
+					</tbody>
+				</table>
+			</section>
+		</section>
+
+		<section id="alerts" class="alerts">
+			<h2>Alerts</h2>
+			<ol>
+				
+				 
+				 
+				
+				
+				
+				
+				
+				
+				<li id="alerts--risk-2-confidence-1">
+					<h3>
+						<span>Risk</span>=<span
+							class="risk-level">Medium</span>, <span>Confidence</span>=<span
+							class="confidence-level">Low</span> <span>(1)</span>
+					</h3>
+					<ol>
+						
+						<li class="alerts--site-li">
+							<h4>
+								<span class="site">http://127.0.0.1:5000</span> <span>(1)</span>
+							</h4>
+							<ol>
+								
+								<li>
+									<h5>
+										<a
+											href="#alert-type-0">Absence of Anti-CSRF Tokens</a> <span>(1)</span>
+									</h5>
+									<ol>
+										<li><details>
+												<summary>
+													<span class="request-method-n-url">GET http://127.0.0.1:5000/</span>
+												</summary>
+												
+<table class="alerts-table">
+	<tr>
+		<th scope="row">Alert tags</th>
+		<td>
+			<ul class="alert-tags-list">
+				<li>
+					<span><a href="https://owasp.org/Top10/2021/A01_2021-Broken_Access_Control/">OWASP_2021_A01</a></span> 
+				</li>
+				<li>
+					 <span>POLICY_QA_STD = </span>
+				</li>
+				<li>
+					 <span>POLICY_PENTEST = </span>
+				</li>
+				<li>
+					<span><a href="https://www.zaproxy.org/docs/desktop/addons/common-library/alerttags/#systemic">SYSTEMIC</a></span> 
+				</li>
+				<li>
+					<span><a href="https://owasp.org/www-project-web-security-testing-guide/v42/4-Web_Application_Security_Testing/06-Session_Management_Testing/05-Testing_for_Cross_Site_Request_Forgery">WSTG-v42-SESS-05</a></span> 
+				</li>
+				<li>
+					<span><a href="https://owasp.org/Top10/2025/A01_2025-Broken_Access_Control/">OWASP_2025_A01</a></span> 
+				</li>
+				<li>
+					<span><a href="https://owasp.org/www-project-top-ten/2017/A5_2017-Broken_Access_Control.html">OWASP_2017_A05</a></span> 
+				</li>
+				<li>
+					<span><a href="https://cwe.mitre.org/data/definitions/352.html">CWE-352</a></span> 
+				</li>
+				<li>
+					 <span>POLICY_DEV_STD = </span>
+				</li>
+			</ul>
+		</td>
+	</tr>
+	<tr>
+		<th scope="row">Alert description</th>
+		<td> 
+<p>No Anti-CSRF tokens were found in a HTML submission form.</p>
+
+<p>A cross-site request forgery is an attack that involves forcing a victim to send an HTTP request to a target destination without their knowledge or intent in order to perform an action as the victim. The underlying cause is application functionality using predictable URL/form actions in a repeatable way. The nature of the attack is that CSRF exploits the trust that a web site has for a user. By contrast, cross-site scripting (XSS) exploits the trust that a user has for a web site. Like XSS, CSRF attacks are not necessarily cross-site, but they can be. Cross-site request forgery is also known as CSRF, XSRF, one-click attack, session riding, confused deputy, and sea surf.</p>
+
+<p>CSRF attacks are effective in a number of situations, including:</p>
+
+<p>    * The victim has an active session on the target site.</p>
+
+<p>    * The victim is authenticated via HTTP auth on the target site.</p>
+
+<p>    * The victim is on the same local network as the target site.</p>
+
+<p>CSRF has primarily been used to perform an action against a target site using the victim&#39;s privileges, but recent techniques have been discovered to disclose information by gaining access to the response. The risk of information disclosure is dramatically increased when the target site is vulnerable to XSS, because XSS can be used as a platform for CSRF, allowing the attack to operate within the bounds of the same-origin policy.</p>
+ </td>
+	</tr>
+	<tr>
+		<th scope="row">Other info</th>
+		<td> 
+<p>No known Anti-CSRF token [anticsrf, CSRFToken, __RequestVerificationToken, csrfmiddlewaretoken, authenticity_token, OWASP_CSRFTOKEN, anoncsrf, csrf_token, _csrf, _csrfSecret, __csrf_magic, CSRF, _token, _csrf_token, _csrfToken] was found in the following HTML form: [Form 1: &quot;genes&quot; ].</p>
+ </td>
+	</tr>
+	<tr>
+		<th scope="row">Request</th>
+		<td><details open="open">
+				<summary>Request line and header section (229 bytes)</summary>
+				
+				<pre><code>GET http://127.0.0.1:5000/ HTTP/1.1
+host: 127.0.0.1:5000
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36
+pragma: no-cache
+cache-control: no-cache
+
+</code></pre>
+				
+				
+			</details> <details class="request-body" open="open">
+				<summary>Request body (0 bytes)</summary>
+				
+				<pre><code></code></pre>
+				
+				
+			</details></td>
+	</tr>
+	<tr>
+		<th scope="row">Response</th>
+		<td><details open="open">
+				<summary>Status line and header section (356 bytes)</summary>
+				
+				<pre><code>HTTP/1.1 200 OK
+Server: Werkzeug/3.1.9 Python/3.14.5
+Date: Wed, 25 Nov 2026 19:44:20 GMT
+Content-Type: text/html; charset=utf-8
+Content-Length: 5399
+Content-Security-Policy: default-src &#39;self&#39;; object-src &#39;none&#39;; base-uri &#39;self&#39;; form-action &#39;self&#39;; frame-ancestors &#39;none&#39;
+X-Frame-Options: DENY
+X-Content-Type-Options: nosniff
+Connection: close
+
+</code></pre>
+				
+				
+			</details> <details class="response-body">
+				<summary>Response body (5399 bytes)</summary>
+				
+				<pre><code>&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+  &lt;title&gt;Worm Lifespan&lt;/title&gt;
+
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;/static/css/main.css&quot;&gt;
+  &lt;script src=&quot;/static/scripts/main.js&quot; defer&gt;&lt;/script&gt;
+  
+&lt;/head&gt;
+&lt;body class=&quot;dashboard-page&quot;&gt;
+  &lt;header class=&quot;dash-header&quot;&gt;
+    &lt;h1&gt;C. elegans lifespan predictor&lt;/h1&gt;
+    &lt;p class=&quot;intro&quot;&gt;
+      This site estimates how long a small roundworm, &lt;em&gt;C. elegans&lt;/em&gt;, lives when some of its
+      genes are changed. Pick a worm on the left and press Predict.
+    &lt;/p&gt;
+  &lt;/header&gt;
+
+  &lt;div class=&quot;dashboard&quot;&gt;
+    &lt;!-- Left: controls and explanations --&gt;
+    &lt;aside class=&quot;dash-sidebar&quot;&gt;
+      &lt;section class=&quot;card panel&quot;&gt;
+        &lt;form method=&quot;post&quot;&gt;
+          &lt;fieldset&gt;
+            &lt;legend&gt;Choose a worm&lt;/legend&gt;
+
+            
+              
+              &lt;label class=&quot;option&quot;&gt;
+                &lt;input type=&quot;checkbox&quot; name=&quot;genes&quot; value=&quot;wild type&quot;
+                       
+                       data-wild-type&gt;
+                &lt;span&gt;
+                  &lt;strong&gt;Wild type&lt;/strong&gt;
+                  &lt;span class=&quot;hint&quot;&gt;A normal worm with no changed genes. Every other worm is compared with this one.&lt;/span&gt;
+                &lt;/span&gt;
+              &lt;/label&gt;
+            
+              &lt;p class=&quot;divider&quot;&gt;or change one or more genes:&lt;/p&gt;
+              &lt;label class=&quot;option&quot;&gt;
+                &lt;input type=&quot;checkbox&quot; name=&quot;genes&quot; value=&quot;daf-2&quot;
+                       
+                       &gt;
+                &lt;span&gt;
+                  &lt;strong&gt;daf-2&lt;/strong&gt;
+                  &lt;span class=&quot;hint&quot;&gt;Senses insulin-like signals. Worms with a weakened daf-2 are known to live longer.&lt;/span&gt;
+                &lt;/span&gt;
+              &lt;/label&gt;
+            
+              
+              &lt;label class=&quot;option&quot;&gt;
+                &lt;input type=&quot;checkbox&quot; name=&quot;genes&quot; value=&quot;rsks-1&quot;
+                       
+                       &gt;
+                &lt;span&gt;
+                  &lt;strong&gt;rsks-1&lt;/strong&gt;
+                  &lt;span class=&quot;hint&quot;&gt;Helps set how fast the worm grows based on food. Changing it slows growth.&lt;/span&gt;
+                &lt;/span&gt;
+              &lt;/label&gt;
+            
+              
+              &lt;label class=&quot;option&quot;&gt;
+                &lt;input type=&quot;checkbox&quot; name=&quot;genes&quot; value=&quot;daf-16&quot;
+                       
+                       &gt;
+                &lt;span&gt;
+                  &lt;strong&gt;daf-16&lt;/strong&gt;
+                  &lt;span class=&quot;hint&quot;&gt;Turns on the worm&amp;#39;s protective genes. Worms need it for daf-2&amp;#39;s life-extending effect.&lt;/span&gt;
+                &lt;/span&gt;
+              &lt;/label&gt;
+            
+          &lt;/fieldset&gt;
+
+          &lt;button class=&quot;btn-block&quot;&gt;Predict&lt;/button&gt;
+        &lt;/form&gt;
+
+        
+      &lt;/section&gt;
+
+      &lt;section class=&quot;card panel panel-quiet&quot;&gt;
+        &lt;details class=&quot;explainer&quot;&gt;
+          &lt;summary&gt;How does this work?&lt;/summary&gt;
+          &lt;ol&gt;
+            &lt;li&gt;Researchers measured how active each gene was in five kinds of worms: normal worms and four
+                strains with changed genes.&lt;/li&gt;
+            &lt;li&gt;Those measurements go into a computer model of the worm&#39;s metabolism (the chemical reactions
+                that keep it alive), which works out how fast the worm can grow.&lt;/li&gt;
+            &lt;li&gt;The slower the model says a worm can grow, the longer it is predicted to live. This is the
+                &quot;model estimate&quot;.&lt;/li&gt;
+            &lt;li&gt;The same researchers also measured how long each kind of worm lived. Those measured
+                lifespans set the main survival curve.&lt;/li&gt;
+          &lt;/ol&gt;
+        &lt;/details&gt;
+
+        &lt;details class=&quot;explainer&quot;&gt;
+          &lt;summary&gt;What do the results mean?&lt;/summary&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;strong&gt;Measured lifespan&lt;/strong&gt; is how long this worm lived in the lab, compared with a
+                normal worm. 2.00&amp;times; means twice as long.&lt;/li&gt;
+            &lt;li&gt;&lt;strong&gt;Model estimate&lt;/strong&gt; is what this project&#39;s metabolic model predicts for the same
+                worm. It is a simple model and can be far off.&lt;/li&gt;
+            &lt;li&gt;&lt;strong&gt;Measured vs model&lt;/strong&gt; shows how far the model is from the lab result.&lt;/li&gt;
+            &lt;li&gt;&lt;strong&gt;Growth compared with a normal worm&lt;/strong&gt; comes from the model: 1.0000 means the
+                same as a normal worm, and lower means slower.&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/details&gt;
+
+        &lt;p class=&quot;muted footnote&quot;&gt;
+          Measured numbers come from a published lab study. Model numbers come from a simple research
+          model, shown with its error. Only the five worm types in the dataset are covered so far.
+        &lt;/p&gt;
+        &lt;p class=&quot;muted footnote&quot;&gt;
+          To disable graph animations to instantly see completed graphs, disable animations in your system settings.
+        &lt;/p&gt;
+      &lt;/section&gt;
+    &lt;/aside&gt;
+
+    &lt;!-- Right: results and the time-lapse graph --&gt;
+    &lt;main class=&quot;dash-main&quot;&gt;
+      
+        &lt;section class=&quot;card dash-empty&quot;&gt;
+          &lt;svg class=&quot;dash-empty-worm&quot; viewBox=&quot;0 0 28 18&quot; aria-hidden=&quot;true&quot;&gt;&lt;path d=&quot;M3 12 C 7 4, 11 4, 14 10 S 21 16, 25 8&quot;/&gt;&lt;/svg&gt;
+          &lt;h2&gt;Your results will appear here&lt;/h2&gt;
+          &lt;p class=&quot;muted&quot;&gt;
+            Choose a worm on the left and press Predict. You&#39;ll get its measured lifespan, the model&#39;s estimate, and a
+            time-lapse of a population of 100 worms aging next to normal worms.
+          &lt;/p&gt;
+        &lt;/section&gt;
+      
+    &lt;/main&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+				
+				
+			</details></td>
+	</tr>
+	
+	
+	<tr>
+		<th scope="row">Evidence</th>
+		<td><pre><code>&lt;form method=&quot;post&quot;&gt;</code></pre></td>
+	</tr>
+	<tr>
+		<th scope="row">Solution</th>
+		<td> 
+<p>Phase: Architecture and Design</p>
+
+<p>Use a vetted library or framework that does not allow this weakness to occur or provides constructs that make this weakness easier to avoid.</p>
+
+<p>For example, use anti-CSRF packages such as the OWASP CSRFGuard.</p>
+
+<p>Phase: Implementation</p>
+
+<p>Ensure that your application is free of cross-site scripting issues, because most CSRF defenses can be bypassed using attacker-controlled script.</p>
+
+<p>Phase: Architecture and Design</p>
+
+<p>Generate a unique nonce for each form, place the nonce into the form, and verify the nonce upon receipt of the form. Be sure that the nonce is not predictable (CWE-330).</p>
+
+<p>Note that this can be bypassed using XSS.</p>
+
+<p>Identify especially dangerous operations. When the user performs a dangerous operation, send a separate confirmation request to ensure that the user intended to perform that operation.</p>
+
+<p>Note that this can be bypassed using XSS.</p>
+
+<p>Use the ESAPI Session Management control.</p>
+
+<p>This control includes a component for CSRF.</p>
+
+<p>Do not use the GET method for any request that triggers a state change.</p>
+
+<p>Phase: Implementation</p>
+
+<p>Check the HTTP Referer header to see if the request originated from an expected page. This could break legitimate functionality, because users or proxies may have disabled sending the Referer for privacy reasons.</p>
+ </td>
+	</tr>
+</table>
+
+											</details></li>
+									</ol>
+								</li>
+								
+							</ol>
+						</li>
+						
+					</ol>
+				</li>
+				  
+				 
+				
+				
+				<li id="alerts--risk-1-confidence-3">
+					<h3>
+						<span>Risk</span>=<span
+							class="risk-level">Low</span>, <span>Confidence</span>=<span
+							class="confidence-level">High</span> <span>(1)</span>
+					</h3>
+					<ol>
+						
+						<li class="alerts--site-li">
+							<h4>
+								<span class="site">http://127.0.0.1:5000</span> <span>(1)</span>
+							</h4>
+							<ol>
+								
+								<li>
+									<h5>
+										<a
+											href="#alert-type-1">Server Leaks Version Information via &quot;Server&quot; HTTP Response Header Field</a> <span>(1)</span>
+									</h5>
+									<ol>
+										<li><details>
+												<summary>
+													<span class="request-method-n-url">GET http://127.0.0.1:5000/static/css/main.css</span>
+												</summary>
+												
+<table class="alerts-table">
+	<tr>
+		<th scope="row">Alert tags</th>
+		<td>
+			<ul class="alert-tags-list">
+				<li>
+					<span><a href="https://owasp.org/Top10/2021/A05_2021-Security_Misconfiguration/">OWASP_2021_A05</a></span> 
+				</li>
+				<li>
+					 <span>POLICY_QA_STD = </span>
+				</li>
+				<li>
+					 <span>POLICY_PENTEST = </span>
+				</li>
+				<li>
+					<span><a href="https://www.zaproxy.org/docs/desktop/addons/common-library/alerttags/#systemic">SYSTEMIC</a></span> 
+				</li>
+				<li>
+					<span><a href="https://owasp.org/www-project-top-ten/2017/A6_2017-Security_Misconfiguration.html">OWASP_2017_A06</a></span> 
+				</li>
+				<li>
+					<span><a href="https://owasp.org/www-project-web-security-testing-guide/v42/4-Web_Application_Security_Testing/01-Information_Gathering/02-Fingerprint_Web_Server">WSTG-v42-INFO-02</a></span> 
+				</li>
+				<li>
+					<span><a href="https://cwe.mitre.org/data/definitions/497.html">CWE-497</a></span> 
+				</li>
+				<li>
+					<span><a href="https://owasp.org/Top10/2025/A02_2025-Security_Misconfiguration/">OWASP_2025_A02</a></span> 
+				</li>
+			</ul>
+		</td>
+	</tr>
+	<tr>
+		<th scope="row">Alert description</th>
+		<td> 
+<p>The web/application server is leaking version information via the &quot;Server&quot; HTTP response header. Access to such information may facilitate attackers identifying other vulnerabilities your web/application server is subject to.</p>
+ </td>
+	</tr>
+	
+	<tr>
+		<th scope="row">Request</th>
+		<td><details open="open">
+				<summary>Request line and header section (281 bytes)</summary>
+				
+				<pre><code>GET http://127.0.0.1:5000/static/css/main.css HTTP/1.1
+host: 127.0.0.1:5000
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36
+pragma: no-cache
+cache-control: no-cache
+referer: http://127.0.0.1:5000/
+
+</code></pre>
+				
+				
+			</details> <details class="request-body" open="open">
+				<summary>Request body (0 bytes)</summary>
+				
+				<pre><code></code></pre>
+				
+				
+			</details></td>
+	</tr>
+	<tr>
+		<th scope="row">Response</th>
+		<td><details open="open">
+				<summary>Status line and header section (578 bytes)</summary>
+				
+				<pre><code>HTTP/1.1 200 OK
+Server: Werkzeug/3.1.9 Python/3.14.5
+Date: Wed, 25 Nov 2026 19:44:20 GMT
+Content-Disposition: inline; filename=main.css
+Content-Type: text/css; charset=utf-8
+Content-Length: 16129
+Last-Modified: Sat, 14 Nov 2026 00:20:59 GMT
+Cache-Control: no-cache
+ETag: &quot;1794615659.5032327-16129-385561660&quot;
+Date: Wed, 25 Nov 2026 19:44:20 GMT
+Accept-Ranges: bytes
+Content-Security-Policy: default-src &#39;self&#39;; object-src &#39;none&#39;; base-uri &#39;self&#39;; form-action &#39;self&#39;; frame-ancestors &#39;none&#39;
+X-Frame-Options: DENY
+X-Content-Type-Options: nosniff
+Connection: close
+
+</code></pre>
+				
+				
+			</details> <details class="response-body">
+				<summary>Response body (16129 bytes)</summary>
+				
+				<pre><code>/* ==========================================================================
+   main stylesheet
+   Colors live in custom properties on :root.
+
+   Theme selection, in order of priority:
+     &lt;html data-theme=&quot;dark&quot;&gt;   force dark
+     &lt;html data-theme=&quot;light&quot;&gt;  force light
+     (no attribute)             follow the operating system setting
+   ========================================================================== */
+
+/* 1. Light theme (default) */
+:root {
+  color-scheme: light;
+
+  --bg-color: #ffffff;        /* page background */
+  --surface-color: #f4f5f7;   /* panels, cards */
+  --raised-color: #ffffff;    /* inputs, items sitting on a panel */
+  --border-color: #c9d0d8;
+  --text-color: #15191d;
+  --muted-color: #4b5661;     /* secondary text, captions, axis labels */
+
+  --primary-color: #0066cc;
+  --primary-hover: #0052a3;
+  --primary-text: #ffffff;    /* text on a primary-colored button */
+
+  --danger-color: #c62828;
+  --danger-bg: #fdecea;
+  --warning-color: #9a5b00;
+  --warning-bg: #fff4e0;
+  --success-color: #2e7d32;
+  --success-bg: #e8f5e9;
+
+  --focus-ring: rgba(0, 102, 204, 0.45);
+  --shadow: 0 1px 2px rgba(16, 24, 32, 0.06), 0 2px 8px rgba(16, 24, 32, 0.06);
+
+  /* For Chart.js: read with getComputedStyle(document.documentElement) */
+  --chart-series-1: #0066cc;  /* selected genotype */
+  --chart-series-2: #8a96a3;  /* wild-type baseline */
+  --chart-grid: #e2e6ea;
+
+  /* Worm-type colors (high contrast, colorblind-safe hues) */
+  --g-wild-type: #3d4852;
+  --g-rsks-1: #0057a8;
+  --g-daf-2: #c24e00;
+  --g-daf-2-rsks-1: #b0136b;
+  --g-triple: #00785a;
+}
+
+
+/* Follow the system dark setting, unless the user picked light */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme=&quot;light&quot;]) {
+    color-scheme: dark;
+
+    --bg-color: #0f1214;
+    --surface-color: #161a1e;
+    --raised-color: #1d2227;
+    --border-color: #3a434c;
+    --text-color: #eef1f4;
+    --muted-color: #b0bac4;
+
+    --primary-color: #4dabf7;
+    --primary-hover: #74bdf9;
+    --primary-text: #0b1620;
+
+    --danger-color: #ff8a80;
+    --danger-bg: #2a1716;
+    --warning-color: #f2b84b;
+    --warning-bg: #2a2214;
+    --success-color: #81c995;
+    --success-bg: #14241a;
+
+    --focus-ring: rgba(77, 171, 247, 0.55);
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 4px 12px rgba(0, 0, 0, 0.35);
+
+    --chart-series-1: #4dabf7;
+    --chart-series-2: #7d8893;
+    --chart-grid: #2c333a;
+
+    --g-wild-type: #d0d7de;
+    --g-rsks-1: #4fb3ff;
+    --g-daf-2: #ff9a3d;
+    --g-daf-2-rsks-1: #ff6fb5;
+    --g-triple: #3ddc97;
+  }
+}
+
+/* 2b. Dark chosen explicitly (e.g. a theme toggle sets data-theme=&quot;dark&quot;) */
+:root[data-theme=&quot;dark&quot;] {
+  color-scheme: dark;
+
+  --bg-color: #0f1214;
+  --surface-color: #161a1e;
+  --raised-color: #1d2227;
+  --border-color: #3a434c;
+  --text-color: #eef1f4;
+  --muted-color: #b0bac4;
+
+  --primary-color: #4dabf7;
+  --primary-hover: #74bdf9;
+  --primary-text: #0b1620;
+
+  --danger-color: #ff8a80;
+  --danger-bg: #2a1716;
+  --warning-color: #f2b84b;
+  --warning-bg: #2a2214;
+  --success-color: #81c995;
+  --success-bg: #14241a;
+
+  --focus-ring: rgba(77, 171, 247, 0.55);
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 4px 12px rgba(0, 0, 0, 0.35);
+
+  --chart-series-1: #4dabf7;
+  --chart-series-2: #7d8893;
+  --chart-grid: #2c333a;
+
+  --g-wild-type: #d0d7de;
+  --g-rsks-1: #4fb3ff;
+  --g-daf-2: #ff9a3d;
+  --g-daf-2-rsks-1: #ff6fb5;
+  --g-triple: #3ddc97;
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+html, body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+  font-family: system-ui, -apple-system, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, sans-serif;
+  line-height: 1.5;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body {
+  padding: 2rem 1.5rem;
+}
+
+h1, h2, h3 {
+  line-height: 1.25;
+  margin: 0 0 0.75rem;
+}
+
+h1 { font-size: 1.75rem; }
+h2 { font-size: 1.35rem; margin-top: 1.5rem; }
+
+p { margin: 0 0 0.5rem; }
+
+a { color: var(--primary-color); }
+a:hover { color: var(--primary-hover); }
+
+::selection {
+  background: var(--primary-color);
+  color: var(--primary-text);
+}
+
+/* Keyboard focus, visible in both themes */
+:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* ==========================================================================
+   Form (gene selection)
+   ========================================================================== */
+
+form {
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+  max-width: 28rem;
+  box-shadow: var(--shadow);
+}
+
+label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0;
+  cursor: pointer;
+}
+
+/* Native checkboxes/radios pick up the theme color; color-scheme above
+   makes their unchecked state dark too */
+input[type=&quot;checkbox&quot;],
+input[type=&quot;radio&quot;] {
+  accent-color: var(--primary-color);
+  width: 1.1rem;
+  height: 1.1rem;
+  cursor: pointer;
+}
+
+input[type=&quot;text&quot;],
+input[type=&quot;search&quot;],
+input[type=&quot;number&quot;],
+select {
+  background: var(--raised-color);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 0.5rem 0.65rem;
+  font: inherit;
+}
+
+input::placeholder { color: var(--muted-color); }
+
+input[type=&quot;range&quot;] { accent-color: var(--primary-color); }
+
+/* ==========================================================================
+   Buttons
+   ========================================================================== */
+
+button,
+.btn {
+  display: inline-block;
+  margin-top: 0.75rem;
+  padding: 0.6rem 1.25rem;
+  font: inherit;
+  font-weight: 600;
+  color: var(--primary-text);
+  background: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+button:hover,
+.btn:hover {
+  background: var(--primary-hover);
+  border-color: var(--primary-hover);
+}
+
+button:disabled,
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Secondary buttons: Download CSV, Save, Share */
+.btn-secondary {
+  color: var(--text-color);
+  background: var(--raised-color);
+  border-color: var(--border-color);
+}
+
+.btn-secondary:hover {
+  background: var(--surface-color);
+  border-color: var(--muted-color);
+}
+
+/* ==========================================================================
+   Results and messages
+   ========================================================================== */
+
+.card {
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  box-shadow: var(--shadow);
+}
+
+.muted { color: var(--muted-color); }
+
+/* Error banner (feature 8). Use &lt;p class=&quot;alert alert-error&quot;&gt; in place of
+   the inline style=&quot;color:red&quot;, which can&#39;t adapt to the theme. */
+.alert {
+  border: 1px solid currentColor;
+  border-radius: 6px;
+  padding: 0.6rem 0.85rem;
+  margin-top: 1rem;
+  max-width: 28rem;
+}
+
+.alert-error   { color: var(--danger-color);  background: var(--danger-bg); }
+.alert-warning { color: var(--warning-color); background: var(--warning-bg); }  /* no feasible solution */
+.alert-success { color: var(--success-color); background: var(--success-bg); }  /* prediction saved */
+
+/* Tables (model accuracy) */
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  text-align: left;
+  padding: 0.5rem 0.6rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+th {
+  color: var(--muted-color);
+  font-weight: 600;
+}
+
+
+
+/* ==========================================================================
+   Page text and gene options
+   ========================================================================== */
+
+.intro {
+  max-width: 40rem;
+  color: var(--muted-color);
+  margin-bottom: 1.25rem;
+}
+
+fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+legend {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+label.option {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 0.45rem 0;
+}
+
+label.option input { margin-top: 0.2rem; flex: none; }
+
+.hint {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--muted-color);
+  line-height: 1.35;
+}
+
+.divider {
+  font-size: 0.85rem;
+  color: var(--muted-color);
+  margin: 0.5rem 0 0.15rem;
+}
+
+.result {
+  max-width: 40rem;
+  margin-top: 1.5rem;
+}
+
+.result h2 { margin-top: 0; }
+
+.note {
+  font-size: 0.9rem;
+  color: var(--muted-color);
+  border-left: 3px solid var(--primary-color);
+  padding-left: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.explainer {
+  max-width: 40rem;
+  margin-top: 1.25rem;
+}
+
+.explainer summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.explainer ol,
+.explainer ul {
+  margin: 0.5rem 0 0;
+  padding-left: 1.25rem;
+}
+
+.explainer li { margin-bottom: 0.35rem; }
+
+.footnote {
+  max-width: 40rem;
+  font-size: 0.85rem;
+  margin-top: 1.5rem;
+}
+
+/* ==========================================================================
+   Time-lapse graph and worm population
+   ========================================================================== */
+
+.timelapse {
+  max-width: 64rem;
+  margin-top: 1.5rem;
+}
+
+.tl-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.tl-header h2 { margin: 0; }
+
+.tl-views { display: flex; gap: 0.4rem; }
+.tl-views .btn { margin-top: 0; padding: 0.4rem 0.8rem; font-size: 0.85rem; }
+.tl-views .btn[aria-pressed=&quot;true&quot;] {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: var(--primary-text);
+}
+
+.tl-caption { font-size: 0.9rem; margin: 0.6rem 0 0.9rem; max-width: 48rem; }
+
+.tl-body {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.tl-chart {
+  position: relative;
+  height: 340px;
+  background: var(--raised-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 0.5rem;
+}
+
+.tl-pops {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 1rem;
+}
+
+.tl-pop h4 {
+  margin: 0 0 0.4rem;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.tl-swatch { width: 0.8rem; height: 0.8rem; border-radius: 2px; display: inline-block; }
+
+.tl-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 2px 4px;
+  background: var(--raised-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 0.5rem;
+}
+
+.tl-worm { width: 100%; height: auto; display: block; }
+.tl-worm path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 3.2;
+  stroke-linecap: round;
+  transition: opacity 0.25s ease, stroke 0.25s ease;
+}
+.tl-worm.dead path { stroke: var(--border-color); opacity: 0.55; }
+
+.tl-count { font-size: 0.85rem; color: var(--muted-color); margin: 0.35rem 0 0; }
+
+.tl-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.tl-controls .btn { margin-top: 0; min-width: 5.5rem; }
+.tl-controls input[type=&quot;range&quot;] { flex: 1 1 14rem; }
+.tl-time { font-variant-numeric: tabular-nums; min-width: 8.5rem; color: var(--muted-color); font-size: 0.9rem; }
+.tl-inline { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.9rem; padding: 0; }
+.tl-inline select { padding: 0.3rem 0.4rem; }
+.tl-footnote { font-size: 0.8rem; margin-top: 0.75rem; }
+
+@media (max-width: 760px) {
+  .tl-chart { height: 280px; }
+}
+
+
+/* ==========================================================================
+   Dashboard layout: controls on the left, results and graph on the right
+   ========================================================================== */
+
+body.dashboard-page { padding: 0; }
+
+.dash-header {
+  padding: 1.1rem 1.75rem;
+  background: var(--surface-color);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.dash-header h1 { margin: 0 0 0.2rem; font-size: 1.6rem; }
+.dash-header .intro { margin: 0; max-width: none; }
+
+.dashboard {
+  display: grid;
+  grid-template-columns: minmax(17rem, 21rem) minmax(0, 1fr);
+  gap: 1.5rem;
+  align-items: start;
+  max-width: 96rem;
+  margin: 0 auto;
+  padding: 1.5rem 1.75rem 2.5rem;
+}
+
+.dash-sidebar {
+  display: grid;
+  gap: 1rem;
+  position: sticky;
+  top: 1rem;
+}
+
+/* The form sits inside a panel now, so it drops its own card styling */
+.panel form {
+  background: none;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+  max-width: none;
+}
+
+.panel .alert { max-width: none; }
+.panel-quiet .explainer:first-child { margin-top: 0; }
+.panel-quiet .footnote { margin-top: 1rem; }
+.btn-block { width: 100%; }
+
+.dash-main {
+  display: grid;
+  gap: 1.25rem;
+  min-width: 0;
+}
+
+.dash-main .timelapse { max-width: none; margin-top: 0; }
+.dash-main .tl-chart { height: 380px; }
+
+/* Selected worm: name, summary tiles and note */
+.dash-result { --accent: var(--primary-color); }
+
+.dash-result-head {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.75rem;
+}
+
+.dash-result-head h2 { margin: 0; }
+
+.dash-swatch {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 3px;
+  background: var(--accent);
+  flex: none;
+}
+
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: 1rem;
+}
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.9rem 1.1rem;
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-left: 6px solid var(--accent);
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+}
+
+.tile-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted-color);
+}
+
+.tile-value {
+  font-size: 2.1rem;
+  font-weight: 750;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+.tile-value small { font-size: 0.95rem; font-weight: 500; color: var(--muted-color); }
+
+.tile-delta { font-size: 0.85rem; font-weight: 600; color: var(--muted-color); }
+.tile-delta.up { color: var(--success-color); }
+.tile-delta.down { color: var(--danger-color); }
+.tile-delta.neutral { color: var(--text-color); }
+
+.dash-result .note { margin-top: 1rem; border-left-color: var(--accent); }
+
+/* Before the first prediction */
+.dash-empty {
+  text-align: center;
+  padding: 4.5rem 2rem;
+  border-style: dashed;
+  box-shadow: none;
+}
+
+.dash-empty h2 { margin-top: 0.75rem; }
+.dash-empty p { max-width: 32rem; margin: 0 auto; }
+
+.dash-empty-worm { width: 5.5rem; height: auto; }
+.dash-empty-worm path {
+  fill: none;
+  stroke: var(--primary-color);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+/* Wide screens: lay each population out as 20 x 5 so both panels and the
+   controls fit on one screen under the graph */
+@media (min-width: 1100px) {
+  .dash-main .tl-grid { grid-template-columns: repeat(20, 1fr); gap: 3px 4px; }
+}
+
+/* Tablets and phones: one column, controls first */
+@media (max-width: 900px) {
+  .dashboard { grid-template-columns: 1fr; padding: 1rem; }
+  .dash-sidebar { position: static; }
+  .dash-header { padding: 1rem; }
+  .dash-main .tl-chart { height: 300px; }
+}
+
+/* ==========================================================================
+   Measured vs model
+   ========================================================================== */
+
+/* Tiles that hold wording instead of a number */
+.tile-value-text { font-size: 1.35rem; line-height: 1.3; padding: 0.3rem 0; }
+
+/* Model-based tiles get a dashed edge, matching the dashed model line on the graph */
+.tile-model { border-left-style: dashed; }
+
+.source-line { font-size: 0.85rem; margin-top: 0.6rem; }
+</code></pre>
+				
+				
+			</details></td>
+	</tr>
+	
+	
+	<tr>
+		<th scope="row">Evidence</th>
+		<td><pre><code>Werkzeug/3.1.9 Python/3.14.5</code></pre></td>
+	</tr>
+	<tr>
+		<th scope="row">Solution</th>
+		<td> 
+<p>Ensure that your web server, application server, load balancer, etc. is configured to suppress the &quot;Server&quot; header or provide generic details.</p>
+ </td>
+	</tr>
+</table>
+
+											</details></li>
+									</ol>
+								</li>
+								
+							</ol>
+						</li>
+						
+					</ol>
+				</li>
+				
+				
+				
+				
+				  
+				 
+				
+				
+				
+				
+				<li id="alerts--risk-0-confidence-2">
+					<h3>
+						<span>Risk</span>=<span
+							class="risk-level">Informational</span>, <span>Confidence</span>=<span
+							class="confidence-level">Medium</span> <span>(2)</span>
+					</h3>
+					<ol>
+						
+						<li class="alerts--site-li">
+							<h4>
+								<span class="site">http://127.0.0.1:5000</span> <span>(2)</span>
+							</h4>
+							<ol>
+								
+								<li>
+									<h5>
+										<a
+											href="#alert-type-2">Information Disclosure - Suspicious Comments</a> <span>(1)</span>
+									</h5>
+									<ol>
+										<li><details>
+												<summary>
+													<span class="request-method-n-url">GET http://127.0.0.1:5000/static/scripts/timelapse.js</span>
+												</summary>
+												
+<table class="alerts-table">
+	<tr>
+		<th scope="row">Alert tags</th>
+		<td>
+			<ul class="alert-tags-list">
+				<li>
+					<span><a href="https://owasp.org/Top10/2021/A01_2021-Broken_Access_Control/">OWASP_2021_A01</a></span> 
+				</li>
+				<li>
+					<span><a href="https://owasp.org/www-project-web-security-testing-guide/v42/4-Web_Application_Security_Testing/01-Information_Gathering/05-Review_Webpage_Content_for_Information_Leakage">WSTG-v42-INFO-05</a></span> 
+				</li>
+				<li>
+					<span><a href="https://owasp.org/www-project-top-ten/2017/A3_2017-Sensitive_Data_Exposure.html">OWASP_2017_A03</a></span> 
+				</li>
+				<li>
+					<span><a href="https://owasp.org/Top10/2025/A01_2025-Broken_Access_Control/">OWASP_2025_A01</a></span> 
+				</li>
+				<li>
+					 <span>POLICY_PENTEST = </span>
+				</li>
+				<li>
+					<span><a href="https://cwe.mitre.org/data/definitions/615.html">CWE-615</a></span> 
+				</li>
+			</ul>
+		</td>
+	</tr>
+	<tr>
+		<th scope="row">Alert description</th>
+		<td> 
+<p>The response appears to contain suspicious comments which may help an attacker.</p>
+ </td>
+	</tr>
+	<tr>
+		<th scope="row">Other info</th>
+		<td> 
+<p>The following pattern was used: \bFROM\b and was detected 4 times, the first in likely comment: &quot;//   model:    this project&#39;s prediction from its metabolic model (drawn dashed)&quot;, see evidence field for the suspicious comment/snippet.</p>
+ </td>
+	</tr>
+	<tr>
+		<th scope="row">Request</th>
+		<td><details open="open">
+				<summary>Request line and header section (289 bytes)</summary>
+				
+				<pre><code>GET http://127.0.0.1:5000/static/scripts/timelapse.js HTTP/1.1
+host: 127.0.0.1:5000
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36
+pragma: no-cache
+cache-control: no-cache
+referer: http://127.0.0.1:5000/
+
+</code></pre>
+				
+				
+			</details> <details class="request-body" open="open">
+				<summary>Request body (0 bytes)</summary>
+				
+				<pre><code></code></pre>
+				
+				
+			</details></td>
+	</tr>
+	<tr>
+		<th scope="row">Response</th>
+		<td><details open="open">
+				<summary>Status line and header section (590 bytes)</summary>
+				
+				<pre><code>HTTP/1.1 200 OK
+Server: Werkzeug/3.1.9 Python/3.14.5
+Date: Wed, 25 Nov 2026 19:44:20 GMT
+Content-Disposition: inline; filename=timelapse.js
+Content-Type: text/javascript; charset=utf-8
+Content-Length: 16423
+Last-Modified: Sat, 14 Nov 2026 01:08:59 GMT
+Cache-Control: no-cache
+ETag: &quot;1794618539.4009173-16423-3431151534&quot;
+Date: Wed, 25 Nov 2026 19:44:20 GMT
+Accept-Ranges: bytes
+Content-Security-Policy: default-src &#39;self&#39;; object-src &#39;none&#39;; base-uri &#39;self&#39;; form-action &#39;self&#39;; frame-ancestors &#39;none&#39;
+X-Frame-Options: DENY
+X-Content-Type-Options: nosniff
+Connection: close
+
+</code></pre>
+				
+				
+			</details> <details class="response-body">
+				<summary>Response body (16423 bytes)</summary>
+				
+				<pre><code>// Time-lapse of the survival curves, with a worm population that shrinks to
+// match the share of worms still alive at each moment.
+//
+// Each worm type can have two curves:
+//   measured: the wild-type curve stretched by the lifespan measured in the lab
+//   model:    this project&#39;s prediction from its metabolic model (drawn dashed)
+//
+// Data comes from /api/curves (built by app.py from core/results/*.csv and
+// core/data/lifespan_reference.csv). Time is relative: 1.0 = the wild-type mean lifespan.
+// Requires Chart.js (static/vendor/chart.umd.min.js), loaded before this file.
+
+(() =&gt; {
+  &quot;use strict&quot;;
+
+  const root = document.getElementById(&quot;timelapse&quot;);
+  if (!root || typeof Chart === &quot;undefined&quot;) return;
+
+  const POPULATION = 100;      // worms per population panel
+  const BASE_DURATION = 10000; // ms to play the visible time range at 1x speed
+  const GONE = 0.002;          // a curve below this counts as &quot;everyone has died&quot;
+
+  const els = {
+    canvas: root.querySelector(&quot;#tl-canvas&quot;),
+    caption: root.querySelector(&quot;#tl-caption&quot;),
+    play: root.querySelector(&quot;#tl-play&quot;),
+    scrub: root.querySelector(&quot;#tl-scrub&quot;),
+    time: root.querySelector(&quot;#tl-time&quot;),
+    speed: root.querySelector(&quot;#tl-speed&quot;),
+    all: root.querySelector(&quot;#tl-all&quot;),
+    pops: root.querySelector(&quot;#tl-pops&quot;),
+    status: root.querySelector(&quot;#tl-status&quot;),
+  };
+
+  const CAPTIONS = {
+    both:
+      &quot;Each line is the share of worms still alive as time passes. The solid line uses the lifespan &quot; +
+      &quot;measured in the lab. The dashed line is what this project&#39;s model predicts for the same worm.&quot;,
+    modelOnly:
+      &quot;Each line is the share of worms still alive as time passes. No lab measurement is available for &quot; +
+      &quot;this worm, so only the model&#39;s prediction (dashed) is drawn.&quot;,
+    reference: &quot;The line is the share of normal worms still alive as time passes.&quot;,
+  };
+
+  const state = {
+    data: null,
+    selected: root.dataset.genotype,
+    index: 0,
+    last: 0,     // last time index shown for the current selection
+    playing: false,
+    lastFrame: 0,
+    progress: 0, // 0..1 along the visible time range
+    chart: null,
+    deathOrder: [],
+    panels: [],
+  };
+
+  // ------------------------------------------------------------ helpers ---
+
+  const css = (name) =&gt; getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+
+  // Each genotype&#39;s color is a CSS variable, so it follows the light/dark theme.
+  const colorOf = (name) =&gt; css(state.data.genotypes[name].color_var) || css(&quot;--primary-color&quot;);
+
+  const isReference = (name) =&gt; name === state.data.reference;
+  const hasMeasured = (name) =&gt; Array.isArray(state.data.genotypes[name].measured);
+
+  // The curve the worm panels follow: measured where it exists, otherwise the model.
+  const bestCurve = (name) =&gt; (hasMeasured(name) ? state.data.genotypes[name].measured : state.data.genotypes[name].model);
+
+  // Same pseudo-random order every time, so the same worms die first in every panel
+  // and in every visit. That makes two populations easy to compare worm by worm.
+  function seededOrder(n, seed = 52340) {
+    const order = Array.from({ length: n }, (_, i) =&gt; i);
+    let x = seed;
+    for (let i = n - 1; i &gt; 0; i--) {
+      x = (x * 1103515245 + 12345) % 2147483648;
+      const j = x % (i + 1);
+      [order[i], order[j]] = [order[j], order[i]];
+    }
+    const rank = new Array(n);
+    order.forEach((worm, position) =&gt; (rank[worm] = position));
+    return rank; // rank[w] = how many worms die before worm w
+  }
+
+  function visibleGenotypes() {
+    const ref = state.data.reference;
+    const names = Object.keys(state.data.genotypes);
+    if (els.all.checked) return names;
+    return isReference(state.selected) ? [ref] : [state.selected, ref];
+  }
+
+  // Which line a dataset draws in the current view, or null if it is hidden.
+  function seriesOf(ds) {
+    const g = state.data.genotypes[ds.genotype];
+    if (!visibleGenotypes().includes(ds.genotype)) return null;
+    if (ds.kind === &quot;measured&quot;) return g.measured;
+    // The model line is drawn for the selected worm only, to keep the graph readable.
+    // Wild type&#39;s model and measured curves are the same line, so it is skipped there.
+    if (isReference(ds.genotype)) return null;
+    if (ds.genotype !== state.selected &amp;&amp;
+        !(els.all.checked &amp;&amp; ds.genotype === &quot;daf-16; daf-2 rsks-1&quot;)) return null;
+    return g.model;
+  }
+
+  // Last time index worth showing: where every visible line has run out.
+  function lastIndex() {
+    const n = state.data.t.length;
+    let last = 1;
+    state.chart.data.datasets.forEach((ds) =&gt; {
+      const ys = seriesOf(ds);
+      if (!ys) return;
+      for (let k = n - 1; k &gt; last; k--) {
+        const v = ys[k];
+        if (v !== null &amp;&amp; v &gt; GONE) {
+          last = k;
+          break;
+        }
+      }
+    });
+    return Math.min(n - 1, last + 2);
+  }
+
+  const fmtPct = (x, digits = 1) =&gt; `${(x * 100).toFixed(digits)}%`;
+
+  // -------------------------------------------------------------- chart ---
+
+  // Draws the 50% line, plus a vertical playhead and a dot on each visible line at the current time.
+  const overlayPlugin = {
+    id: &quot;timelapseOverlay&quot;,
+    afterDatasetsDraw(chart) {
+      const { ctx, chartArea: area, scales } = chart;
+      const t = state.data.t[state.index];
+      ctx.save();
+
+      // Reference line
+      const y = scales.y.getPixelForValue(0.5);
+      if (y &gt;= area.top &amp;&amp; y &lt;= area.bottom) {
+        ctx.strokeStyle = css(&quot;--muted-color&quot;);
+        ctx.setLineDash([3, 4]);
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(area.left, y);
+        ctx.lineTo(area.right, y);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = css(&quot;--muted-color&quot;);
+        ctx.font = &quot;11px system-ui, sans-serif&quot;;
+        ctx.textAlign = &quot;right&quot;;
+        ctx.fillText(&quot;half alive&quot;, area.right - 4, y - 5);
+      }
+
+      // Playhead
+      const x = scales.x.getPixelForValue(t);
+      ctx.strokeStyle = css(&quot;--text-color&quot;);
+      ctx.globalAlpha = 0.35;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(x, area.top);
+      ctx.lineTo(x, area.bottom);
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+
+      // Dot at the leading edge of each visible line
+      chart.data.datasets.forEach((ds) =&gt; {
+        if (ds.hidden || !ds.data.length) return;
+        const last = ds.data[ds.data.length - 1];
+        if (last.y === null) return;
+        ctx.fillStyle = ds.borderColor;
+        ctx.beginPath();
+        ctx.arc(scales.x.getPixelForValue(last.x), scales.y.getPixelForValue(last.y), 4, 0, Math.PI * 2);
+        ctx.fill();
+      });
+      ctx.restore();
+    },
+  };
+
+  function labelOf(name, kind) {
+    const display = state.data.genotypes[name].name;
+    if (kind === &quot;model&quot;) return `${display}: model prediction`;
+    return isReference(name) ? display : `${display}: measured`;
+  }
+
+  function buildChart() {
+    const names = Object.keys(state.data.genotypes);
+    const datasets = [];
+    names.forEach((name) =&gt; {
+      [&quot;measured&quot;, &quot;model&quot;].forEach((kind) =&gt; {
+        datasets.push({
+          label: labelOf(name, kind),
+          genotype: name,
+          kind,
+          data: [],
+          borderColor: colorOf(name),
+          backgroundColor: colorOf(name),
+          borderWidth: name === state.selected ? 3 : 2,
+          borderDash: kind === &quot;model&quot; ? [7, 6] : [],
+          // Lower order is drawn on top: the dashed model line sits above the solid lines it overlaps
+          order: kind === &quot;model&quot; ? 0 : isReference(name) ? 2 : 1,
+          pointRadius: 0,
+          spanGaps: false,
+          tension: 0,
+        });
+      });
+    });
+
+    state.chart = new Chart(els.canvas, {
+      type: &quot;line&quot;,
+      data: { datasets },
+      options: {
+        animation: false,
+        parsing: false,
+        normalized: true,
+        maintainAspectRatio: false,
+        interaction: { mode: &quot;nearest&quot;, axis: &quot;x&quot;, intersect: false },
+        scales: {
+          x: { type: &quot;linear&quot;, min: 0, title: { display: true, text: &quot;Time (1.0 = average lifespan of a normal worm)&quot; } },
+          y: { min: 0, max: 1, title: { display: true, text: &quot;Worms still alive&quot; }, ticks: { callback: (v) =&gt; `${Math.round(v * 100)}%` } },
+        },
+        plugins: {
+          // boxHeight 0 draws each legend key as a line, so dashed lines look dashed in the legend too
+          legend: { labels: { boxWidth: 30, boxHeight: 0, filter: (item, d) =&gt; !d.datasets[item.datasetIndex].hidden } },
+          tooltip: {
+            callbacks: {
+              title: (items) =&gt; `Time ${items[0].parsed.x.toFixed(2)}`,
+              label: (item) =&gt; `${item.dataset.label}: ${fmtPct(item.parsed.y)} alive`,
+            },
+          },
+        },
+      },
+      plugins: [overlayPlugin],
+    });
+    applyTheme();
+    applyView();
+  }
+
+  function applyTheme() {
+    const c = state.chart;
+    if (!c) return;
+    const text = css(&quot;--muted-color&quot;);
+    const grid = css(&quot;--chart-grid&quot;);
+    [&quot;x&quot;, &quot;y&quot;].forEach((axis) =&gt; {
+      c.options.scales[axis].ticks = { ...(c.options.scales[axis].ticks || {}), color: text };
+      c.options.scales[axis].grid = { color: grid };
+      c.options.scales[axis].title.color = text;
+    });
+    c.options.plugins.legend.labels.color = css(&quot;--text-color&quot;);
+    c.data.datasets.forEach((ds) =&gt; {
+      ds.borderColor = colorOf(ds.genotype);
+      ds.backgroundColor = ds.borderColor;
+    });
+    c.update(&quot;none&quot;);
+  }
+
+  function applyView() {
+    const c = state.chart;
+    c.data.datasets.forEach((ds) =&gt; (ds.hidden = seriesOf(ds) === null));
+    els.caption.textContent = isReference(state.selected)
+      ? CAPTIONS.reference
+      : hasMeasured(state.selected) ? CAPTIONS.both : CAPTIONS.modelOnly;
+
+    // The time range follows what is on screen, so a short-lived worm isn&#39;t squeezed into a corner.
+    state.last = lastIndex();
+    const end = state.data.t[state.last];
+    const step = end &gt; 4 ? 0.5 : 0.1;
+    c.options.scales.x.max = Math.ceil(end / step - 1e-9) * step; // round up so the last tick is a tidy number
+    els.scrub.max = String(state.last);
+    setIndex(Math.min(state.index, state.last));
+  }
+
+  // --------------------------------------------------------- population ---
+
+  const WORM_PATH = &quot;M3 12 C 7 4, 11 4, 14 10 S 21 16, 25 8&quot;;
+  const SVG_NS = &quot;http://www.w3.org/2000/svg&quot;;
+
+  function buildPanels() {
+    const ref = state.data.reference;
+    const names = isReference(state.selected) ? [ref] : [state.selected, ref];
+    els.pops.replaceChildren();
+    state.panels = names.map((name) =&gt; {
+      const g = state.data.genotypes[name];
+
+      // Built with createElement and textContent, so a name can never be read as HTML.
+      const panel = document.createElement(&quot;div&quot;);
+      panel.className = &quot;tl-pop&quot;;
+
+      const heading = document.createElement(&quot;h4&quot;);
+      const swatch = document.createElement(&quot;span&quot;);
+      swatch.className = &quot;tl-swatch&quot;;
+      swatch.style.background = `var(${g.color_var})`;
+      heading.append(swatch, document.createTextNode(g.name));
+
+      const grid = document.createElement(&quot;div&quot;);
+      grid.className = &quot;tl-grid&quot;;
+      grid.setAttribute(&quot;role&quot;, &quot;img&quot;);
+      grid.setAttribute(&quot;aria-label&quot;, `${POPULATION} worms of type ${g.name}`);
+
+      const count = document.createElement(&quot;p&quot;);
+      count.className = &quot;tl-count&quot;;
+
+      const worms = [];
+      for (let i = 0; i &lt; POPULATION; i++) {
+        const svg = document.createElementNS(SVG_NS, &quot;svg&quot;);
+        svg.setAttribute(&quot;viewBox&quot;, &quot;0 0 28 18&quot;);
+        svg.setAttribute(&quot;class&quot;, &quot;tl-worm&quot;);
+        svg.style.color = `var(${g.color_var})`;
+        const path = document.createElementNS(SVG_NS, &quot;path&quot;);
+        path.setAttribute(&quot;d&quot;, WORM_PATH);
+        svg.appendChild(path);
+        grid.appendChild(svg);
+        worms.push(svg);
+      }
+
+      panel.append(heading, grid, count);
+      els.pops.appendChild(panel);
+      return { name, worms, count };
+    });
+  }
+
+  function updatePanels() {
+    const i = state.index;
+    const refAlive = bestCurve(state.data.reference)[i];
+    state.panels.forEach((p) =&gt; {
+      const alive = bestCurve(p.name)[i];
+      const n = Math.round(alive * POPULATION);
+      p.worms.forEach((w, k) =&gt; w.classList.toggle(&quot;dead&quot;, state.deathOrder[k] &lt; POPULATION - n));
+      let text = `${fmtPct(alive)} alive`;
+      if (!isReference(p.name)) {
+        const gap = (alive - refAlive) * 100; // percentage points
+        text += Math.abs(gap) &lt; 0.05
+          ? &quot; · same as normal worm&quot;
+          : ` · ${gap &gt; 0 ? &quot;+&quot; : &quot;&quot;}${gap.toFixed(1)} points vs normal worm`;
+        text += hasMeasured(p.name) ? &quot; (measured)&quot; : &quot; (model estimate, no lab number)&quot;;
+      }
+      p.count.textContent = text;
+    });
+  }
+
+  // ---------------------------------------------------------- animation ---
+
+  function drawFrame() {
+    const i = state.index;
+    const t = state.data.t;
+    state.chart.data.datasets.forEach((ds) =&gt; {
+      const ys = seriesOf(ds);
+      ds.data = [];
+      if (!ys) return;
+      for (let k = 0; k &lt;= i; k++) ds.data.push({ x: t[k], y: ys[k] });
+    });
+    state.chart.update(&quot;none&quot;);
+    updatePanels();
+    els.scrub.value = String(i);
+    els.time.textContent = `Time ${t[i].toFixed(2)}`;
+  }
+
+  function setIndex(i) {
+    state.index = Math.max(0, Math.min(state.last, i));
+    state.progress = state.last ? state.index / state.last : 1;
+    drawFrame();
+  }
+
+  function tick(now) {
+    if (!state.playing) return;
+    const speed = parseFloat(els.speed.value) || 1;
+    const dt = Math.max(0, now - state.lastFrame); // the first frame&#39;s timestamp can precede play()
+    state.lastFrame = now;
+    state.progress = Math.min(1, state.progress + (dt * speed) / BASE_DURATION);
+    const next = Math.max(0, Math.min(state.last, Math.round(state.progress * state.last)));
+    if (next !== state.index) {
+      state.index = next;
+      drawFrame();
+    }
+    if (state.progress &gt;= 1) return pause(true);
+    requestAnimationFrame(tick);
+  }
+
+  function play() {
+    if (state.progress &gt;= 1) setIndex(0); // replay from the start
+    state.playing = true;
+    state.lastFrame = performance.now();
+    els.play.textContent = &quot;Pause&quot;;
+    els.play.setAttribute(&quot;aria-label&quot;, &quot;Pause time-lapse&quot;);
+    requestAnimationFrame(tick);
+  }
+
+  function pause(finished = false) {
+    state.playing = false;
+    els.play.textContent = finished ? &quot;Replay&quot; : &quot;Play&quot;;
+    els.play.setAttribute(&quot;aria-label&quot;, finished ? &quot;Replay time-lapse&quot; : &quot;Play time-lapse&quot;);
+  }
+
+  // -------------------------------------------------------------- start ---
+
+  function wireControls() {
+    els.play.addEventListener(&quot;click&quot;, () =&gt; (state.playing ? pause() : play()));
+    els.scrub.addEventListener(&quot;input&quot;, () =&gt; {
+      pause(Number(els.scrub.value) &gt;= state.last);
+      setIndex(Number(els.scrub.value));
+    });
+    els.all.addEventListener(&quot;change&quot;, applyView);
+
+    // Follow light/dark changes from the system or a data-theme toggle
+    window.matchMedia(&quot;(prefers-color-scheme: dark)&quot;).addEventListener(&quot;change&quot;, applyTheme);
+    new MutationObserver(applyTheme).observe(document.documentElement, { attributes: true, attributeFilter: [&quot;data-theme&quot;] });
+  }
+
+  async function start() {
+    try {
+      const res = await fetch(root.dataset.curvesUrl);
+      if (!res.ok) throw new Error(`server returned ${res.status}`);
+      state.data = await res.json();
+    } catch (err) {
+      els.status.textContent = `The graph couldn&#39;t be loaded (${err.message}). Try reloading the page.`;
+      els.status.hidden = false;
+      return;
+    }
+    if (!state.data.genotypes[state.selected]) state.selected = state.data.reference;
+
+    state.deathOrder = seededOrder(POPULATION);
+    buildPanels();
+    buildChart();
+    wireControls();
+
+    // People who turn off animations see the finished graph and can scrub through it.
+    if (window.matchMedia(&quot;(prefers-reduced-motion: reduce)&quot;).matches) {
+      setIndex(state.last);
+      pause(true);
+    } else {
+      setIndex(0);
+      play();
+    }
+  }
+
+  start();
+})();
+</code></pre>
+				
+				
+			</details></td>
+	</tr>
+	
+	
+	<tr>
+		<th scope="row">Evidence</th>
+		<td><pre><code>roject&#39;s prediction from its metabolic model</code></pre></td>
+	</tr>
+	<tr>
+		<th scope="row">Solution</th>
+		<td> 
+<p>Remove all comments that return information that may help an attacker and fix any underlying problems they refer to.</p>
+ </td>
+	</tr>
+</table>
+
+											</details></li>
+									</ol>
+								</li>
+								
+								<li>
+									<h5>
+										<a
+											href="#alert-type-3">Modern Web Application</a> <span>(1)</span>
+									</h5>
+									<ol>
+										<li><details>
+												<summary>
+													<span class="request-method-n-url">GET http://127.0.0.1:5000/</span>
+												</summary>
+												
+<table class="alerts-table">
+	<tr>
+		<th scope="row">Alert tags</th>
+		<td>
+			<ul class="alert-tags-list">
+				<li>
+					 <span>POLICY_QA_STD = </span>
+				</li>
+				<li>
+					 <span>POLICY_PENTEST = </span>
+				</li>
+				<li>
+					<span><a href="https://www.zaproxy.org/docs/desktop/addons/common-library/alerttags/#systemic">SYSTEMIC</a></span> 
+				</li>
+				<li>
+					 <span>POLICY_DEV_STD = </span>
+				</li>
+			</ul>
+		</td>
+	</tr>
+	<tr>
+		<th scope="row">Alert description</th>
+		<td> 
+<p>The application appears to be a modern web application. If you need to explore it automatically then the Client Spider may well be more effective than the standard one.</p>
+ </td>
+	</tr>
+	<tr>
+		<th scope="row">Other info</th>
+		<td> 
+<p>No links have been found while there are scripts, which is an indication that this is a modern web application.</p>
+ </td>
+	</tr>
+	<tr>
+		<th scope="row">Request</th>
+		<td><details open="open">
+				<summary>Request line and header section (229 bytes)</summary>
+				
+				<pre><code>GET http://127.0.0.1:5000/ HTTP/1.1
+host: 127.0.0.1:5000
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36
+pragma: no-cache
+cache-control: no-cache
+
+</code></pre>
+				
+				
+			</details> <details class="request-body" open="open">
+				<summary>Request body (0 bytes)</summary>
+				
+				<pre><code></code></pre>
+				
+				
+			</details></td>
+	</tr>
+	<tr>
+		<th scope="row">Response</th>
+		<td><details open="open">
+				<summary>Status line and header section (356 bytes)</summary>
+				
+				<pre><code>HTTP/1.1 200 OK
+Server: Werkzeug/3.1.9 Python/3.14.5
+Date: Wed, 25 Nov 2026 19:44:20 GMT
+Content-Type: text/html; charset=utf-8
+Content-Length: 5399
+Content-Security-Policy: default-src &#39;self&#39;; object-src &#39;none&#39;; base-uri &#39;self&#39;; form-action &#39;self&#39;; frame-ancestors &#39;none&#39;
+X-Frame-Options: DENY
+X-Content-Type-Options: nosniff
+Connection: close
+
+</code></pre>
+				
+				
+			</details> <details class="response-body">
+				<summary>Response body (5399 bytes)</summary>
+				
+				<pre><code>&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+  &lt;title&gt;Worm Lifespan&lt;/title&gt;
+
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;/static/css/main.css&quot;&gt;
+  &lt;script src=&quot;/static/scripts/main.js&quot; defer&gt;&lt;/script&gt;
+  
+&lt;/head&gt;
+&lt;body class=&quot;dashboard-page&quot;&gt;
+  &lt;header class=&quot;dash-header&quot;&gt;
+    &lt;h1&gt;C. elegans lifespan predictor&lt;/h1&gt;
+    &lt;p class=&quot;intro&quot;&gt;
+      This site estimates how long a small roundworm, &lt;em&gt;C. elegans&lt;/em&gt;, lives when some of its
+      genes are changed. Pick a worm on the left and press Predict.
+    &lt;/p&gt;
+  &lt;/header&gt;
+
+  &lt;div class=&quot;dashboard&quot;&gt;
+    &lt;!-- Left: controls and explanations --&gt;
+    &lt;aside class=&quot;dash-sidebar&quot;&gt;
+      &lt;section class=&quot;card panel&quot;&gt;
+        &lt;form method=&quot;post&quot;&gt;
+          &lt;fieldset&gt;
+            &lt;legend&gt;Choose a worm&lt;/legend&gt;
+
+            
+              
+              &lt;label class=&quot;option&quot;&gt;
+                &lt;input type=&quot;checkbox&quot; name=&quot;genes&quot; value=&quot;wild type&quot;
+                       
+                       data-wild-type&gt;
+                &lt;span&gt;
+                  &lt;strong&gt;Wild type&lt;/strong&gt;
+                  &lt;span class=&quot;hint&quot;&gt;A normal worm with no changed genes. Every other worm is compared with this one.&lt;/span&gt;
+                &lt;/span&gt;
+              &lt;/label&gt;
+            
+              &lt;p class=&quot;divider&quot;&gt;or change one or more genes:&lt;/p&gt;
+              &lt;label class=&quot;option&quot;&gt;
+                &lt;input type=&quot;checkbox&quot; name=&quot;genes&quot; value=&quot;daf-2&quot;
+                       
+                       &gt;
+                &lt;span&gt;
+                  &lt;strong&gt;daf-2&lt;/strong&gt;
+                  &lt;span class=&quot;hint&quot;&gt;Senses insulin-like signals. Worms with a weakened daf-2 are known to live longer.&lt;/span&gt;
+                &lt;/span&gt;
+              &lt;/label&gt;
+            
+              
+              &lt;label class=&quot;option&quot;&gt;
+                &lt;input type=&quot;checkbox&quot; name=&quot;genes&quot; value=&quot;rsks-1&quot;
+                       
+                       &gt;
+                &lt;span&gt;
+                  &lt;strong&gt;rsks-1&lt;/strong&gt;
+                  &lt;span class=&quot;hint&quot;&gt;Helps set how fast the worm grows based on food. Changing it slows growth.&lt;/span&gt;
+                &lt;/span&gt;
+              &lt;/label&gt;
+            
+              
+              &lt;label class=&quot;option&quot;&gt;
+                &lt;input type=&quot;checkbox&quot; name=&quot;genes&quot; value=&quot;daf-16&quot;
+                       
+                       &gt;
+                &lt;span&gt;
+                  &lt;strong&gt;daf-16&lt;/strong&gt;
+                  &lt;span class=&quot;hint&quot;&gt;Turns on the worm&amp;#39;s protective genes. Worms need it for daf-2&amp;#39;s life-extending effect.&lt;/span&gt;
+                &lt;/span&gt;
+              &lt;/label&gt;
+            
+          &lt;/fieldset&gt;
+
+          &lt;button class=&quot;btn-block&quot;&gt;Predict&lt;/button&gt;
+        &lt;/form&gt;
+
+        
+      &lt;/section&gt;
+
+      &lt;section class=&quot;card panel panel-quiet&quot;&gt;
+        &lt;details class=&quot;explainer&quot;&gt;
+          &lt;summary&gt;How does this work?&lt;/summary&gt;
+          &lt;ol&gt;
+            &lt;li&gt;Researchers measured how active each gene was in five kinds of worms: normal worms and four
+                strains with changed genes.&lt;/li&gt;
+            &lt;li&gt;Those measurements go into a computer model of the worm&#39;s metabolism (the chemical reactions
+                that keep it alive), which works out how fast the worm can grow.&lt;/li&gt;
+            &lt;li&gt;The slower the model says a worm can grow, the longer it is predicted to live. This is the
+                &quot;model estimate&quot;.&lt;/li&gt;
+            &lt;li&gt;The same researchers also measured how long each kind of worm lived. Those measured
+                lifespans set the main survival curve.&lt;/li&gt;
+          &lt;/ol&gt;
+        &lt;/details&gt;
+
+        &lt;details class=&quot;explainer&quot;&gt;
+          &lt;summary&gt;What do the results mean?&lt;/summary&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;strong&gt;Measured lifespan&lt;/strong&gt; is how long this worm lived in the lab, compared with a
+                normal worm. 2.00&amp;times; means twice as long.&lt;/li&gt;
+            &lt;li&gt;&lt;strong&gt;Model estimate&lt;/strong&gt; is what this project&#39;s metabolic model predicts for the same
+                worm. It is a simple model and can be far off.&lt;/li&gt;
+            &lt;li&gt;&lt;strong&gt;Measured vs model&lt;/strong&gt; shows how far the model is from the lab result.&lt;/li&gt;
+            &lt;li&gt;&lt;strong&gt;Growth compared with a normal worm&lt;/strong&gt; comes from the model: 1.0000 means the
+                same as a normal worm, and lower means slower.&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/details&gt;
+
+        &lt;p class=&quot;muted footnote&quot;&gt;
+          Measured numbers come from a published lab study. Model numbers come from a simple research
+          model, shown with its error. Only the five worm types in the dataset are covered so far.
+        &lt;/p&gt;
+        &lt;p class=&quot;muted footnote&quot;&gt;
+          To disable graph animations to instantly see completed graphs, disable animations in your system settings.
+        &lt;/p&gt;
+      &lt;/section&gt;
+    &lt;/aside&gt;
+
+    &lt;!-- Right: results and the time-lapse graph --&gt;
+    &lt;main class=&quot;dash-main&quot;&gt;
+      
+        &lt;section class=&quot;card dash-empty&quot;&gt;
+          &lt;svg class=&quot;dash-empty-worm&quot; viewBox=&quot;0 0 28 18&quot; aria-hidden=&quot;true&quot;&gt;&lt;path d=&quot;M3 12 C 7 4, 11 4, 14 10 S 21 16, 25 8&quot;/&gt;&lt;/svg&gt;
+          &lt;h2&gt;Your results will appear here&lt;/h2&gt;
+          &lt;p class=&quot;muted&quot;&gt;
+            Choose a worm on the left and press Predict. You&#39;ll get its measured lifespan, the model&#39;s estimate, and a
+            time-lapse of a population of 100 worms aging next to normal worms.
+          &lt;/p&gt;
+        &lt;/section&gt;
+      
+    &lt;/main&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+				
+				
+			</details></td>
+	</tr>
+	
+	
+	<tr>
+		<th scope="row">Evidence</th>
+		<td><pre><code>&lt;script src=&quot;/static/scripts/main.js&quot; defer&gt;&lt;/script&gt;</code></pre></td>
+	</tr>
+	<tr>
+		<th scope="row">Solution</th>
+		<td> 
+<p>This is an informational alert and so no changes are required.</p>
+ </td>
+	</tr>
+</table>
+
+											</details></li>
+									</ol>
+								</li>
+								
+							</ol>
+						</li>
+						
+					</ol>
+				</li>
+				
+				<li id="alerts--risk-0-confidence-1">
+					<h3>
+						<span>Risk</span>=<span
+							class="risk-level">Informational</span>, <span>Confidence</span>=<span
+							class="confidence-level">Low</span> <span>(1)</span>
+					</h3>
+					<ol>
+						
+						<li class="alerts--site-li">
+							<h4>
+								<span class="site">http://127.0.0.1:5000</span> <span>(1)</span>
+							</h4>
+							<ol>
+								
+								<li>
+									<h5>
+										<a
+											href="#alert-type-4">User Controllable HTML Element Attribute (Potential XSS)</a> <span>(1)</span>
+									</h5>
+									<ol>
+										<li><details>
+												<summary>
+													<span class="request-method-n-url">POST http://127.0.0.1:5000/</span>
+												</summary>
+												
+<table class="alerts-table">
+	<tr>
+		<th scope="row">Alert tags</th>
+		<td>
+			<ul class="alert-tags-list">
+				<li>
+					<span><a href="https://owasp.org/Top10/2025/A05_2025-Injection/">OWASP_2025_A05</a></span> 
+				</li>
+				<li>
+					<span><a href="https://owasp.org/www-project-top-ten/2017/A1_2017-Injection.html">OWASP_2017_A01</a></span> 
+				</li>
+				<li>
+					<span><a href="https://owasp.org/Top10/2021/A03_2021-Injection/">OWASP_2021_A03</a></span> 
+				</li>
+				<li>
+					<span><a href="https://cwe.mitre.org/data/definitions/20.html">CWE-20</a></span> 
+				</li>
+				<li>
+					 <span>POLICY_PENTEST = </span>
+				</li>
+			</ul>
+		</td>
+	</tr>
+	<tr>
+		<th scope="row">Alert description</th>
+		<td> 
+<p>This check looks at user-supplied input in query string parameters and POST data to identify where certain HTML attribute values might be controlled. This provides hot-spot detection for XSS (cross-site scripting) that will require further review by a security analyst to determine exploitability.</p>
+ </td>
+	</tr>
+	<tr>
+		<th scope="row">Other info</th>
+		<td> 
+<p>User-controlled HTML attribute values were found. Try injecting special characters to see if XSS might be possible. The page at the following URL:</p>
+
+<p>http://127.0.0.1:5000/</p>
+
+<p>appears to include user input in:</p>
+
+<p>a(n) [input] tag [value] attribute</p>
+
+<p>The user input found was:</p>
+
+<p>genes=wild type</p>
+
+<p>The user-controlled value was:</p>
+
+<p>wild type</p>
+ </td>
+	</tr>
+	<tr>
+		<th scope="row">Request</th>
+		<td><details open="open">
+				<summary>Request line and header section (332 bytes)</summary>
+				
+				<pre><code>POST http://127.0.0.1:5000/ HTTP/1.1
+host: 127.0.0.1:5000
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36
+pragma: no-cache
+cache-control: no-cache
+content-type: application/x-www-form-urlencoded
+referer: http://127.0.0.1:5000/
+content-length: 15
+
+</code></pre>
+				
+				
+			</details> <details class="request-body" open="open">
+				<summary>Request body (15 bytes)</summary>
+				
+				<pre><code>genes=wild+type</code></pre>
+				
+				
+			</details></td>
+	</tr>
+	<tr>
+		<th scope="row">Response</th>
+		<td><details open="open">
+				<summary>Status line and header section (356 bytes)</summary>
+				
+				<pre><code>HTTP/1.1 200 OK
+Server: Werkzeug/3.1.9 Python/3.14.5
+Date: Wed, 25 Nov 2026 19:44:20 GMT
+Content-Type: text/html; charset=utf-8
+Content-Length: 8762
+Content-Security-Policy: default-src &#39;self&#39;; object-src &#39;none&#39;; base-uri &#39;self&#39;; form-action &#39;self&#39;; frame-ancestors &#39;none&#39;
+X-Frame-Options: DENY
+X-Content-Type-Options: nosniff
+Connection: close
+
+</code></pre>
+				
+				
+			</details> <details class="response-body">
+				<summary>Response body (8762 bytes)</summary>
+				
+				<pre><code>&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+  &lt;title&gt;Worm Lifespan&lt;/title&gt;
+
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;/static/css/main.css&quot;&gt;
+  &lt;script src=&quot;/static/scripts/main.js&quot; defer&gt;&lt;/script&gt;
+  
+    &lt;script src=&quot;/static/vendor/chart.umd.min.js&quot; defer&gt;&lt;/script&gt;
+    &lt;script src=&quot;/static/scripts/timelapse.js&quot; defer&gt;&lt;/script&gt;
+  
+&lt;/head&gt;
+&lt;body class=&quot;dashboard-page&quot;&gt;
+  &lt;header class=&quot;dash-header&quot;&gt;
+    &lt;h1&gt;C. elegans lifespan predictor&lt;/h1&gt;
+    &lt;p class=&quot;intro&quot;&gt;
+      This site estimates how long a small roundworm, &lt;em&gt;C. elegans&lt;/em&gt;, lives when some of its
+      genes are changed. Pick a worm on the left and press Predict.
+    &lt;/p&gt;
+  &lt;/header&gt;
+
+  &lt;div class=&quot;dashboard&quot;&gt;
+    &lt;!-- Left: controls and explanations --&gt;
+    &lt;aside class=&quot;dash-sidebar&quot;&gt;
+      &lt;section class=&quot;card panel&quot;&gt;
+        &lt;form method=&quot;post&quot;&gt;
+          &lt;fieldset&gt;
+            &lt;legend&gt;Choose a worm&lt;/legend&gt;
+
+            
+              
+              &lt;label class=&quot;option&quot;&gt;
+                &lt;input type=&quot;checkbox&quot; name=&quot;genes&quot; value=&quot;wild type&quot;
+                       checked
+                       data-wild-type&gt;
+                &lt;span&gt;
+                  &lt;strong&gt;Wild type&lt;/strong&gt;
+                  &lt;span class=&quot;hint&quot;&gt;A normal worm with no changed genes. Every other worm is compared with this one.&lt;/span&gt;
+                &lt;/span&gt;
+              &lt;/label&gt;
+            
+              &lt;p class=&quot;divider&quot;&gt;or change one or more genes:&lt;/p&gt;
+              &lt;label class=&quot;option&quot;&gt;
+                &lt;input type=&quot;checkbox&quot; name=&quot;genes&quot; value=&quot;daf-2&quot;
+                       
+                       &gt;
+                &lt;span&gt;
+                  &lt;strong&gt;daf-2&lt;/strong&gt;
+                  &lt;span class=&quot;hint&quot;&gt;Senses insulin-like signals. Worms with a weakened daf-2 are known to live longer.&lt;/span&gt;
+                &lt;/span&gt;
+              &lt;/label&gt;
+            
+              
+              &lt;label class=&quot;option&quot;&gt;
+                &lt;input type=&quot;checkbox&quot; name=&quot;genes&quot; value=&quot;rsks-1&quot;
+                       
+                       &gt;
+                &lt;span&gt;
+                  &lt;strong&gt;rsks-1&lt;/strong&gt;
+                  &lt;span class=&quot;hint&quot;&gt;Helps set how fast the worm grows based on food. Changing it slows growth.&lt;/span&gt;
+                &lt;/span&gt;
+              &lt;/label&gt;
+            
+              
+              &lt;label class=&quot;option&quot;&gt;
+                &lt;input type=&quot;checkbox&quot; name=&quot;genes&quot; value=&quot;daf-16&quot;
+                       
+                       &gt;
+                &lt;span&gt;
+                  &lt;strong&gt;daf-16&lt;/strong&gt;
+                  &lt;span class=&quot;hint&quot;&gt;Turns on the worm&amp;#39;s protective genes. Worms need it for daf-2&amp;#39;s life-extending effect.&lt;/span&gt;
+                &lt;/span&gt;
+              &lt;/label&gt;
+            
+          &lt;/fieldset&gt;
+
+          &lt;button class=&quot;btn-block&quot;&gt;Predict&lt;/button&gt;
+        &lt;/form&gt;
+
+        
+      &lt;/section&gt;
+
+      &lt;section class=&quot;card panel panel-quiet&quot;&gt;
+        &lt;details class=&quot;explainer&quot;&gt;
+          &lt;summary&gt;How does this work?&lt;/summary&gt;
+          &lt;ol&gt;
+            &lt;li&gt;Researchers measured how active each gene was in five kinds of worms: normal worms and four
+                strains with changed genes.&lt;/li&gt;
+            &lt;li&gt;Those measurements go into a computer model of the worm&#39;s metabolism (the chemical reactions
+                that keep it alive), which works out how fast the worm can grow.&lt;/li&gt;
+            &lt;li&gt;The slower the model says a worm can grow, the longer it is predicted to live. This is the
+                &quot;model estimate&quot;.&lt;/li&gt;
+            &lt;li&gt;The same researchers also measured how long each kind of worm lived. Those measured
+                lifespans set the main survival curve.&lt;/li&gt;
+          &lt;/ol&gt;
+        &lt;/details&gt;
+
+        &lt;details class=&quot;explainer&quot;&gt;
+          &lt;summary&gt;What do the results mean?&lt;/summary&gt;
+          &lt;ul&gt;
+            &lt;li&gt;&lt;strong&gt;Measured lifespan&lt;/strong&gt; is how long this worm lived in the lab, compared with a
+                normal worm. 2.00&amp;times; means twice as long.&lt;/li&gt;
+            &lt;li&gt;&lt;strong&gt;Model estimate&lt;/strong&gt; is what this project&#39;s metabolic model predicts for the same
+                worm. It is a simple model and can be far off.&lt;/li&gt;
+            &lt;li&gt;&lt;strong&gt;Measured vs model&lt;/strong&gt; shows how far the model is from the lab result.&lt;/li&gt;
+            &lt;li&gt;&lt;strong&gt;Growth compared with a normal worm&lt;/strong&gt; comes from the model: 1.0000 means the
+                same as a normal worm, and lower means slower.&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/details&gt;
+
+        &lt;p class=&quot;muted footnote&quot;&gt;
+          Measured numbers come from a published lab study. Model numbers come from a simple research
+          model, shown with its error. Only the five worm types in the dataset are covered so far.
+        &lt;/p&gt;
+        &lt;p class=&quot;muted footnote&quot;&gt;
+          To disable graph animations to instantly see completed graphs, disable animations in your system settings.
+        &lt;/p&gt;
+      &lt;/section&gt;
+    &lt;/aside&gt;
+
+    &lt;!-- Right: results and the time-lapse graph --&gt;
+    &lt;main class=&quot;dash-main&quot;&gt;
+      
+        &lt;section class=&quot;dash-result&quot; style=&quot;--accent: var(--g-wild-type)&quot; aria-live=&quot;polite&quot;&gt;
+          &lt;div class=&quot;dash-result-head&quot;&gt;
+            &lt;span class=&quot;dash-swatch&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;
+            &lt;h2&gt;Wild type (normal worm)&lt;/h2&gt;
+          &lt;/div&gt;
+
+          &lt;div class=&quot;tiles&quot;&gt;
+            &lt;div class=&quot;tile&quot;&gt;
+              &lt;span class=&quot;tile-label&quot;&gt;Measured lifespan&lt;/span&gt;
+              
+                &lt;span class=&quot;tile-value&quot;&gt;1.00&lt;small&gt;&amp;times; a normal worm&lt;/small&gt;&lt;/span&gt;
+                
+                  &lt;span class=&quot;tile-delta&quot;&gt;Baseline&lt;/span&gt;
+                
+              
+            &lt;/div&gt;
+
+            &lt;div class=&quot;tile tile-model&quot;&gt;
+              &lt;span class=&quot;tile-label&quot;&gt;Model estimate&lt;/span&gt;
+              &lt;span class=&quot;tile-value&quot;&gt;1.00&lt;small&gt;&amp;times; a normal worm&lt;/small&gt;&lt;/span&gt;
+              
+                &lt;span class=&quot;tile-delta&quot;&gt;Baseline&lt;/span&gt;
+              
+            &lt;/div&gt;
+
+            &lt;div class=&quot;tile&quot;&gt;
+              &lt;span class=&quot;tile-label&quot;&gt;Measured vs model&lt;/span&gt;
+              
+                &lt;span class=&quot;tile-value tile-value-text&quot;&gt;Baseline&lt;/span&gt;
+                &lt;span class=&quot;tile-delta&quot;&gt;Both start from this worm&lt;/span&gt;
+              
+            &lt;/div&gt;
+
+            &lt;div class=&quot;tile tile-model&quot;&gt;
+              &lt;span class=&quot;tile-label&quot;&gt;Growth vs normal worm&lt;/span&gt;
+              &lt;span class=&quot;tile-value&quot;&gt;1.0000&lt;small&gt;&amp;times;&lt;/small&gt;&lt;/span&gt;
+              
+                &lt;span class=&quot;tile-delta&quot;&gt;Baseline&lt;/span&gt;
+              
+            &lt;/div&gt;
+          &lt;/div&gt;
+
+          
+            &lt;p class=&quot;note&quot;&gt;This is the baseline. Every other worm&#39;s results are compared with this one.&lt;/p&gt;
+          
+
+          &lt;p class=&quot;muted source-line&quot;&gt;
+            Measured values: &lt;a href=&quot;https://doi.org/10.1016/j.celrep.2013.11.018&quot; rel=&quot;noopener&quot;&gt;Chen et al. 2013, Cell Reports 5(6):1600-1610&lt;/a&gt;
+            (adult worms at 25&amp;deg;C).
+            Model values: this project&#39;s metabolic model.
+          &lt;/p&gt;
+        &lt;/section&gt;
+
+        &lt;section class=&quot;card timelapse&quot; id=&quot;timelapse&quot;
+                 data-genotype=&quot;wild type&quot;
+                 data-curves-url=&quot;/api/curves&quot;&gt;
+          &lt;div class=&quot;tl-header&quot;&gt;
+            &lt;h2&gt;Watch the worms age&lt;/h2&gt;
+          &lt;/div&gt;
+          &lt;p class=&quot;muted tl-caption&quot; id=&quot;tl-caption&quot;&gt;&lt;/p&gt;
+          &lt;p class=&quot;alert alert-error&quot; id=&quot;tl-status&quot; role=&quot;alert&quot; hidden&gt;&lt;/p&gt;
+
+          &lt;div class=&quot;tl-body&quot;&gt;
+            &lt;div class=&quot;tl-chart&quot;&gt;
+              &lt;canvas id=&quot;tl-canvas&quot; role=&quot;img&quot; aria-label=&quot;Share of worms alive over time&quot;&gt;&lt;/canvas&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;tl-pops&quot; id=&quot;tl-pops&quot;&gt;&lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;div class=&quot;tl-controls&quot;&gt;
+            &lt;button type=&quot;button&quot; class=&quot;btn&quot; id=&quot;tl-play&quot;&gt;Play&lt;/button&gt;
+            &lt;input type=&quot;range&quot; id=&quot;tl-scrub&quot; min=&quot;0&quot; max=&quot;199&quot; step=&quot;1&quot; value=&quot;0&quot; aria-label=&quot;Time&quot;&gt;
+            &lt;span class=&quot;tl-time&quot; id=&quot;tl-time&quot;&gt;Time 0.00&lt;/span&gt;
+            &lt;label class=&quot;tl-inline&quot;&gt;Speed
+              &lt;select id=&quot;tl-speed&quot;&gt;
+                &lt;option value=&quot;0.5&quot;&gt;0.5&amp;times;&lt;/option&gt;
+                &lt;option value=&quot;1&quot; selected&gt;1&amp;times;&lt;/option&gt;
+                &lt;option value=&quot;2&quot;&gt;2&amp;times;&lt;/option&gt;
+                &lt;option value=&quot;4&quot;&gt;4&amp;times;&lt;/option&gt;
+              &lt;/select&gt;
+            &lt;/label&gt;
+            &lt;label class=&quot;tl-inline&quot;&gt;&lt;input type=&quot;checkbox&quot; id=&quot;tl-all&quot;&gt; Show all worm types&lt;/label&gt;
+          &lt;/div&gt;
+
+          &lt;p class=&quot;muted tl-footnote&quot;&gt;
+            Each panel shows 100 worms, so one worm stands for 1% of the population. A worm fades out when
+            it would have died by that time, based on the measured lifespan where one exists. Time is shown
+            relative to a normal worm: 1.0 is the average normal lifespan.
+          &lt;/p&gt;
+        &lt;/section&gt;
+      
+    &lt;/main&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+				
+				
+			</details></td>
+	</tr>
+	<tr>
+		<th scope="row">Parameter</th>
+		<td><pre><code>genes</code></pre></td>
+	</tr>
+	
+	
+	<tr>
+		<th scope="row">Solution</th>
+		<td> 
+<p>Validate all input and sanitize output it before writing to any HTML attributes.</p>
+ </td>
+	</tr>
+</table>
+
+											</details></li>
+									</ol>
+								</li>
+								
+							</ol>
+						</li>
+						
+					</ol>
+				</li>
+				  
+			</ol>
+		</section>
+
+		<section id="appendix" class="appendix">
+			<h2>Appendix</h2>
+
+			<section id="alert-types" class="alert-types">
+				<h3>Alert Types</h3>
+				<p class="alert-types-intro">This section contains additional information on the types of alerts in the report.</p>
+				<ol>
+					<li
+						id="alert-type-0">
+						<h4>Absence of Anti-CSRF Tokens</h4>
+						<table class="alert-types-table">
+							<tr>
+								<th scope="row">Source</th>
+								<td>
+									
+									   <span>raised by a passive scanner</span> <span>(<a
+										href="https://www.zaproxy.org/docs/alerts/10202/">Absence of Anti-CSRF Tokens</a>)
+									</span>   
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">CWE ID</th>
+								<td><a
+									href="https://cwe.mitre.org/data/definitions/352.html">352</a></td>
+							</tr>
+							<tr>
+								<th scope="row">WASC ID</th>
+								<td>9</td>
+							</tr>
+							<tr>
+								<th scope="row">Reference</th>
+								<td>
+									<ol>
+										<li><a
+											href="https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html">https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html</a></li>
+										<li><a
+											href="https://cwe.mitre.org/data/definitions/352.html">https://cwe.mitre.org/data/definitions/352.html</a></li>
+									</ol>
+								</td>
+							</tr>
+						</table>
+					</li>
+					<li
+						id="alert-type-1">
+						<h4>Server Leaks Version Information via &quot;Server&quot; HTTP Response Header Field</h4>
+						<table class="alert-types-table">
+							<tr>
+								<th scope="row">Source</th>
+								<td>
+									
+									   <span>raised by a passive scanner</span> <span>(<a
+										href="https://www.zaproxy.org/docs/alerts/10036/">HTTP Server Response Header</a>)
+									</span>   
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">CWE ID</th>
+								<td><a
+									href="https://cwe.mitre.org/data/definitions/497.html">497</a></td>
+							</tr>
+							<tr>
+								<th scope="row">WASC ID</th>
+								<td>13</td>
+							</tr>
+							<tr>
+								<th scope="row">Reference</th>
+								<td>
+									<ol>
+										<li><a
+											href="https://httpd.apache.org/docs/current/mod/core.html#servertokens">https://httpd.apache.org/docs/current/mod/core.html#servertokens</a></li>
+										<li><a
+											href="https://learn.microsoft.com/en-us/previous-versions/msp-n-p/ff648552(v=pandp.10)">https://learn.microsoft.com/en-us/previous-versions/msp-n-p/ff648552(v=pandp.10)</a></li>
+										<li><a
+											href="https://www.troyhunt.com/shhh-dont-let-your-response-headers/">https://www.troyhunt.com/shhh-dont-let-your-response-headers/</a></li>
+									</ol>
+								</td>
+							</tr>
+						</table>
+					</li>
+					<li
+						id="alert-type-2">
+						<h4>Information Disclosure - Suspicious Comments</h4>
+						<table class="alert-types-table">
+							<tr>
+								<th scope="row">Source</th>
+								<td>
+									
+									   <span>raised by a passive scanner</span> <span>(<a
+										href="https://www.zaproxy.org/docs/alerts/10027/">Information Disclosure - Suspicious Comments</a>)
+									</span>   
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">CWE ID</th>
+								<td><a
+									href="https://cwe.mitre.org/data/definitions/615.html">615</a></td>
+							</tr>
+							<tr>
+								<th scope="row">WASC ID</th>
+								<td>13</td>
+							</tr>
+							
+						</table>
+					</li>
+					<li
+						id="alert-type-3">
+						<h4>Modern Web Application</h4>
+						<table class="alert-types-table">
+							<tr>
+								<th scope="row">Source</th>
+								<td>
+									
+									   <span>raised by a passive scanner</span> <span>(<a
+										href="https://www.zaproxy.org/docs/alerts/10109/">Modern Web Application</a>)
+									</span>   
+								</td>
+							</tr>
+							
+							
+							
+						</table>
+					</li>
+					<li
+						id="alert-type-4">
+						<h4>User Controllable HTML Element Attribute (Potential XSS)</h4>
+						<table class="alert-types-table">
+							<tr>
+								<th scope="row">Source</th>
+								<td>
+									
+									   <span>raised by a passive scanner</span> <span>(<a
+										href="https://www.zaproxy.org/docs/alerts/10031/">User Controllable HTML Element Attribute (Potential XSS)</a>)
+									</span>   
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">CWE ID</th>
+								<td><a
+									href="https://cwe.mitre.org/data/definitions/20.html">20</a></td>
+							</tr>
+							<tr>
+								<th scope="row">WASC ID</th>
+								<td>20</td>
+							</tr>
+							<tr>
+								<th scope="row">Reference</th>
+								<td>
+									<ol>
+										<li><a
+											href="https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html">https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html</a></li>
+									</ol>
+								</td>
+							</tr>
+						</table>
+					</li>
+				</ol>
+			</section>
+		</section>
+		 
+	</main>
+</body>
+</html>
+
+
+

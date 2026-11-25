@@ -51,6 +51,18 @@ ERROR_UNKNOWN = ("That combination isn't in the dataset. You can choose wild typ
                  "daf-2 with rsks-1, or all three genes.")
 
 app = Flask(__name__)
+
+# reduces security vulnerabilities (db4)
+@app.after_request
+def set_security_headers(response):
+    response.headers["Content-Security-Policy"] = (
+        "default-src 'self'; object-src 'none'; base-uri 'self'; "
+        "form-action 'self'; frame-ancestors 'none'"
+    )
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    return response
+
 app.json.sort_keys = False  # keep genotypes in the pipeline's order (wild type first)
 survival = pd.read_csv(RESULTS / "survival_curves_illustrative.csv", index_col=0)
 growth = pd.read_csv(RESULTS / "growth_comparison.csv", index_col="genotype")
