@@ -1,8 +1,10 @@
+import os
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
 from flask import Flask, jsonify, render_template, request
+from flask_wtf.csrf import CSRFProtect
 
 RESULTS = Path(__file__).resolve().parent.parent / "core" / "results"
 REFERENCE_DATA = Path(__file__).resolve().parent.parent / "core" / "data" / "lifespan_reference.csv"
@@ -51,6 +53,16 @@ ERROR_UNKNOWN = ("That combination isn't in the dataset. You can choose wild typ
                  "daf-2 with rsks-1, or all three genes.")
 
 app = Flask(__name__)
+secret_key = os.environ.get("SECRET_KEY")
+if not secret_key or len(secret_key) < 32:
+    raise RuntimeError("Set SECRET_KEY to a random value of at least 32 characters.")
+
+app.config.update(
+    SECRET_KEY=secret_key,
+    SESSION_COOKIE_HTTPONLY=True,
+    SESSION_COOKIE_SAMESITE="Lax",
+)
+CSRFProtect(app)
 
 # reduces security vulnerabilities (db4)
 @app.after_request

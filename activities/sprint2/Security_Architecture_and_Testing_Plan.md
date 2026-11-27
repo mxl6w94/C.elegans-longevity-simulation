@@ -39,7 +39,7 @@ The Flask app has four entry points, and only one takes user input.
 | F4 | Low now, high later | `timelapse.js` builds the population panels with `innerHTML` and template strings that include `g.name` from the API. The names are server constants today; once they come from a database or user input, this becomes a DOM XSS hole. | Build those elements with `createElement` and `textContent` |
 | F5 | Low | `Server` header reveals software versions | `server_tokens off` in Nginx; Gunicorn stays behind the proxy |
 | F6 | Low | One inline `style` attribute (`--accent`) forces a weaker CSP (`style-src 'unsafe-inline'`) | Replace it with a CSS class per genotype |
-| F7 | Future | No CSRF protection. Nothing changes state yet, but saving and sharing predictions will. | Add Flask-WTF `CSRFProtect` before those features ship |
+| F7 | Low | No CSRF protection on the prediction form (resolved). | Flask-WTF `CSRFProtect` validates unsafe requests; the form includes a session-bound token, and `SECRET_KEY` is required from the environment. |
 | F8 | Info | Two `\|safe` filters in the template, both on hard-coded arrow characters. Safe as written. | Add a review rule: any new `\|safe` or `innerHTML` needs a second reviewer |
 
 ## 2. Target architecture on AWS EC2
@@ -94,7 +94,7 @@ The rule: **queries are never built with string formatting.** This applies from 
 - **Debug off in production** (F1): Gunicorn with `FLASK_DEBUG=0`. A test fails if production config has `DEBUG=True`.
 - **Headers** (F2, F5): CSP as above, `Strict-Transport-Security: max-age=31536000`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: same-origin`, `Permissions-Policy` with camera, mic and location off, `server_tokens off`.
 - **Size and rate limits** (F3): `MAX_CONTENT_LENGTH = 16 KB` (the form is tiny), Nginx `client_max_body_size 16k`, and `limit_req` on `POST /`.
-- **CSRF** (F7): Flask-WTF `CSRFProtect` on every POST, added together with the first feature that saves anything.
+- **CSRF** (F7): Flask-WTF `CSRFProtect` validates every unsafe request, including the prediction form, using a session-bound token.
 - **Secrets**: `SECRET_KEY` comes from an environment variable set by systemd, never from the repository. Session cookies are `Secure`, `HttpOnly` and `SameSite=Lax`.
 - **Errors**: custom 404 and 500 pages that show no stack traces or file paths.
 
@@ -176,7 +176,7 @@ Targets: planned saved predictions (feature 12) and share links (feature 18). Th
 | CFG-02 | Request of 20 KB to `POST /` | 413 Payload Too Large |
 | CFG-03 | Response headers on `/`, `/api/curves`, a static file and a 404 | All section 3 headers present; no `Server` version |
 | CFG-04 | Forced error (test-only route) | Generic 500 page; no stack trace, path or library name |
-| CFG-05 | `POST /` without a CSRF token (once CSRF is added) | 400 |
+| CFG-05 | `POST /` without a CSRF token | 400 |
 | CFG-06 | Plain HTTP on port 80 (staging) | 301 redirect to HTTPS |
 | CFG-07 | Port scan of the instance (staging) | Only 80 and 443 open |
 
@@ -256,9 +256,9 @@ The app goes to production only when every item below is true:
 - [ ] `pip-audit` and Dependabot: zero known vulnerabilities, or each one documented with a reason it doesn't apply
 - [ ] ZAP: no medium or high alerts
 - [ ] Section 6 checklist complete for the production instance
-- [ ] Findings F1 to F6 closed
+- [ ] Findings F1 to F7 closed
 
-**Before each planned feature ships**, its tests move from `xfail` to required: saved predictions (feature 12) need CSRF (F7), SQL-01 to SQL-06 and PT-08; gene search (feature 15) needs XSS-05; share links (feature 18) need PT-08 and the SQL cases.
+**Before each planned feature ships**, its tests move from `xfail` to required: saved predictions (feature 12) need CSRF coverage (F7), SQL-01 to SQL-06 and PT-08; gene search (feature 15) needs XSS-05; share links (feature 18) need PT-08 and the SQL cases.
 
 ## 8. Open questions
 

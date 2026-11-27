@@ -61,16 +61,36 @@ def test_path_traversal_is_blocked(raw_get, path):
 
 
 @pytest.mark.parametrize("payload", list(XSS_PAYLOADS.values()), ids=list(XSS_PAYLOADS))
-def test_form_input_is_never_reflected(client, base_url, payload):
-    r = client.post(f"{base_url}/", data={"genes": payload}, timeout=10)
+def test_form_input_is_never_reflected(client, base_url, csrf_token, payload):
+    r = client.post(
+        f"{base_url}/", data={"csrf_token": csrf_token, "genes": payload}, timeout=10
+    )
     assert r.status_code == 200
     assert payload not in r.text
     assert "That combination isn&#39;t in the dataset." in r.text
 
 
+def test_post_without_csrf_token_is_rejected(client, base_url):
+    r = client.post(f"{base_url}/", data={"genes": "daf-2"}, timeout=10)
+    assert r.status_code == 400
+
+
+def test_post_with_invalid_csrf_token_is_rejected(client, base_url, csrf_token):
+    r = client.post(
+        f"{base_url}/", data={"csrf_token": "invalid", "genes": "daf-2"}, timeout=10
+    )
+    assert r.status_code == 400
+
+
 @pytest.mark.parametrize("method", ["PUT", "DELETE", "PATCH", "TRACE"])
-def test_unused_http_methods_are_rejected(client, base_url, method):
-    assert client.request(method, f"{base_url}/", timeout=10).status_code == 405
+def test_unused_http_methods_are_rejected(client, base_url, csrf_token, method):
+    response = client.request(
+        method,
+        f"{base_url}/",
+        headers={"X-CSRFToken": csrf_token},
+        timeout=10,
+    )
+    assert response.status_code == 405
 
 
 def test_not_running_flask_dev_server(client, base_url):
@@ -98,6 +118,10 @@ def test_security_headers_present(client, base_url):
 
 
 @pytest.mark.xfail(strict=True, reason="F3: no request size limit yet (CFG-02)")
-def test_large_request_is_rejected(client, base_url):
-    r = client.post(f"{base_url}/", data={"genes": "a" * 20_000}, timeout=10)
+def test_large_request_is_rejected(client, base_url, csrf_token):
+    r = client.post(
+        f"{base_url}/",
+        data={"csrf_token": csrf_token, "genes": "a" * 20_000},
+        timeout=10,
+    )
     assert r.status_code == 413

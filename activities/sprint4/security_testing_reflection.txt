@@ -3,9 +3,12 @@ Name: Caleb Walton
 This is my work with security testing so far.
 
 I used Claude to help interpret the results from the Semgrep and OWASP ZAP scans. The responses from Claude's analysis
-of the Semgrep report pointed out security issues
+of the initial Semgrep report pointed out security issues
 with our .yml file and CSRF issues with the web application.
-Claude's analysis of OWASP ZAP's report included CSRF, CSP header, and clickjacking security issues.
-While the semgrep results before and after my security
-adjustments are the same, for the OWASP ZAP results I helped eliminate issues with CSP headers and clickjacking while fixing other minor
+Claude's analysis of OWASP ZAP's initial report included CSRF, CSP header, and clickjacking security issues.
+For the OWASP ZAP results I helped eliminate issues with CSP headers and clickjacking while fixing other minor
 security issues. Claude generated and suggested some code that I then used to help fix these security vulnerabilities.
+Implementing the anti-CSRF measures (done through GitHub Copilot GPT-6 Luna) required a lot of changes across several different code files, so be sure to review the code files again,
+especially the README since the application now requires the creation of an anti-CSRF token in the terminal.
+While the newest OWASP ZAP results reflect the anti-CSRF measures, the Semgrep results remained the same throughout all my security scans,
+and GitHub Copilot (Mai Code 2 Flash) says it is likely an error on Semgrep's end.

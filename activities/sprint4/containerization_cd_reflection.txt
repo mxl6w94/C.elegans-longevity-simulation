@@ -1,0 +1,4 @@
+Name: Caleb Walton
+
+I saw that someone already made the CI and Docker files, so I just ran the container made from the Dockerfile.
+I have a screenshot in the sprint4 folder of the container working, proving the containerization works.

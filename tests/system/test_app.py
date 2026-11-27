@@ -24,8 +24,10 @@ ERRORS = [
 ]
 
 
-def post_genes(client, base_url, genes):
-    return client.post(f"{base_url}/", data={"genes": genes}, timeout=10)
+def post_genes(client, base_url, genes, csrf_token):
+    return client.post(
+        f"{base_url}/", data={"csrf_token": csrf_token, "genes": genes}, timeout=10
+    )
 
 
 # --- the page -------------------------------------------------------------
@@ -39,8 +41,8 @@ def test_home_page_loads(client, base_url):
 
 
 @pytest.mark.parametrize("genes, name, key", GENOTYPES, ids=[g[2] for g in GENOTYPES])
-def test_prediction_for_each_worm(client, base_url, genes, name, key):
-    r = post_genes(client, base_url, genes)
+def test_prediction_for_each_worm(client, base_url, csrf_token, genes, name, key):
+    r = post_genes(client, base_url, genes, csrf_token)
     assert r.status_code == 200
     assert f"<h2>{html.escape(name)}</h2>" in r.text
     for tile in ("Measured lifespan", "Model estimate", "Measured vs model", "Growth vs normal worm"):
@@ -52,15 +54,15 @@ def test_prediction_for_each_worm(client, base_url, genes, name, key):
 
 
 @pytest.mark.parametrize("genes, message", ERRORS, ids=["nothing", "wt-plus-gene", "daf-16-alone", "daf-16-rsks-1"])
-def test_invalid_selection_shows_error(client, base_url, genes, message):
-    r = post_genes(client, base_url, genes)
+def test_invalid_selection_shows_error(client, base_url, csrf_token, genes, message):
+    r = post_genes(client, base_url, genes, csrf_token)
     assert r.status_code == 200
     assert message in html.unescape(r.text)
     assert 'id="timelapse"' not in r.text
 
 
-def test_ticked_boxes_are_remembered(client, base_url):
-    r = post_genes(client, base_url, ["daf-2", "rsks-1"])
+def test_ticked_boxes_are_remembered(client, base_url, csrf_token):
+    r = post_genes(client, base_url, ["daf-2", "rsks-1"], csrf_token)
     checked = set(re.findall(r'value="([^"]+)"\s+checked', r.text))
     assert checked == {"daf-2", "rsks-1"}
 

@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import http.client
 import os
+import re
 import time
 import urllib.parse
 
@@ -45,6 +46,15 @@ def base_url() -> str:
 def client():
     with requests.Session() as session:
         yield session
+
+
+@pytest.fixture
+def csrf_token(client, base_url):
+    response = client.get(f"{base_url}/")
+    assert response.status_code == 200
+    match = re.search(r'<input[^>]*name="csrf_token"[^>]*value="([^"]+)"', response.text)
+    assert match, "home page did not render a CSRF token"
+    return match.group(1)
 
 
 @pytest.fixture(scope="session")

@@ -62,6 +62,7 @@ jobs:
           docker run --detach --name wormlife
           --publish 127.0.0.1:8000:8000
           --read-only --tmpfs /tmp
+          --env SECRET_KEY=system-test-only-secret-key-not-for-production
           --security-opt no-new-privileges
           --cap-drop ALL
           "$IMAGE"

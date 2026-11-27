@@ -80,11 +80,24 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-This creates a private Python environment in `web/.venv` and installs Flask and pandas into it. The `.venv` folder is ignored by Git, so each person creates their own.
+This creates a private Python environment in `web/.venv` and installs the website's dependencies. The `.venv` folder is ignored by Git, so each person creates their own.
 
 #### 3. Run the website
 
-From the `web` folder, with the environment active (your prompt starts with `(.venv)`):
+Set a random secret key of at least 32 characters before starting the app. It signs
+the CSRF token and must be kept private. In PowerShell:
+
+```
+$env:SECRET_KEY = python -c "import secrets; print(secrets.token_hex(32))"
+```
+
+On macOS or Linux:
+
+```
+export SECRET_KEY="$(python -c 'import secrets; print(secrets.token_hex(32))')"
+```
+
+From the `web` folder, with the environment active and `SECRET_KEY` set (your prompt starts with `(.venv)`):
 
 ```
 flask --app app run --debug
@@ -92,7 +105,7 @@ flask --app app run --debug
 
 Open <http://127.0.0.1:5000> in your browser. `--debug` reloads the server when you save a file. Press `Ctrl+C` in the terminal to stop it.
 
-Next time, you only need to activate the environment and run the server:
+Next time, activate the environment, set a new `SECRET_KEY` as above, and run the server:
 
 ```
 cd web
@@ -100,6 +113,31 @@ cd web
 source .venv/bin/activate       (macOS/Linux)
 flask --app app run --debug
 ```
+
+#### Run with Docker
+
+Build the image from the repository root:
+
+```
+docker build -t wormlife-web .
+```
+
+In PowerShell, create a secret and pass it to the container:
+
+```
+$secret = python -c "import secrets; print(secrets.token_hex(32))"
+docker run --rm -p 8000:8000 -e "SECRET_KEY=$secret" wormlife-web
+```
+
+On macOS or Linux:
+
+```
+export SECRET_KEY="$(python -c 'import secrets; print(secrets.token_hex(32))')"
+docker run --rm -p 8000:8000 -e SECRET_KEY="$SECRET_KEY" wormlife-web
+```
+
+Open <http://localhost:8000>. Keep the key private and use the same value across
+all workers in a deployment.
 
 #### 4. Re-run the modeling pipeline (optional)
 

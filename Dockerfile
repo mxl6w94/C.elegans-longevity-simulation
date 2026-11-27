@@ -6,7 +6,7 @@
 # this image; it runs offline and its CSVs are copied in at build time.
 #
 #   docker build -t wormlife-web .
-#   docker run --rm -p 8000:8000 --read-only --tmpfs /tmp wormlife-web
+#   docker run --rm -p 8000:8000 -e SECRET_KEY=<random-32+-character-secret> --read-only --tmpfs /tmp wormlife-web
 #   open http://localhost:8000
 #
 # On EC2, publish the port on localhost only (-p 127.0.0.1:8000:8000) and put
