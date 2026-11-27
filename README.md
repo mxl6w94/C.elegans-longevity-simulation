@@ -129,6 +129,8 @@ $secret = python -c "import secrets; print(secrets.token_hex(32))"
 docker run --rm -p 8000:8000 -e "SECRET_KEY=$secret" wormlife-web
 ```
 
+Then type "localhost:8000" in your browser.
+
 On macOS or Linux:
 
 ```
